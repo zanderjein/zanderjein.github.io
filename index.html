@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Zander Jein</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #f5efe6;
+      --surface: #fffdf9;
+      --border: #e6ddcf;
+      --text: #2e2a25;
+      --muted: #6f675c;
+      --faint: #8c8378;
+      --accent: #4a5d4f;        /* muted forest green */
+      --accent-soft: #5f7665;
+      --accent-wash: #e8ece6;
+      --max-width: 700px;
+      --serif: "Fraunces", Georgia, "Times New Roman", serif;
+      --sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--sans);
+      background-color: var(--bg);
+      /* faint aged-paper grain */
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
+      color: var(--text);
+      line-height: 1.58;
+      font-size: 17px;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    a { color: var(--accent); text-decoration: none; transition: color 0.2s ease; }
+    a:hover { color: var(--accent-soft); }
+
+    h1, h2, h3 { font-family: var(--serif); font-weight: 500; letter-spacing: -0.01em; }
+
+    .container { max-width: var(--max-width); margin: 0 auto; padding: 0 1.5rem; }
+
+    section { padding: 2.75rem 0; }
+    /* asterism divider sitting in the whitespace between sections */
+    section + section::before {
+      content: "⁂";
+      display: block;
+      text-align: center;
+      color: var(--accent);
+      font-size: 1rem;
+      opacity: 0.55;
+      margin-bottom: 2.5rem;
+      letter-spacing: 0.3em;
+    }
+
+    .section-title {
+      font-size: 1.8rem;
+      letter-spacing: -0.02em;
+      margin-bottom: 0.2rem;
+    }
+    .section-lead {
+      color: var(--muted);
+      font-size: 1rem;
+      margin-bottom: 1.5rem;
+      max-width: 52ch;
+    }
+
+    /* Nav */
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      background: rgba(245, 239, 230, 0.85);
+      backdrop-filter: blur(8px);
+      border-bottom: 1px solid var(--border);
+    }
+    nav .container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      height: 60px;
+    }
+    nav .brand { font-family: var(--serif); font-weight: 600; font-size: 1.15rem; color: var(--text); }
+    nav .links { display: flex; gap: 1.5rem; }
+    nav .links a {
+      position: relative;
+      color: var(--muted);
+      font-size: 0.92rem;
+      font-weight: 500;
+      padding-bottom: 2px;
+    }
+    nav .links a::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      width: 100%;
+      height: 1.5px;
+      background: var(--accent);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.25s ease;
+    }
+    nav .links a:hover { color: var(--accent); }
+    nav .links a:hover::after { transform: scaleX(1); }
+
+    /* Hero */
+    .hero {
+      min-height: 62vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 3rem 0 2.75rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .hero h1 {
+      font-size: clamp(2.6rem, 7vw, 3.8rem);
+      font-weight: 600;
+      letter-spacing: -0.03em;
+      line-height: 1.05;
+      margin-bottom: 1rem;
+    }
+    /* thin accent rule between name and tagline */
+    .hero h1::after {
+      content: "";
+      display: block;
+      width: 2.5rem;
+      height: 2px;
+      background: var(--accent);
+      margin-top: 1rem;
+    }
+    .hero .tagline {
+      font-family: var(--serif);
+      font-size: clamp(1.15rem, 3vw, 1.45rem);
+      font-weight: 400;
+      font-style: italic;
+      color: var(--muted);
+      max-width: 30ch;
+    }
+
+    /* About */
+    .about p {
+      font-size: 1.12rem;
+      line-height: 1.65;
+      color: var(--text);
+      max-width: 58ch;
+    }
+    .about p::first-letter {
+      font-family: var(--serif);
+      font-size: 3.1rem;
+      line-height: 0.78;
+      font-weight: 600;
+      float: left;
+      color: var(--accent);
+      padding: 0.32rem 0.55rem 0 0;
+    }
+    .about .accent-word { color: var(--accent); font-style: italic; }
+
+    /* Reading feed */
+    .reading-list { list-style: none; display: flex; flex-direction: column; }
+    .reading-item {
+      padding: 1.1rem 0;
+      border-top: 1px solid var(--border);
+    }
+    .reading-item:first-child { border-top: none; padding-top: 0; }
+    .reading-item h3 { font-size: 1.2rem; margin-bottom: 0.1rem; }
+    .reading-item .source { color: var(--faint); font-size: 0.88rem; margin-bottom: 0.4rem; }
+    .reading-item .note { color: var(--muted); }
+    .reading-item .note::before {
+      content: "“";
+      font-family: var(--serif);
+      color: var(--accent);
+      font-size: 1.3rem;
+      margin-right: 0.1rem;
+      vertical-align: -0.15rem;
+    }
+
+    /* Blog feed */
+    .post-feed { display: flex; flex-direction: column; gap: 0.85rem; }
+    .post-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 1.4rem 1.5rem;
+      transition: border-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .post-card:hover {
+      border-color: var(--accent-soft);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(74, 93, 79, 0.1);
+    }
+    .post-card .date {
+      font-variant: small-caps;
+      font-size: 0.8rem;
+      color: var(--accent);
+      letter-spacing: 0.1em;
+      font-weight: 600;
+    }
+    .post-card h3 { font-size: 1.3rem; line-height: 1.2; margin: 0.2rem 0 0.4rem; }
+    .post-card h3 a { color: var(--text); }
+    .post-card h3 a:hover { color: var(--accent); }
+    .post-card .excerpt { color: var(--muted); margin-bottom: 0.7rem; }
+    .post-card .read-more {
+      font-size: 0.92rem;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+    }
+    .post-card .read-more::after { content: "→"; transition: transform 0.2s ease; }
+    .post-card:hover .read-more::after { transform: translateX(3px); }
+
+    /* Contact / Footer */
+    footer {
+      background: var(--accent-wash);
+      border-top: 1px solid var(--border);
+      padding: 3rem 0;
+    }
+    footer h2 { font-size: 1.5rem; margin-bottom: 0.75rem; }
+    footer p { color: var(--muted); margin-bottom: 1.5rem; max-width: 50ch; }
+    .contact-links { display: flex; flex-wrap: wrap; gap: 0.75rem; margin-bottom: 2rem; }
+    .contact-links a {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.55rem 1.1rem;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      border-radius: 8px;
+      color: var(--text);
+      font-size: 0.95rem;
+      font-weight: 500;
+      transition: border-color 0.2s ease, color 0.2s ease;
+    }
+    .contact-links a:hover { border-color: var(--accent); color: var(--accent); }
+    .copyright { color: var(--faint); font-size: 0.85rem; }
+
+    @media (max-width: 600px) {
+      body { font-size: 16px; }
+      section { padding: 2.25rem 0; }
+      .hero { min-height: 52vh; padding: 2.5rem 0; }
+      section + section::before { margin-bottom: 2rem; }
+      nav .links { gap: 1rem; }
+      nav .links a { font-size: 0.82rem; }
+      .post-card { padding: 1.25rem; }
+    }
+  </style>
+</head>
+<body>
+  <nav>
+    <div class="container">
+      <span class="brand">Zander Jein</span>
+      <div class="links">
+        <a href="#about">About</a>
+        <a href="#reading">Reading</a>
+        <a href="#healthcare">Healthcare</a>
+        <a href="#personal">Personal</a>
+      </div>
+    </div>
+  </nav>
+
+  <header class="hero">
+    <div class="container">
+      <h1>Zander Jein</h1>
+      <p class="tagline">About me, the things I'm reading, and my interests</p>
+    </div>
+  </header>
+
+  <section id="about" class="about">
+    <div class="container">
+      <h2 class="section-title">About</h2>
+      <p>Hi everyone! My name is Zander, and I'm currently a student at Yale University, studying economics and mathematics. I previously did a lot of competitive debating, played in orchestra, and dabbled a bit in philosophy. However, my current fixation is on the <span class="accent-word">U.S. health care system</span>—and what can be done about it.</p>
+    </div>
+  </section>
+
+  <section id="reading" class="reading">
+    <div class="container">
+      <h2 class="section-title">Reading</h2>
+      <p class="section-lead">Books, articles, and essays I'm working through right now, with a few notes of my own.</p>
+      <ul class="reading-list">
+        <li class="reading-item">
+          <h3>An American Sickness</h3>
+          <p class="source">Elisabeth Rosenthal · Book</p>
+          <p class="note">A clear-eyed tour of how American medicine became a business. Reframed how I think about where the money actually goes.</p>
+        </li>
+        <li class="reading-item">
+          <h3>The Cost Conundrum</h3>
+          <p class="source">Atul Gawande · The New Yorker</p>
+          <p class="note">Still the essay I'd hand anyone who wants to understand why two similar towns can have wildly different health costs.</p>
+        </li>
+        <li class="reading-item">
+          <h3>Being Mortal</h3>
+          <p class="source">Atul Gawande · Book</p>
+          <p class="note">Less about policy, more about what care is for. A good counterweight to all the spreadsheets.</p>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <section id="healthcare" class="healthcare">
+    <div class="container">
+      <h2 class="section-title">Healthcare Writing</h2>
+      <p class="section-lead">My own attempts to think out loud about the U.S. health care system—what's broken, and what might be done.</p>
+      <div class="post-feed">
+        <article class="post-card">
+          <p class="date">May 2026</p>
+          <h3><a href="#">Why a Hospital Bill Is Never Just a Bill</a></h3>
+          <p class="excerpt">An attempt to trace a single emergency-room charge from the moment of care to the final statement—and to find where the number actually comes from.</p>
+          <a href="#" class="read-more">Read more</a>
+        </article>
+        <article class="post-card">
+          <p class="date">April 2026</p>
+          <h3><a href="#">The Case for Boring Reforms</a></h3>
+          <p class="excerpt">Sweeping overhauls get the headlines, but a lot of the most promising fixes are quiet, administrative, and unglamorous. Here's why that might be a feature.</p>
+          <a href="#" class="read-more">Read more</a>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section id="personal" class="personal">
+    <div class="container">
+      <h2 class="section-title">Personal Writing</h2>
+      <p class="section-lead">Notes on life at Yale, music, debate, and whatever else I'm turning over.</p>
+      <div class="post-feed">
+        <article class="post-card">
+          <p class="date">May 2026</p>
+          <h3><a href="#">What Debate Taught Me About Listening</a></h3>
+          <p class="excerpt">Years of competitive debating made me good at arguing. It took longer to learn the harder skill hiding underneath it.</p>
+          <a href="#" class="read-more">Read more</a>
+        </article>
+        <article class="post-card">
+          <p class="date">March 2026</p>
+          <h3><a href="#">A Semester in Three Movements</a></h3>
+          <p class="excerpt">On returning to the orchestra after a year away, and what it's like to read music again with rustier hands and a clearer head.</p>
+          <a href="#" class="read-more">Read more</a>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <footer id="contact">
+    <div class="container">
+      <h2>Get in touch</h2>
+      <p>Always happy to talk about health care, books, or anything else. The best way to reach me is by email.</p>
+      <div class="contact-links">
+        <a href="mailto:zander.jeinthanuttkanont@yale.edu">✉ Email</a>
+        <a href="https://www.linkedin.com/in/zander-jein" target="_blank" rel="noopener">LinkedIn</a>
+      </div>
+      <p class="copyright">&copy; <span id="year"></span> Zander Jein</p>
+    </div>
+  </footer>
+
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>
