@@ -3,23 +3,24 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Zander Jein</title>
+  <title>zander jein</title>
+  <meta name="description" content="zander jein—yale student studying economics and mathematics, thinking about the u.s. healthcare system." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
   <style>
     :root {
-      --bg: #f5efe6;
-      --surface: #fffdf9;
-      --border: #e6ddcf;
-      --text: #2e2a25;
-      --muted: #6f675c;
-      --faint: #8c8378;
-      --accent: #4a5d4f;        /* muted forest green */
-      --accent-soft: #5f7665;
-      --accent-wash: #e8ece6;
-      --max-width: 700px;
-      --serif: "Fraunces", Georgia, "Times New Roman", serif;
+      --bg: #f6f2ea;
+      --surface: #fffdf8;
+      --border: #e3dccd;
+      --text: #232020;
+      --muted: #6b645a;
+      --faint: #a39a8c;
+      --accent: #b5562b;        /* warm terracotta */
+      --accent-soft: #c96a3e;
+      --chip-bg: #efe9dd;
+      --max-width: 640px;
+      --serif: "EB Garamond", Georgia, "Times New Roman", serif;
       --sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
     }
 
@@ -30,204 +31,180 @@
     body {
       font-family: var(--sans);
       background-color: var(--bg);
-      /* faint aged-paper grain */
-      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
       color: var(--text);
-      line-height: 1.58;
+      line-height: 1.6;
       font-size: 17px;
       -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
     }
 
-    a { color: var(--accent); text-decoration: none; transition: color 0.2s ease; }
+    a { color: var(--accent); text-decoration: none; transition: color 0.18s ease; }
     a:hover { color: var(--accent-soft); }
-
-    h1, h2, h3 { font-family: var(--serif); font-weight: 500; letter-spacing: -0.01em; }
 
     .container { max-width: var(--max-width); margin: 0 auto; padding: 0 1.5rem; }
 
-    section { padding: 2.75rem 0; }
-    /* asterism divider sitting in the whitespace between sections */
-    section + section::before {
-      content: "⁂";
-      display: block;
-      text-align: center;
+    /* ---- Section scaffold ---- */
+    section { padding: 3.25rem 0; }
+
+    .section-head { margin-bottom: 1.75rem; }
+
+    .section-num {
+      font-family: var(--serif);
+      font-size: 0.95rem;
+      font-weight: 600;
       color: var(--accent);
-      font-size: 1rem;
-      opacity: 0.55;
-      margin-bottom: 2.5rem;
-      letter-spacing: 0.3em;
+      letter-spacing: 0.04em;
+      display: inline-block;
+      margin-bottom: 0.35rem;
     }
 
     .section-title {
-      font-size: 1.8rem;
+      font-family: var(--serif);
+      font-size: clamp(1.75rem, 5vw, 2.2rem);
+      font-weight: 600;
+      letter-spacing: -0.01em;
+      line-height: 1.1;
+      text-transform: lowercase;
+    }
+    .section-title .emoji {
+      font-size: 0.72em;
+      margin-left: 0.4rem;
+      vertical-align: 0.04em;
+      -webkit-text-fill-color: initial;
+    }
+
+    .descriptors {
+      margin-top: 0.6rem;
+      color: var(--faint);
+      font-size: 0.9rem;
+      letter-spacing: 0.01em;
+    }
+
+    /* clean separator between sections */
+    .rule {
+      border: none;
+      border-top: 1px solid var(--border);
+      max-width: var(--max-width);
+      margin: 0 auto;
+    }
+
+    /* ---- Hero ---- */
+    .hero { padding: 4.5rem 0 1rem; }
+    .hero .eyebrow {
+      font-family: var(--serif);
+      font-weight: 600;
+      color: var(--text);
+      font-size: clamp(2rem, 6vw, 3rem);
       letter-spacing: -0.02em;
-      margin-bottom: 0.2rem;
-    }
-    .section-lead {
-      color: var(--muted);
-      font-size: 1rem;
-      margin-bottom: 1.5rem;
-      max-width: 52ch;
-    }
-
-    /* Nav */
-    nav {
-      position: sticky;
-      top: 0;
-      z-index: 10;
-      background: rgba(245, 239, 230, 0.85);
-      backdrop-filter: blur(8px);
-      border-bottom: 1px solid var(--border);
-    }
-    nav .container {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      height: 60px;
-    }
-    nav .brand { font-family: var(--serif); font-weight: 600; font-size: 1.15rem; color: var(--text); }
-    nav .links { display: flex; gap: 1.5rem; }
-    nav .links a {
-      position: relative;
-      color: var(--muted);
-      font-size: 0.92rem;
-      font-weight: 500;
-      padding-bottom: 2px;
-    }
-    nav .links a::after {
-      content: "";
-      position: absolute;
-      left: 0;
-      bottom: 0;
-      width: 100%;
-      height: 1.5px;
-      background: var(--accent);
-      transform: scaleX(0);
-      transform-origin: left;
-      transition: transform 0.25s ease;
-    }
-    nav .links a:hover { color: var(--accent); }
-    nav .links a:hover::after { transform: scaleX(1); }
-
-    /* Hero */
-    .hero {
-      min-height: 62vh;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      padding: 3rem 0 2.75rem;
-      border-bottom: 1px solid var(--border);
+      line-height: 1.08;
+      text-transform: lowercase;
+      margin-bottom: 0.75rem;
+      max-width: 16ch;
     }
     .hero h1 {
-      font-size: clamp(2.6rem, 7vw, 3.8rem);
+      font-family: var(--serif);
+      font-size: clamp(2.4rem, 8vw, 3.4rem);
       font-weight: 600;
       letter-spacing: -0.03em;
-      line-height: 1.05;
-      margin-bottom: 1rem;
+      line-height: 1.02;
+      text-transform: lowercase;
     }
-    /* thin accent rule between name and tagline */
-    .hero h1::after {
-      content: "";
-      display: block;
-      width: 2.5rem;
-      height: 2px;
-      background: var(--accent);
-      margin-top: 1rem;
-    }
-    .hero .tagline {
-      font-family: var(--serif);
-      font-size: clamp(1.15rem, 3vw, 1.45rem);
-      font-weight: 400;
-      font-style: italic;
+    .hero .sub {
       color: var(--muted);
-      max-width: 30ch;
+      margin-top: 1rem;
+      max-width: 46ch;
     }
+    .hero .quicklinks {
+      margin-top: 1.4rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem 1.1rem;
+      font-size: 0.9rem;
+    }
+    .hero .quicklinks a { color: var(--muted); font-weight: 500; }
+    .hero .quicklinks a:hover { color: var(--accent); }
 
-    /* About */
+    /* ---- About ---- */
     .about p {
       font-size: 1.12rem;
-      line-height: 1.65;
-      color: var(--text);
-      max-width: 58ch;
+      line-height: 1.7;
+      max-width: 56ch;
     }
-    .about p::first-letter {
-      font-family: var(--serif);
-      font-size: 3.1rem;
-      line-height: 0.78;
-      font-weight: 600;
-      float: left;
-      color: var(--accent);
-      padding: 0.32rem 0.55rem 0 0;
-    }
+    .about p + p { margin-top: 0.85rem; }
     .about .accent-word { color: var(--accent); font-style: italic; }
 
-    /* Reading feed */
-    .reading-list { list-style: none; display: flex; flex-direction: column; }
-    .reading-item {
-      padding: 1.1rem 0;
+    /* ---- Feed / item lists ---- */
+    .feed { list-style: none; display: flex; flex-direction: column; }
+    .feed li {
+      display: flex;
+      gap: 1.1rem;
+      padding: 1.15rem 0;
       border-top: 1px solid var(--border);
+      align-items: baseline;
     }
-    .reading-item:first-child { border-top: none; padding-top: 0; }
-    .reading-item h3 { font-size: 1.2rem; margin-bottom: 0.1rem; }
-    .reading-item .source { color: var(--faint); font-size: 0.88rem; margin-bottom: 0.4rem; }
-    .reading-item .note { color: var(--muted); }
-    .reading-item .note::before {
-      content: "“";
+    .feed li:first-child { border-top: none; padding-top: 0.25rem; }
+    .feed .date {
+      flex-shrink: 0;
       font-family: var(--serif);
-      color: var(--accent);
-      font-size: 1.3rem;
-      margin-right: 0.1rem;
-      vertical-align: -0.15rem;
+      font-size: 0.85rem;
+      color: var(--faint);
+      width: 4.4rem;
+      padding-top: 0.15rem;
+      letter-spacing: 0.02em;
     }
+    .feed .body { flex: 1; }
+    .feed .item-title {
+      font-family: var(--serif);
+      font-size: 1.18rem;
+      font-weight: 500;
+      line-height: 1.25;
+      letter-spacing: -0.01em;
+    }
+    .feed .item-title a { color: var(--text); }
+    .feed .item-title a:hover { color: var(--accent); }
+    .feed .byline { color: var(--faint); font-size: 0.88rem; margin-top: 0.1rem; }
+    .feed .note { color: var(--muted); font-size: 0.97rem; margin-top: 0.4rem; }
+    .feed .note em { font-style: italic; color: var(--text); }
 
-    /* Blog feed */
-    .post-feed { display: flex; flex-direction: column; gap: 0.85rem; }
-    .post-card {
-      background: var(--surface);
+    /* tag chips */
+    .tags { margin-top: 0.55rem; display: flex; flex-wrap: wrap; gap: 0.4rem; }
+    .chip {
+      font-size: 0.72rem;
+      letter-spacing: 0.04em;
+      text-transform: lowercase;
+      color: var(--muted);
+      background: var(--chip-bg);
       border: 1px solid var(--border);
-      border-radius: 10px;
-      padding: 1.4rem 1.5rem;
-      transition: border-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+      border-radius: 999px;
+      padding: 0.15rem 0.6rem;
+      font-weight: 500;
     }
-    .post-card:hover {
-      border-color: var(--accent-soft);
-      transform: translateY(-2px);
-      box-shadow: 0 8px 24px rgba(74, 93, 79, 0.1);
-    }
-    .post-card .date {
-      font-variant: small-caps;
-      font-size: 0.8rem;
-      color: var(--accent);
-      letter-spacing: 0.1em;
-      font-weight: 600;
-    }
-    .post-card h3 { font-size: 1.3rem; line-height: 1.2; margin: 0.2rem 0 0.4rem; }
-    .post-card h3 a { color: var(--text); }
-    .post-card h3 a:hover { color: var(--accent); }
-    .post-card .excerpt { color: var(--muted); margin-bottom: 0.7rem; }
-    .post-card .read-more {
-      font-size: 0.92rem;
-      font-weight: 600;
+    .chip.healthcare { color: #a8492b; border-color: #e6c9bb; background: #f6e7df; }
+    .chip.personal   { color: #5a6b4e; border-color: #d3dac8; background: #e9eee1; }
+    .chip.econ       { color: #4c5b73; border-color: #c8d0dd; background: #e3e8f0; }
+
+    /* "see all" link */
+    .see-all {
       display: inline-flex;
       align-items: center;
-      gap: 0.3rem;
+      gap: 0.35rem;
+      margin-top: 1.5rem;
+      font-size: 0.9rem;
+      font-weight: 600;
+      letter-spacing: 0.01em;
     }
-    .post-card .read-more::after { content: "→"; transition: transform 0.2s ease; }
-    .post-card:hover .read-more::after { transform: translateX(3px); }
+    .see-all::after { content: "→"; transition: transform 0.18s ease; }
+    .see-all:hover::after { transform: translateX(3px); }
 
-    /* Contact / Footer */
-    footer {
-      background: var(--accent-wash);
-      border-top: 1px solid var(--border);
-      padding: 3rem 0;
-    }
-    footer h2 { font-size: 1.5rem; margin-bottom: 0.75rem; }
-    footer p { color: var(--muted); margin-bottom: 1.5rem; max-width: 50ch; }
-    .contact-links { display: flex; flex-wrap: wrap; gap: 0.75rem; margin-bottom: 2rem; }
+    /* ---- Contact ---- */
+    .contact .lead { font-size: 1.12rem; max-width: 50ch; line-height: 1.65; }
+    .contact .email-line { margin-top: 1.1rem; color: var(--muted); font-size: 1rem; }
+    .contact .lead strong { font-family: var(--serif); font-weight: 500; }
+    .contact-links { display: flex; flex-wrap: wrap; gap: 0.7rem; margin-top: 1.5rem; }
     .contact-links a {
       display: inline-flex;
       align-items: center;
-      gap: 0.4rem;
+      gap: 0.45rem;
       padding: 0.55rem 1.1rem;
       border: 1px solid var(--border);
       background: var(--surface);
@@ -235,124 +212,251 @@
       color: var(--text);
       font-size: 0.95rem;
       font-weight: 500;
-      transition: border-color 0.2s ease, color 0.2s ease;
+      transition: border-color 0.18s ease, color 0.18s ease;
     }
     .contact-links a:hover { border-color: var(--accent); color: var(--accent); }
-    .copyright { color: var(--faint); font-size: 0.85rem; }
+    .contact-links svg { width: 1rem; height: 1rem; }
 
-    @media (max-width: 600px) {
+    .colophon {
+      padding: 2.5rem 0 3.5rem;
+      color: var(--faint);
+      font-size: 0.82rem;
+    }
+
+    @media (max-width: 560px) {
       body { font-size: 16px; }
-      section { padding: 2.25rem 0; }
-      .hero { min-height: 52vh; padding: 2.5rem 0; }
-      section + section::before { margin-bottom: 2rem; }
-      nav .links { gap: 1rem; }
-      nav .links a { font-size: 0.82rem; }
-      .post-card { padding: 1.25rem; }
+      section { padding: 2.5rem 0; }
+      .hero { padding: 3.25rem 0 0.5rem; }
+      .feed li { flex-direction: column; gap: 0.3rem; }
+      .feed .date { width: auto; padding-top: 0; }
     }
   </style>
 </head>
 <body>
-  <nav>
-    <div class="container">
-      <span class="brand">Zander Jein</span>
-      <div class="links">
-        <a href="#about">About</a>
-        <a href="#reading">Reading</a>
-        <a href="#healthcare">Healthcare</a>
-        <a href="#personal">Personal</a>
-      </div>
-    </div>
-  </nav>
-
   <header class="hero">
     <div class="container">
-      <h1>Zander Jein</h1>
-      <p class="tagline">About me, the things I'm reading, and my interests</p>
+      <p class="eyebrow">welcome to a microcosm of my brain!</p>
+      <nav class="quicklinks">
+        <a href="#about">01 about</a>
+        <a href="#writing">02 writing</a>
+        <a href="#reading">03 reading</a>
+        <a href="#music">04 music</a>
+        <a href="#travels">05 travels</a>
+        <a href="#contact">06 say hi</a>
+      </nav>
     </div>
   </header>
 
+  <hr class="rule" />
+
+  <!-- 01 ABOUT -->
   <section id="about" class="about">
     <div class="container">
-      <h2 class="section-title">About</h2>
-      <p>Hi everyone! My name is Zander, and I'm currently a student at Yale University, studying economics and mathematics. I previously did a lot of competitive debating, played in orchestra, and dabbled a bit in philosophy. However, my current fixation is on the <span class="accent-word">U.S. health care system</span>—and what can be done about it.</p>
+      <div class="section-head">
+        <span class="section-num">01</span>
+        <h2 class="section-title">about <span class="emoji">🪴</span></h2>
+      </div>
+      <p>im zander, a student at yale studying econ + math!</p>
+      <p>my current fixation is on AI and the U.S. healthcare system and what can be done about both.</p>
+      <p>im interested in competitive debating, orchestral music, philosophy, reading, and studying mandarin.</p>
     </div>
   </section>
 
-  <section id="reading" class="reading">
+  <hr class="rule" />
+
+  <!-- 02 WRITING -->
+  <section id="writing" class="writing">
     <div class="container">
-      <h2 class="section-title">Reading</h2>
-      <p class="section-lead">Books, articles, and essays I'm working through right now, with a few notes of my own.</p>
-      <ul class="reading-list">
-        <li class="reading-item">
-          <h3>An American Sickness</h3>
-          <p class="source">Elisabeth Rosenthal · Book</p>
-          <p class="note">A clear-eyed tour of how American medicine became a business. Reframed how I think about where the money actually goes.</p>
+      <div class="section-head">
+        <span class="section-num">02</span>
+        <h2 class="section-title">things i'm writing <span class="emoji">✍️</span></h2>
+        <p class="descriptors">healthcare · ideas · life</p>
+      </div>
+      <!-- tag chips: use class "chip healthcare", "chip personal", or "chip econ" for color; plain "chip" is neutral -->
+      <ul class="feed">
+        <li>
+          <span class="date">[MM.DD.YY]</span>
+          <div class="body">
+            <h3 class="item-title"><a href="#">[post title]</a></h3>
+            <p class="note">[one-line description of the post]</p>
+            <div class="tags"><span class="chip healthcare">healthcare</span></div>
+          </div>
         </li>
-        <li class="reading-item">
-          <h3>The Cost Conundrum</h3>
-          <p class="source">Atul Gawande · The New Yorker</p>
-          <p class="note">Still the essay I'd hand anyone who wants to understand why two similar towns can have wildly different health costs.</p>
+        <li>
+          <span class="date">[MM.DD.YY]</span>
+          <div class="body">
+            <h3 class="item-title"><a href="#">[post title]</a></h3>
+            <p class="note">[one-line description of the post]</p>
+            <div class="tags"><span class="chip healthcare">healthcare</span><span class="chip econ">econ</span></div>
+          </div>
         </li>
-        <li class="reading-item">
-          <h3>Being Mortal</h3>
-          <p class="source">Atul Gawande · Book</p>
-          <p class="note">Less about policy, more about what care is for. A good counterweight to all the spreadsheets.</p>
+        <li>
+          <span class="date">[MM.DD.YY]</span>
+          <div class="body">
+            <h3 class="item-title"><a href="#">[post title]</a></h3>
+            <p class="note">[one-line description of the post]</p>
+            <div class="tags"><span class="chip personal">personal</span></div>
+          </div>
+        </li>
+        <li>
+          <span class="date">[MM.DD.YY]</span>
+          <div class="body">
+            <h3 class="item-title"><a href="#">[post title]</a></h3>
+            <p class="note">[one-line description of the post]</p>
+            <div class="tags"><span class="chip personal">personal</span></div>
+          </div>
         </li>
       </ul>
+      <a href="#" class="see-all">see all writing</a>
     </div>
   </section>
 
-  <section id="healthcare" class="healthcare">
+  <hr class="rule" />
+
+  <!-- 03 READING -->
+  <section id="reading" class="reading">
     <div class="container">
-      <h2 class="section-title">Healthcare Writing</h2>
-      <p class="section-lead">My own attempts to think out loud about the U.S. health care system—what's broken, and what might be done.</p>
-      <div class="post-feed">
-        <article class="post-card">
-          <p class="date">May 2026</p>
-          <h3><a href="#">Why a Hospital Bill Is Never Just a Bill</a></h3>
-          <p class="excerpt">An attempt to trace a single emergency-room charge from the moment of care to the final statement—and to find where the number actually comes from.</p>
-          <a href="#" class="read-more">Read more</a>
-        </article>
-        <article class="post-card">
-          <p class="date">April 2026</p>
-          <h3><a href="#">The Case for Boring Reforms</a></h3>
-          <p class="excerpt">Sweeping overhauls get the headlines, but a lot of the most promising fixes are quiet, administrative, and unglamorous. Here's why that might be a feature.</p>
-          <a href="#" class="read-more">Read more</a>
-        </article>
+      <div class="section-head">
+        <span class="section-num">03</span>
+        <h2 class="section-title">what i'm reading <span class="emoji">📚</span></h2>
+        <p class="descriptors">books · essays · papers</p>
       </div>
+      <ul class="feed">
+        <li>
+          <div class="body">
+            <h3 class="item-title">[book / article title]</h3>
+            <p class="byline">[author]</p>
+            <p class="note">[your short take—what it changed or why it stuck with you]</p>
+            <div class="tags"><span class="chip">book</span><span class="chip healthcare">healthcare</span></div>
+          </div>
+        </li>
+        <li>
+          <div class="body">
+            <h3 class="item-title">[book / article title]</h3>
+            <p class="byline">[author · publication]</p>
+            <p class="note">[your short take]</p>
+            <div class="tags"><span class="chip">essay</span></div>
+          </div>
+        </li>
+        <li>
+          <div class="body">
+            <h3 class="item-title">[paper title]</h3>
+            <p class="byline">[authors · journal]</p>
+            <p class="note">[your short take]</p>
+            <div class="tags"><span class="chip">paper</span><span class="chip econ">econ</span></div>
+          </div>
+        </li>
+      </ul>
+      <a href="#" class="see-all">see the whole shelf</a>
     </div>
   </section>
 
-  <section id="personal" class="personal">
+  <hr class="rule" />
+
+  <!-- 04 MUSIC -->
+  <section id="music" class="music">
     <div class="container">
-      <h2 class="section-title">Personal Writing</h2>
-      <p class="section-lead">Notes on life at Yale, music, debate, and whatever else I'm turning over.</p>
-      <div class="post-feed">
-        <article class="post-card">
-          <p class="date">May 2026</p>
-          <h3><a href="#">What Debate Taught Me About Listening</a></h3>
-          <p class="excerpt">Years of competitive debating made me good at arguing. It took longer to learn the harder skill hiding underneath it.</p>
-          <a href="#" class="read-more">Read more</a>
-        </article>
-        <article class="post-card">
-          <p class="date">March 2026</p>
-          <h3><a href="#">A Semester in Three Movements</a></h3>
-          <p class="excerpt">On returning to the orchestra after a year away, and what it's like to read music again with rustier hands and a clearer head.</p>
-          <a href="#" class="read-more">Read more</a>
-        </article>
+      <div class="section-head">
+        <span class="section-num">04</span>
+        <h2 class="section-title">what i'm listening to <span class="emoji">🎻</span></h2>
+        <p class="descriptors">music · my favorites · likely laufey</p>
       </div>
+      <ul class="feed">
+        <li>
+          <div class="body">
+            <h3 class="item-title">[piece / album title]</h3>
+            <p class="byline">[composer / artist]</p>
+            <p class="note">[short note—why you love it or what it reminds you of]</p>
+            <div class="tags"><span class="chip">classical</span><span class="chip">favorite</span></div>
+          </div>
+        </li>
+        <li>
+          <div class="body">
+            <h3 class="item-title">[piece / album title]</h3>
+            <p class="byline">[composer / artist]</p>
+            <p class="note">[short note]</p>
+            <div class="tags"><span class="chip">listening</span></div>
+          </div>
+        </li>
+        <li>
+          <div class="body">
+            <h3 class="item-title">[piece / album title]</h3>
+            <p class="byline">[composer / artist]</p>
+            <p class="note">[short note]</p>
+            <div class="tags"><span class="chip">orchestra</span><span class="chip">favorite</span></div>
+          </div>
+        </li>
+      </ul>
+      <a href="#" class="see-all">more of what i love</a>
     </div>
   </section>
 
-  <footer id="contact">
+  <hr class="rule" />
+
+  <!-- 05 TRAVELS -->
+  <section id="travels" class="travels">
     <div class="container">
-      <h2>Get in touch</h2>
-      <p>Always happy to talk about health care, books, or anything else. The best way to reach me is by email.</p>
+      <div class="section-head">
+        <span class="section-num">05</span>
+        <h2 class="section-title">places i've been <span class="emoji">✈️</span></h2>
+        <p class="descriptors">places · memories · photos</p>
+      </div>
+      <ul class="feed">
+        <li>
+          <span class="date">[MM.DD.YY]</span>
+          <div class="body">
+            <h3 class="item-title">[place name]</h3>
+            <p class="note">[short personal note—what you did or what stayed with you]</p>
+          </div>
+        </li>
+        <li>
+          <span class="date">[MM.DD.YY]</span>
+          <div class="body">
+            <h3 class="item-title">[place name]</h3>
+            <p class="note">[short personal note]</p>
+          </div>
+        </li>
+        <li>
+          <span class="date">[MM.DD.YY]</span>
+          <div class="body">
+            <h3 class="item-title">[place name]</h3>
+            <p class="note">[short personal note]</p>
+          </div>
+        </li>
+      </ul>
+      <a href="#" class="see-all">see more places</a>
+    </div>
+  </section>
+
+  <hr class="rule" />
+
+  <!-- 06 CONTACT -->
+  <section id="contact" class="contact">
+    <div class="container">
+      <div class="section-head">
+        <span class="section-num">06</span>
+        <h2 class="section-title">please say hi! <span class="emoji">💌</span></h2>
+      </div>
+      <p class="lead">i love hearing from people—about healthcare, books, music, or anything! the best way to reach me is email.</p>
+      <p class="email-line">📧: zander [dot] jeinthanuttkanont [at] yale [dot] edu</p>
       <div class="contact-links">
-        <a href="mailto:zander.jeinthanuttkanont@yale.edu">✉ Email</a>
-        <a href="https://www.linkedin.com/in/zander-jein" target="_blank" rel="noopener">LinkedIn</a>
+        <a href="https://www.linkedin.com/in/zander-jein" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-4 0v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+          linkedin
+        </a>
+        <a href="https://substack.com/@zanderjein" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M22 4.5H2v2.6h20V4.5zM2 9.7V21l10-4.4L22 21V9.7H2z"/></svg>
+          substack
+        </a>
       </div>
-      <p class="copyright">&copy; <span id="year"></span> Zander Jein</p>
+    </div>
+  </section>
+
+  <hr class="rule" />
+
+  <footer class="colophon">
+    <div class="container">
+      <p>© <span id="year"></span> zander jein · new haven, ct</p>
     </div>
   </footer>
 
