@@ -4,233 +4,11 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>zander jein</title>
-  <meta name="description" content="zander jein—yale student studying economics and mathematics, thinking about the u.s. healthcare system." />
+  <meta name="description" content="zander jein—yale student studying economics and mathematics, thinking about the U.S. healthcare system." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
-  <style>
-    :root {
-      --bg: #f6f2ea;
-      --surface: #fffdf8;
-      --border: #e3dccd;
-      --text: #232020;
-      --muted: #6b645a;
-      --faint: #a39a8c;
-      --accent: #b5562b;        /* warm terracotta */
-      --accent-soft: #c96a3e;
-      --chip-bg: #efe9dd;
-      --max-width: 640px;
-      --serif: "EB Garamond", Georgia, "Times New Roman", serif;
-      --sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-    }
-
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-
-    html { scroll-behavior: smooth; }
-
-    body {
-      font-family: var(--sans);
-      background-color: var(--bg);
-      color: var(--text);
-      line-height: 1.6;
-      font-size: 17px;
-      -webkit-font-smoothing: antialiased;
-      text-rendering: optimizeLegibility;
-    }
-
-    a { color: var(--accent); text-decoration: none; transition: color 0.18s ease; }
-    a:hover { color: var(--accent-soft); }
-
-    .container { max-width: var(--max-width); margin: 0 auto; padding: 0 1.5rem; }
-
-    /* ---- Section scaffold ---- */
-    section { padding: 3.25rem 0; }
-
-    .section-head { margin-bottom: 1.75rem; }
-
-    .section-num {
-      font-family: var(--serif);
-      font-size: 0.95rem;
-      font-weight: 600;
-      color: var(--accent);
-      letter-spacing: 0.04em;
-      display: inline-block;
-      margin-bottom: 0.35rem;
-    }
-
-    .section-title {
-      font-family: var(--serif);
-      font-size: clamp(1.75rem, 5vw, 2.2rem);
-      font-weight: 600;
-      letter-spacing: -0.01em;
-      line-height: 1.1;
-      text-transform: lowercase;
-    }
-    .section-title .emoji {
-      font-size: 0.72em;
-      margin-left: 0.4rem;
-      vertical-align: 0.04em;
-      -webkit-text-fill-color: initial;
-    }
-
-    .descriptors {
-      margin-top: 0.6rem;
-      color: var(--faint);
-      font-size: 0.9rem;
-      letter-spacing: 0.01em;
-    }
-
-    /* clean separator between sections */
-    .rule {
-      border: none;
-      border-top: 1px solid var(--border);
-      max-width: var(--max-width);
-      margin: 0 auto;
-    }
-
-    /* ---- Hero ---- */
-    .hero { padding: 4.5rem 0 1rem; }
-    .hero .eyebrow {
-      font-family: var(--serif);
-      font-weight: 600;
-      color: var(--text);
-      font-size: clamp(2rem, 6vw, 3rem);
-      letter-spacing: -0.02em;
-      line-height: 1.08;
-      text-transform: lowercase;
-      margin-bottom: 0.75rem;
-      max-width: 16ch;
-    }
-    .hero h1 {
-      font-family: var(--serif);
-      font-size: clamp(2.4rem, 8vw, 3.4rem);
-      font-weight: 600;
-      letter-spacing: -0.03em;
-      line-height: 1.02;
-      text-transform: lowercase;
-    }
-    .hero .sub {
-      color: var(--muted);
-      margin-top: 1rem;
-      max-width: 46ch;
-    }
-    .hero .quicklinks {
-      margin-top: 1.4rem;
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.4rem 1.1rem;
-      font-size: 0.9rem;
-    }
-    .hero .quicklinks a { color: var(--muted); font-weight: 500; }
-    .hero .quicklinks a:hover { color: var(--accent); }
-
-    /* ---- About ---- */
-    .about p {
-      font-size: 1.12rem;
-      line-height: 1.7;
-      max-width: 56ch;
-    }
-    .about p + p { margin-top: 0.85rem; }
-    .about .accent-word { color: var(--accent); font-style: italic; }
-
-    /* ---- Feed / item lists ---- */
-    .feed { list-style: none; display: flex; flex-direction: column; }
-    .feed li {
-      display: flex;
-      gap: 1.1rem;
-      padding: 1.15rem 0;
-      border-top: 1px solid var(--border);
-      align-items: baseline;
-    }
-    .feed li:first-child { border-top: none; padding-top: 0.25rem; }
-    .feed .date {
-      flex-shrink: 0;
-      font-family: var(--serif);
-      font-size: 0.85rem;
-      color: var(--faint);
-      width: 4.4rem;
-      padding-top: 0.15rem;
-      letter-spacing: 0.02em;
-    }
-    .feed .body { flex: 1; }
-    .feed .item-title {
-      font-family: var(--serif);
-      font-size: 1.18rem;
-      font-weight: 500;
-      line-height: 1.25;
-      letter-spacing: -0.01em;
-    }
-    .feed .item-title a { color: var(--text); }
-    .feed .item-title a:hover { color: var(--accent); }
-    .feed .byline { color: var(--faint); font-size: 0.88rem; margin-top: 0.1rem; }
-    .feed .note { color: var(--muted); font-size: 0.97rem; margin-top: 0.4rem; }
-    .feed .note em { font-style: italic; color: var(--text); }
-
-    /* tag chips */
-    .tags { margin-top: 0.55rem; display: flex; flex-wrap: wrap; gap: 0.4rem; }
-    .chip {
-      font-size: 0.72rem;
-      letter-spacing: 0.04em;
-      text-transform: lowercase;
-      color: var(--muted);
-      background: var(--chip-bg);
-      border: 1px solid var(--border);
-      border-radius: 999px;
-      padding: 0.15rem 0.6rem;
-      font-weight: 500;
-    }
-    .chip.healthcare { color: #a8492b; border-color: #e6c9bb; background: #f6e7df; }
-    .chip.personal   { color: #5a6b4e; border-color: #d3dac8; background: #e9eee1; }
-    .chip.econ       { color: #4c5b73; border-color: #c8d0dd; background: #e3e8f0; }
-
-    /* "see all" link */
-    .see-all {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.35rem;
-      margin-top: 1.5rem;
-      font-size: 0.9rem;
-      font-weight: 600;
-      letter-spacing: 0.01em;
-    }
-    .see-all::after { content: "→"; transition: transform 0.18s ease; }
-    .see-all:hover::after { transform: translateX(3px); }
-
-    /* ---- Contact ---- */
-    .contact .lead { font-size: 1.12rem; max-width: 50ch; line-height: 1.65; }
-    .contact .email-line { margin-top: 1.1rem; color: var(--muted); font-size: 1rem; }
-    .contact .lead strong { font-family: var(--serif); font-weight: 500; }
-    .contact-links { display: flex; flex-wrap: wrap; gap: 0.7rem; margin-top: 1.5rem; }
-    .contact-links a {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.45rem;
-      padding: 0.55rem 1.1rem;
-      border: 1px solid var(--border);
-      background: var(--surface);
-      border-radius: 8px;
-      color: var(--text);
-      font-size: 0.95rem;
-      font-weight: 500;
-      transition: border-color 0.18s ease, color 0.18s ease;
-    }
-    .contact-links a:hover { border-color: var(--accent); color: var(--accent); }
-    .contact-links svg { width: 1rem; height: 1rem; }
-
-    .colophon {
-      padding: 2.5rem 0 3.5rem;
-      color: var(--faint);
-      font-size: 0.82rem;
-    }
-
-    @media (max-width: 560px) {
-      body { font-size: 16px; }
-      section { padding: 2.5rem 0; }
-      .hero { padding: 3.25rem 0 0.5rem; }
-      .feed li { flex-direction: column; gap: 0.3rem; }
-      .feed .date { width: auto; padding-top: 0; }
-    }
-  </style>
+  <link rel="stylesheet" href="assets/style.css" />
 </head>
 <body>
   <header class="hero">
@@ -240,9 +18,8 @@
         <a href="#about">01 about</a>
         <a href="#writing">02 writing</a>
         <a href="#reading">03 reading</a>
-        <a href="#music">04 music</a>
-        <a href="#travels">05 travels</a>
-        <a href="#contact">06 say hi</a>
+        <a href="#travels">04 travels</a>
+        <a href="#contact">05 say hi</a>
       </nav>
     </div>
   </header>
@@ -272,42 +49,15 @@
         <h2 class="section-title">things i'm writing <span class="emoji">✍️</span></h2>
         <p class="descriptors">healthcare · ideas · life</p>
       </div>
-      <!-- tag chips: use class "chip healthcare", "chip personal", or "chip econ" for color; plain "chip" is neutral -->
       <ul class="feed">
         <li>
-          <span class="date">[MM.DD.YY]</span>
+          <span class="date">05.25.26</span>
           <div class="body">
-            <h3 class="item-title"><a href="#">[post title]</a></h3>
-            <p class="note">[one-line description of the post]</p>
+            <h3 class="item-title"><a href="https://substack.com/home/post/p-197083535" target="_blank" rel="noopener noreferrer">why you should care about the U.S. healthcare system</a></h3>
             <div class="tags"><span class="chip healthcare">healthcare</span></div>
           </div>
         </li>
-        <li>
-          <span class="date">[MM.DD.YY]</span>
-          <div class="body">
-            <h3 class="item-title"><a href="#">[post title]</a></h3>
-            <p class="note">[one-line description of the post]</p>
-            <div class="tags"><span class="chip healthcare">healthcare</span><span class="chip econ">econ</span></div>
-          </div>
-        </li>
-        <li>
-          <span class="date">[MM.DD.YY]</span>
-          <div class="body">
-            <h3 class="item-title"><a href="#">[post title]</a></h3>
-            <p class="note">[one-line description of the post]</p>
-            <div class="tags"><span class="chip personal">personal</span></div>
-          </div>
-        </li>
-        <li>
-          <span class="date">[MM.DD.YY]</span>
-          <div class="body">
-            <h3 class="item-title"><a href="#">[post title]</a></h3>
-            <p class="note">[one-line description of the post]</p>
-            <div class="tags"><span class="chip personal">personal</span></div>
-          </div>
-        </li>
       </ul>
-      <a href="#" class="see-all">see all writing</a>
     </div>
   </section>
 
@@ -323,118 +73,65 @@
       </div>
       <ul class="feed">
         <li>
+          <span class="date">05.24.26</span>
           <div class="body">
-            <h3 class="item-title">[book / article title]</h3>
-            <p class="byline">[author]</p>
-            <p class="note">[your short take—what it changed or why it stuck with you]</p>
-            <div class="tags"><span class="chip">book</span><span class="chip healthcare">healthcare</span></div>
+            <h3 class="item-title"><a href="reading/the-bell-jar.html">the bell jar</a> <span class="stars">★★★★☆</span></h3>
+            <div class="tags"><span class="chip">book</span></div>
           </div>
         </li>
         <li>
+          <span class="date">05.21.26</span>
           <div class="body">
-            <h3 class="item-title">[book / article title]</h3>
-            <p class="byline">[author · publication]</p>
-            <p class="note">[your short take]</p>
-            <div class="tags"><span class="chip">essay</span></div>
+            <h3 class="item-title"><a href="reading/the-great-gatsby.html">the great gatsby</a> <span class="stars">★★☆☆☆</span></h3>
+            <div class="tags"><span class="chip">book</span></div>
           </div>
         </li>
         <li>
+          <span class="date">05.20.26</span>
           <div class="body">
-            <h3 class="item-title">[paper title]</h3>
-            <p class="byline">[authors · journal]</p>
-            <p class="note">[your short take]</p>
-            <div class="tags"><span class="chip">paper</span><span class="chip econ">econ</span></div>
+            <h3 class="item-title"><a href="reading/the-communist-manifesto.html">the communist manifesto</a> <span class="stars">★★★☆☆</span></h3>
+            <div class="tags"><span class="chip">book</span></div>
+          </div>
+        </li>
+        <li>
+          <span class="date">05.18.26</span>
+          <div class="body">
+            <h3 class="item-title"><a href="reading/when-breath-becomes-air.html">when breath becomes air</a> <span class="stars">★★★★★</span></h3>
+            <div class="tags"><span class="chip">book</span></div>
+          </div>
+        </li>
+        <li>
+          <span class="date">12.11.23</span>
+          <div class="body">
+            <h3 class="item-title"><a href="reading/the-house-on-the-cerulean-sea.html">the house on the cerulean sea</a> <span class="stars">★★★★☆</span></h3>
+            <div class="tags"><span class="chip">book</span></div>
           </div>
         </li>
       </ul>
-      <a href="#" class="see-all">see the whole shelf</a>
     </div>
   </section>
 
   <hr class="rule" />
 
-  <!-- 04 MUSIC -->
-  <section id="music" class="music">
-    <div class="container">
-      <div class="section-head">
-        <span class="section-num">04</span>
-        <h2 class="section-title">what i'm listening to <span class="emoji">🎻</span></h2>
-        <p class="descriptors">music · my favorites · likely laufey</p>
-      </div>
-      <ul class="feed">
-        <li>
-          <div class="body">
-            <h3 class="item-title">[piece / album title]</h3>
-            <p class="byline">[composer / artist]</p>
-            <p class="note">[short note—why you love it or what it reminds you of]</p>
-            <div class="tags"><span class="chip">classical</span><span class="chip">favorite</span></div>
-          </div>
-        </li>
-        <li>
-          <div class="body">
-            <h3 class="item-title">[piece / album title]</h3>
-            <p class="byline">[composer / artist]</p>
-            <p class="note">[short note]</p>
-            <div class="tags"><span class="chip">listening</span></div>
-          </div>
-        </li>
-        <li>
-          <div class="body">
-            <h3 class="item-title">[piece / album title]</h3>
-            <p class="byline">[composer / artist]</p>
-            <p class="note">[short note]</p>
-            <div class="tags"><span class="chip">orchestra</span><span class="chip">favorite</span></div>
-          </div>
-        </li>
-      </ul>
-      <a href="#" class="see-all">more of what i love</a>
-    </div>
-  </section>
-
-  <hr class="rule" />
-
-  <!-- 05 TRAVELS -->
+  <!-- 04 TRAVELS -->
   <section id="travels" class="travels">
     <div class="container">
       <div class="section-head">
-        <span class="section-num">05</span>
+        <span class="section-num">04</span>
         <h2 class="section-title">places i've been <span class="emoji">✈️</span></h2>
         <p class="descriptors">places · memories · photos</p>
       </div>
-      <ul class="feed">
-        <li>
-          <span class="date">[MM.DD.YY]</span>
-          <div class="body">
-            <h3 class="item-title">[place name]</h3>
-            <p class="note">[short personal note—what you did or what stayed with you]</p>
-          </div>
-        </li>
-        <li>
-          <span class="date">[MM.DD.YY]</span>
-          <div class="body">
-            <h3 class="item-title">[place name]</h3>
-            <p class="note">[short personal note]</p>
-          </div>
-        </li>
-        <li>
-          <span class="date">[MM.DD.YY]</span>
-          <div class="body">
-            <h3 class="item-title">[place name]</h3>
-            <p class="note">[short personal note]</p>
-          </div>
-        </li>
-      </ul>
-      <a href="#" class="see-all">see more places</a>
+      <p class="empty-note">more soon — still putting these together.</p>
     </div>
   </section>
 
   <hr class="rule" />
 
-  <!-- 06 CONTACT -->
+  <!-- 05 CONTACT -->
   <section id="contact" class="contact">
     <div class="container">
       <div class="section-head">
-        <span class="section-num">06</span>
+        <span class="section-num">05</span>
         <h2 class="section-title">please say hi! <span class="emoji">💌</span></h2>
       </div>
       <p class="lead">i love hearing from people—about healthcare, books, music, or anything! the best way to reach me is email.</p>
