@@ -31,6 +31,22 @@ const RUN_TYPES = new Set(['Run', 'TrailRun', 'VirtualRun']);
 
 const { STRAVA_CLIENT_ID, STRAVA_CLIENT_SECRET, STRAVA_REFRESH_TOKEN, STRAVA_REFRESH_TOKEN_OUT } = process.env;
 
+/** Strava's error body names what it rejected, e.g. "RefreshToken.refresh_token invalid".
+    It never contains a credential, so it is safe to log. */
+async function stravaErrorDetail(res) {
+  try {
+    const body = await res.json();
+    const parts = (Array.isArray(body.errors) ? body.errors : [])
+      .map((e) => [e.resource && e.field ? `${e.resource}.${e.field}` : e.resource || e.field, e.code]
+        .filter(Boolean).join(' '))
+      .filter(Boolean);
+    const detail = [body.message, parts.join('; ')].filter(Boolean).join(': ');
+    return detail ? ` (Strava said: ${detail})` : '';
+  } catch {
+    return '';
+  }
+}
+
 async function refreshAccessToken() {
   const res = await fetch('https://www.strava.com/oauth/token', {
     method: 'POST',
@@ -44,10 +60,10 @@ async function refreshAccessToken() {
   });
 
   if (!res.ok) {
-    const hint = res.status === 400 || res.status === 401
-      ? ' The stored refresh token or client credentials were rejected. If the last run could not save a rotated token, authorize again (walkthrough step 2) and update STRAVA_REFRESH_TOKEN.'
-      : '';
-    throw new Error(`token refresh returned HTTP ${res.status}.${hint}`);
+    throw new Error(`token refresh returned HTTP ${res.status}${await stravaErrorDetail(res)}.`
+      + (res.status === 400 || res.status === 401
+        ? ' The stored refresh token or client credentials were rejected. If the last run could not save a rotated token, authorize again (walkthrough step 3) and save the new token.'
+        : ''));
   }
 
   const json = await res.json();
@@ -78,7 +94,7 @@ async function listActivitiesSince(accessToken, afterEpoch) {
     const url = `${API}/athlete/activities?after=${afterEpoch}&per_page=${PER_PAGE}&page=${page}`;
     const res = await fetch(url, { headers: { Authorization: `Bearer ${accessToken}` } });
     if (res.status === 429) throw new Error('Strava rate limit hit (HTTP 429); will retry next run');
-    if (!res.ok) throw new Error(`activities page ${page} returned HTTP ${res.status}`);
+    if (!res.ok) throw new Error(`activities page ${page} returned HTTP ${res.status}${await stravaErrorDetail(res)}`);
     const batch = await res.json();
     if (!Array.isArray(batch)) throw new Error(`activities page ${page} was not a list`);
     if (!batch.length) break;
