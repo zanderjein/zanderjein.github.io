@@ -121,7 +121,7 @@
   --edge: max(var(--gutter), calc((100vw - var(--page)) / 2 + var(--gutter)));
 
   /* --- shape: two radii. Printed things (covers, posters) are nearly square;
-         surfaces the page itself makes (the sheet, the bar) are soft. --- */
+         surfaces the page itself makes (the bar) are soft. --- */
   --r-s: 3px;
   --r-m: 12px;
 
@@ -302,8 +302,8 @@ a { color: inherit; }
 }
 
 /* ------------------------------------------------------------- top bar --
-   A bar that floats clear of the window edge, on the same soft radius as the
-   sheet in Health. It arrives once the hero has gone by.
+   A bar that floats clear of the window edge, on the page's soft radius.
+   It arrives once the hero has gone by.
    ------------------------------------------------------------------------ */
 
 .topbar {
@@ -836,94 +836,69 @@ a { color: inherit; }
 .mini-author { font-size: var(--t-mono); color: var(--ink-faint); }
 
 /* -------------------------------------------------------------- health --
-   One numeral, far larger than anything near it, and a raised sheet lying across
-   its shoulder. The numeral is the running; the sheet is last night.
+   A running track. Last night's sleep and recovery are the two lanes of a stadium
+   oval, each run as far round as its score from the start line, and the year's
+   miles stand in the infield. The lane that isn't run yet is a row of ticks, not a band.
    ------------------------------------------------------------------------ */
 
 .health-head { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.5rem 1.5rem; }
 .health-note { color: var(--ink-muted); }
 
-.health-body { position: relative; margin-top: clamp(1.5rem, 3vw, 2.5rem); display: grid; gap: clamp(2rem, 6vw, 3rem); }
+.track { position: relative; container-type: inline-size; margin-top: clamp(2rem, 4vw, 3rem); }
+.track-svg { display: block; width: 100%; height: auto; overflow: visible; }
+.lane-ticks { fill: none; stroke: var(--ink-faint); stroke-width: 13; stroke-dasharray: 0.07 0.43; opacity: 0.5; }
+.lane-fill {
+  fill: none;
+  stroke: var(--ink-link);
+  stroke-width: 13;
+  stroke-dasharray: 100;
+  stroke-dashoffset: 100;
+  transition: stroke-dashoffset 1800ms var(--ease-inout);
+}
+.lane-fill[data-lane="1"] { transition-delay: 150ms; }
+.lane-start { stroke: var(--ink); stroke-width: 3; }
 
-.run { position: relative; z-index: var(--z-under); }
-.run-miles { display: grid; gap: 0.9rem; }
+/* the infield sits inside the inner lane; its type is sized by the track, not the window */
+.infield { position: absolute; inset: 17% 16%; display: flex; align-items: center; justify-content: center; gap: 6cqw; }
+.run-miles { display: grid; gap: 1.6cqw; }
 .run-num {
   font-family: var(--display);
-  font-size: clamp(11rem, 40vw, 36rem);
+  /* two digits fill the infield; three share the same width */
+  font-size: calc(25cqw * 2 / var(--digits, 2));
   line-height: 0.72;
   letter-spacing: -0.05em;
   font-variant-numeric: lining-nums;
-  /* wide screens have margin to spare, and the numeral steps out into it */
-  margin-left: calc(-0.05em - clamp(0rem, (100vw - 82rem) / 3, 8rem));
-  padding-bottom: 0.04em;
+  margin-left: -0.05em;
 }
-.run-cap { font-size: var(--t-lead); line-height: 1.2; letter-spacing: -0.014em; color: var(--ink-muted); }
-.run-runs { color: var(--ink-muted); }
+.run-cap { font-size: max(var(--t-small), 1.9cqw); line-height: 1.2; letter-spacing: -0.014em; color: var(--ink-muted); }
+
+/* which lane is which: a figure, a little two-lane glyph, a name */
+.laps { display: none; gap: 0.5rem; }
+.lap-title { font-family: var(--display); font-size: var(--t-lead); letter-spacing: -0.015em; }
+.lap { display: flex; align-items: baseline; gap: 0.6rem; color: var(--ink-muted); }
+.lap b { font-family: var(--display); font-weight: 400; font-size: var(--t-title); letter-spacing: -0.02em; color: var(--ink); min-width: 2.6ch; }
+.lap b .pct { font-size: 0.5em; color: var(--ink-faint); margin-left: 0.08em; }
+.lap-glyph { width: 2rem; height: 1rem; align-self: center; flex: none; }
+.lap-glyph path { fill: none; stroke: var(--ink-faint); stroke-width: 1.5; opacity: 0.5; }
+.lap-glyph .on { stroke: var(--ink-link); stroke-width: 2.5; opacity: 1; }
+.laps-below { display: grid; }
+.laps .is-empty { margin: 0; }
+
+.track-foot { margin-top: clamp(1.5rem, 3vw, 2.25rem); display: grid; gap: 1.5rem; }
 .run-runs b,
 .run-goal b { font-family: var(--display); font-weight: 400; font-size: var(--t-title); letter-spacing: -0.02em; color: var(--ink); margin-right: 0.15em; }
+.run-runs, .run-goal { color: var(--ink-muted); }
 .run-facts { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.25rem clamp(1.5rem, 4vw, 3rem); }
-.run-goal { color: var(--ink-muted); }
+.track-stamps { display: flex; flex-wrap: wrap; gap: 0.25rem 1.5rem; }
 
-/* a dotted route in the space the numeral leaves. Decoration, so it only appears where there is
-   room for it, and it is the same dotted line as the arc in About. It draws once, start to arrow. */
-.route { display: none; overflow: visible; }
-.route-line { fill: none; stroke: var(--ink-muted); stroke-width: 1.6; stroke-dasharray: 0.5 7.5; stroke-linecap: round; }
-.route-tip { fill: none; stroke: var(--ink-muted); stroke-width: 1.4; stroke-linecap: round; stroke-linejoin: round; }
-.route-start { fill: var(--bg); stroke: var(--ink-muted); stroke-width: 1.6; }
-.route-draw {
-  fill: none;
-  stroke: #fff;
-  stroke-width: 26;
-  stroke-linecap: round;
-  stroke-dasharray: 1;
-  stroke-dashoffset: 1;
-  transition: stroke-dashoffset 2600ms var(--ease-inout) 300ms;
+@media (min-width: 48rem) {
+  /* from a tablet up the legend moves into the infield, beside the miles */
+  .infield { justify-content: space-between; }
+  .laps-infield { display: grid; }
+  .laps-below { display: none; }
+  .track-foot { grid-template-columns: minmax(0, 1fr) auto; align-items: baseline; }
+  .track-stamps { flex-direction: column; gap: 0.35rem; text-align: right; }
 }
-.route.is-in .route-draw { stroke-dashoffset: 0; }
-.run-more .stamp { margin-top: 1rem; }
-
-.sheet {
-  position: relative;
-  justify-self: start;
-  z-index: var(--z-over);
-  background: var(--surface);
-  border-radius: var(--r-m);
-  box-shadow: var(--shadow-rest);
-  padding: clamp(1.5rem, 3vw, 2.25rem) clamp(1.5rem, 3.4vw, 2.5rem);
-}
-.sheet-label { font-family: var(--display); font-size: var(--t-lead); letter-spacing: -0.015em; }
-.sheet .stamp { margin-top: 1.5rem; }
-
-.rings { display: flex; gap: clamp(1.5rem, 3.5vw, 2.5rem); margin-top: 1.25rem; }
-.ring { margin: 0; }
-.ring-dial { position: relative; width: clamp(6.5rem, 12vw, 9rem); aspect-ratio: 1; }
-.ring-dial svg { width: 100%; height: 100%; transform: rotate(-90deg); display: block; }
-/* the unfilled part of the dial is a ring of ticks, like an instrument face, not a grey band */
-.ring-ticks { fill: none; stroke: var(--ink-faint); stroke-width: 5; stroke-dasharray: 0.35 2.15; opacity: 0.55; }
-.ring-fill {
-  fill: none;
-  stroke: var(--ink-link);
-  stroke-width: 5;
-  stroke-linecap: round;
-  stroke-dasharray: 100;
-  stroke-dashoffset: 100;
-  transition: stroke-dashoffset 900ms var(--ease-out);
-}
-.ring-value {
-  position: absolute;
-  inset: 0;
-  display: flex;
-  align-items: baseline;
-  justify-content: center;
-  /* baseline-aligned children can't be centred by the box, so the line is */
-  line-height: 1;
-  padding-top: calc(50% - 0.52em);
-  font-family: var(--display);
-  font-size: var(--t-title);
-  letter-spacing: -0.02em;
-}
-.ring-value .pct { font-size: 0.5em; color: var(--ink-faint); margin-left: 0.08em; }
-.ring-name { font-size: var(--t-small); color: var(--ink-muted); text-align: center; margin-top: 0.6rem; }
 
 /* ----------------------------------------------------------- interests --
    Two poster walls side by side, every other column hanging lower. On anything
@@ -1095,24 +1070,6 @@ a { color: inherit; }
   .book-lead { grid-template-columns: minmax(0, 1fr); gap: 1.75rem; }
   .shelf { padding-left: 5.5rem; padding-top: 0.75rem; }
 
-  /* the sheet lies across the numeral's shoulder */
-  .health-body { align-items: start; gap: 0; }
-  .run { grid-row: 1; grid-column: 1; }
-  .sheet { grid-row: 1; grid-column: 2; }
-  /* the small facts run underneath both, so the sheet never lies on top of a number */
-  .health-body { grid-template-columns: max-content max-content minmax(0, 1fr); }
-  .route {
-    display: block;
-    grid-row: 1;
-    grid-column: 3;
-    justify-self: end;
-    align-self: start;
-    margin-top: clamp(1rem, 3vw, 3rem);
-    width: min(100% - clamp(1.5rem, 3vw, 3rem), 27rem);
-  }
-  .run-more { grid-row: 2; grid-column: 1 / -1; margin-top: clamp(1.5rem, 3vw, 2.25rem); }
-  /* across the shoulder of the 9 and no further: the number has to stay a number */
-  .sheet { margin-left: clamp(-4.25rem, -3.4vw, -2.25rem); margin-top: clamp(4rem, 12vw, 11rem); }
 }
 
 /* ------------------------------------------------------- from 64rem up --
@@ -1146,7 +1103,6 @@ a { color: inherit; }
 @media (max-width: 39.99rem) {
   .topbar-name { display: none; }
   .book-lead { grid-template-columns: minmax(0, 44%) minmax(0, 1fr); gap: 1.25rem; align-items: end; }
-  .sheet { margin-top: -0.5rem; }
   .close-email span + span { padding-left: 0; }
 }
 

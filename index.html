@@ -136,7 +136,8 @@
     </section>
 
     <!-- ================================================== HEALTH
-         One numeral far larger than anything near it, and a raised sheet lying across it. -->
+         A running track. Last night's sleep and recovery are two lanes of the oval, each run
+         as far round as its score from the start line; the year's miles stand in the infield. -->
     <section class="section health" id="health">
       <div class="wrap">
         <div class="health-head">
@@ -144,40 +145,31 @@
           <p class="health-note" id="line-health"></p>
         </div>
 
-        <div class="health-body">
-          <article class="run" data-reveal>
-            <div class="run-figure" id="card-running"><p class="is-empty">Loading…</p></div>
-          </article>
-
-          <!-- decoration only: a dotted route that draws itself, in the same line as About's arc -->
-          <svg class="route" data-reveal viewBox="0 0 400 320" aria-hidden="true" focusable="false">
-            <defs>
-              <mask id="route-mask" maskUnits="userSpaceOnUse" x="-20" y="-20" width="440" height="360">
-                <path class="route-draw" pathLength="1" d="M18 296 C 92 300 118 236 176 232 C 250 227 262 292 318 262 C 372 233 356 150 292 140 C 236 131 196 176 222 214 C 246 248 306 214 300 164 C 292 100 214 96 190 58 C 176 36 196 14 232 18" />
-              </mask>
-              <marker id="route-tip" viewBox="0 0 12 12" refX="9" refY="6" markerWidth="12" markerHeight="12" orient="auto">
-                <path class="route-tip" d="M2 1.5 L9.5 6 L2 10.5" />
-              </marker>
-            </defs>
-            <g mask="url(#route-mask)">
-              <path class="route-line" marker-end="url(#route-tip)" d="M18 296 C 92 300 118 236 176 232 C 250 227 262 292 318 262 C 372 233 356 150 292 140 C 236 131 196 176 222 214 C 246 248 306 214 300 164 C 292 100 214 96 190 58 C 176 36 196 14 232 18" />
-              <circle class="route-start" cx="18" cy="296" r="4" />
-            </g>
+        <div class="track" id="track" data-reveal>
+          <!-- the lanes are drawn by main.js from one stadium path, inset per lane -->
+          <svg class="track-svg" viewBox="0 0 1000 470" aria-hidden="true" focusable="false">
+            <path class="lane-ticks" pathLength="100" data-lane="0" />
+            <path class="lane-ticks" pathLength="100" data-lane="1" />
+            <path class="lane-fill" pathLength="100" data-lane="0" data-score="sleepScore" />
+            <path class="lane-fill" pathLength="100" data-lane="1" data-score="recoveryScore" />
+            <line class="lane-start" x1="600" x2="600" y1="424" y2="476" />
           </svg>
-
-          <div class="run-more" data-reveal>
-            <div class="run-facts">
-              <p class="run-runs" id="run-runs"></p>
-              <p class="run-goal" id="card-goal"></p>
-            </div>
-            <p class="stamp" id="foot-running"></p>
+          <div class="infield">
+            <div class="run-figure" id="card-running"><p class="is-empty">Loading…</p></div>
+            <div class="laps laps-infield" id="card-sleep"><p class="is-empty">Loading…</p></div>
           </div>
+        </div>
 
-          <article class="sheet night" data-reveal>
-            <h3 class="sheet-label">Last night</h3>
-            <div id="card-sleep"><p class="is-empty">Loading…</p></div>
+        <div class="track-foot" data-reveal>
+          <div class="laps laps-below" id="card-sleep-below"></div>
+          <div class="run-facts">
+            <p class="run-runs" id="run-runs"></p>
+            <p class="run-goal" id="card-goal"></p>
+          </div>
+          <div class="track-stamps">
+            <p class="stamp" id="foot-running"></p>
             <p class="stamp" id="foot-sleep"></p>
-          </article>
+          </div>
         </div>
       </div>
     </section>

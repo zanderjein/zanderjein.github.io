@@ -293,64 +293,74 @@ function renderRunning(data) {
   }
 
   const miles = Number(data.miles).toLocaleString('en-US', { maximumFractionDigits: 0 });
+  // three digits share the width two digits get, so the number never leaves the infield
+  $('track').style.setProperty('--digits', Math.max(2, miles.replace(/\D/g, '').length));
 
   body.innerHTML = `
     <p class="run-miles"><span class="run-num">${miles}</span><span class="run-cap">miles run${data.year ? ' in ' + esc(data.year) : ' this year'}</span></p>`;
   const runs = $('run-runs');
   if (runs) runs.innerHTML = `<b>${esc(data.runs ?? 0)}</b> runs`;
 
-  foot.textContent = updatedAgo(data.updated);
+  foot.textContent = `Running ${updatedAgo(data.updated).toLowerCase()}`;
 }
 
+/* A stadium oval, run anticlockwise from the start line on the home straight.
+   Lane 0 is the outside lane; each lane in is inset a little further. */
+const lanePath = (lane) => {
+  const inset = 8 + lane * 24;
+  const x0 = inset, x1 = 1000 - inset, y0 = inset, y1 = 470 - inset, r = (y1 - y0) / 2;
+  return `M600 ${y1} L${x1 - r} ${y1} A${r} ${r} 0 0 0 ${x1 - r} ${y0} L${x0 + r} ${y0} A${r} ${r} 0 0 0 ${x0 + r} ${y1} Z`;
+};
+
+/* the little glyph in the legend: the same two lanes, with one of them picked out */
+const lapGlyph = (lane) => `
+  <svg class="lap-glyph" viewBox="0 0 32 16" aria-hidden="true">
+    <path class="${lane === 0 ? 'on' : ''}" d="M8 1.5 H24 A6.5 6.5 0 0 1 24 14.5 H8 A6.5 6.5 0 0 1 8 1.5 Z" />
+    <path class="${lane === 1 ? 'on' : ''}" d="M9 5 H23 A3 3 0 0 1 23 11 H9 A3 3 0 0 1 9 5 Z" />
+  </svg>`;
+
 function renderSleep(data) {
-  const body = $('card-sleep');
+  const track = $('track');
   const foot = $('foot-sleep');
+  const legends = [$('card-sleep'), $('card-sleep-below')];
+
+  track.querySelectorAll('[data-lane]').forEach((p) => p.setAttribute('d', lanePath(Number(p.dataset.lane))));
 
   if (!data || (data.sleepScore == null && data.recoveryScore == null)) {
-    body.innerHTML = '<p class="is-empty">No recent data.</p>';
+    legends.forEach((el) => { el.innerHTML = '<p class="is-empty">No recent data.</p>'; });
     foot.textContent = '';
     return;
   }
 
-  // pathLength="100" lets the dash offset be the percentage itself
-  const ring = (name, value) => {
-    const v = value == null ? 0 : Math.max(0, Math.min(100, Number(value)));
-    return `
-      <figure class="ring">
-        <div class="ring-dial">
-          <svg viewBox="0 0 120 120" aria-hidden="true">
-            <circle class="ring-ticks" cx="60" cy="60" r="54" pathLength="100" />
-            <circle class="ring-fill" cx="60" cy="60" r="54" pathLength="100" data-value="${v}" />
-          </svg>
-          <span class="ring-value">${value == null ? 'n/a' : esc(value) + '<span class="pct">%</span>'}</span>
-        </div>
-        <figcaption class="ring-name">${name}</figcaption>
-      </figure>`;
-  };
+  const lap = (lane, name, value) => `
+    <p class="lap">${lapGlyph(lane)}<b>${value == null ? 'n/a' : esc(value) + '<span class="pct">%</span>'}</b> ${name}</p>`;
+  const html = `
+    <h3 class="lap-title">Last night</h3>
+    ${lap(0, 'Sleep', data.sleepScore)}
+    ${lap(1, 'Recovery', data.recoveryScore)}`;
+  legends.forEach((el) => { el.innerHTML = html; });
 
-  body.innerHTML = `
-    <div class="rings">
-      ${ring('Sleep', data.sleepScore)}
-      ${ring('Recovery', data.recoveryScore)}
-    </div>`;
-
-  drawRings(body);
-  foot.textContent = updatedAgo(data.updated);
+  runLanes(track, data);
+  foot.textContent = `Last night ${updatedAgo(data.updated).toLowerCase()}`;
 }
 
-/** Rings draw from 0 to their value once the card scrolls into view. */
-function drawRings(scope) {
-  const fills = [...scope.querySelectorAll('.ring-fill')];
-  const draw = () => fills.forEach((el) => { el.style.strokeDashoffset = String(100 - Number(el.dataset.value)); });
-  if (REDUCED.matches || !('IntersectionObserver' in window)) { draw(); return; }
+/** Each lane runs from the start line round to its score once the track scrolls into view.
+    pathLength="100" lets the dash offset be the percentage itself. */
+function runLanes(track, data) {
+  const lanes = [...track.querySelectorAll('.lane-fill')];
+  const run = () => lanes.forEach((el) => {
+    const v = Math.max(0, Math.min(100, Number(data[el.dataset.score]) || 0));
+    el.style.strokeDashoffset = String(100 - v);
+  });
+  if (REDUCED.matches || !('IntersectionObserver' in window)) { run(); return; }
 
   const io = new IntersectionObserver(([entry]) => {
     if (!entry.isIntersecting) return;
     io.disconnect();
-    // one frame at zero first, so the transition has somewhere to start from
-    requestAnimationFrame(() => requestAnimationFrame(draw));
+    // one frame at the start line first, so the transition has somewhere to run from
+    requestAnimationFrame(() => requestAnimationFrame(run));
   }, { threshold: 0.35 });
-  io.observe(scope);
+  io.observe(track);
 }
 
 /* ---------------------------------------------------------------- library -- */
