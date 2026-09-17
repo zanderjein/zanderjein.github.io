@@ -539,6 +539,13 @@ a { color: inherit; }
 }
 .mark.is-in, .chapter-head.is-in { opacity: 1; transform: none; }
 
+/* on a phone the maps sit to the left, so the place name keeps to the right, off the coastline */
+@media (max-width: 47.99rem) {
+  .chapter-title { text-align: right; }
+  /* Connecticut fills the width, so its name sits just under the shoreline rather than on it */
+  .chapter-map[data-map="newhaven"] + .chapter-head { margin-top: -0.5rem; }
+}
+
 /* stacked, but with room: reduced motion on a wide screen. Still map, list, map, list in
    reading order; the map simply stands beside its list instead of above it. */
 @media (min-width: 48rem) {
