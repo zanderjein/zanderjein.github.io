@@ -19,7 +19,7 @@ permissions:
   pages: write      # request a Pages build after committing
 
 # never let two refreshes run at once: they would race each other's pushes, and
-# both would spend the same single-use Strava refresh token
+# both would spend the same single-use Strava or WHOOP refresh token
 concurrency:
   group: refresh-data
   cancel-in-progress: false
@@ -78,7 +78,55 @@ jobs:
           rm -f "$TOKEN_FILE"
           echo "Saved the new Strava refresh token."
 
-      # Phase 3: Whoop goes here, in the same shape.
+      # WHOOP spends its refresh token on every run. Before doing that, prove this
+      # run can save the replacement: write a harmless canary secret with the same
+      # token the save step uses. If that fails, WHOOP is skipped and its current
+      # token stays valid instead of being burned.
+      - name: Check secrets can be saved
+        id: can_save
+        continue-on-error: true
+        env:
+          GH_TOKEN: ${{ secrets.SECRETS_WRITE_TOKEN }}
+        run: |
+          if [ -z "$GH_TOKEN" ]; then
+            echo "The SECRETS_WRITE_TOKEN secret is missing."
+            exit 1
+          fi
+          date -u +%Y-%m-%dT%H:%M:%SZ | gh secret set TOKEN_SAVE_CHECK --repo "$GITHUB_REPOSITORY"
+          echo "Secrets can be saved."
+
+      # Skips cleanly until the three WHOOP_* secrets exist.
+      - name: WHOOP
+        id: whoop
+        if: steps.can_save.outcome == 'success'
+        continue-on-error: true
+        env:
+          WHOOP_CLIENT_ID: ${{ secrets.WHOOP_CLIENT_ID }}
+          WHOOP_CLIENT_SECRET: ${{ secrets.WHOOP_CLIENT_SECRET }}
+          WHOOP_REFRESH_TOKEN: ${{ secrets.WHOOP_REFRESH_TOKEN }}
+          WHOOP_REFRESH_TOKEN_OUT: ${{ runner.temp }}/whoop-refresh-token
+        run: node scripts/fetch-whoop.js
+
+      # Runs even if the WHOOP step failed after receiving its new token.
+      - name: Save rotated WHOOP token
+        id: whoop_token
+        if: always()
+        continue-on-error: true
+        env:
+          GH_TOKEN: ${{ secrets.SECRETS_WRITE_TOKEN }}
+          TOKEN_FILE: ${{ runner.temp }}/whoop-refresh-token
+        run: |
+          if [ ! -s "$TOKEN_FILE" ]; then
+            echo "No new WHOOP token to save."
+            exit 0
+          fi
+          if [ -z "$GH_TOKEN" ]; then
+            echo "The SECRETS_WRITE_TOKEN secret is missing, so the new token could not be saved."
+            exit 1
+          fi
+          gh secret set WHOOP_REFRESH_TOKEN --repo "$GITHUB_REPOSITORY" < "$TOKEN_FILE"
+          rm -f "$TOKEN_FILE"
+          echo "Saved the new WHOOP refresh token."
 
       - name: Commit changed data
         id: commit
@@ -107,14 +155,30 @@ jobs:
       # but the run shows red so a broken integration doesn't fail silently.
       - name: Report failed integrations
         if: >-
+          always() && (
           steps.goodreads.outcome == 'failure' ||
           steps.strava.outcome == 'failure' ||
-          steps.strava_token.outcome == 'failure'
+          steps.strava_token.outcome == 'failure' ||
+          steps.can_save.outcome == 'failure' ||
+          steps.whoop.outcome == 'failure' ||
+          steps.whoop_token.outcome == 'failure' )
         env:
           GOODREADS: ${{ steps.goodreads.outcome }}
           STRAVA: ${{ steps.strava.outcome }}
           STRAVA_TOKEN: ${{ steps.strava_token.outcome }}
+          CAN_SAVE: ${{ steps.can_save.outcome }}
+          WHOOP: ${{ steps.whoop.outcome }}
+          WHOOP_TOKEN: ${{ steps.whoop_token.outcome }}
         run: |
+          if [ "$CAN_SAVE" = failure ]; then
+            echo "::error title=Secrets can't be saved::WHOOP was skipped to protect its token. SECRETS_WRITE_TOKEN may have expired or lost its Secrets permission."
+          fi
+          if [ "$WHOOP" = failure ]; then
+            echo "::error title=WHOOP refresh failed::The previous whoop.json was kept. Open the WHOOP step for the reason."
+          fi
+          if [ "$WHOOP_TOKEN" = failure ]; then
+            echo "::error title=WHOOP token not saved::The next WHOOP refresh will be rejected. Run ~/whoop-token.sh again."
+          fi
           if [ "$GOODREADS" = failure ]; then
             echo "::error title=Goodreads refresh failed::The previous books.json was kept. Open the Goodreads step for the reason."
           fi
