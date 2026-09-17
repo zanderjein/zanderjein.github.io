@@ -15,7 +15,7 @@ const SITE = {
     date: '2026-11-08',                       // YYYY-MM-DD, local time
     name: 'the Boston Half',
     longName: 'the B.A.A. Boston Half Marathon',
-    where: 'Franklin Park, 8:00 a.m.'
+    where: 'Franklin Park, 8:00\u00a0a.m.'   // the time holds together when the line wraps
   },
 
   /* Hero rotating line. Each entry cross-fades every four seconds.
@@ -23,62 +23,68 @@ const SITE = {
   currently: [
     'Just finished <b>{book}</b>',
     'Currently training for <b>the Boston Half</b>',
-    'Currently assistant stage managing <b>Come From Away</b> at the Yale Dramat'
+    'Currently stage managing for <b>the Yale Dramat</b>'
   ],
 
   /* About — the slow scrolling line of interests. Add or remove freely. */
   tickerWords: [
     'competitive debating', 'orchestral music', 'philosophy', 'reading',
-    'studying Mandarin', 'running', 'musicals', 'movies', 'traveling'
+    'studying mandarin', 'running', 'musicals', 'movies', 'traveling'
   ],
 
-  /* Professional experiences. Omit `url` and the card renders without a link.
+  /* Professional experiences — logos only, no roles. Omit `url` and the tile renders without a link.
      `logo` is the organisation's own file in assets/logos (see SOURCES.md there).
-     `logoHover`: 'file' shows the published artwork on hover; a hex recolours the
-     mark instead, for files that are drawn in white for dark headers. */
+     `logoAsPublished` shows the file exactly as the organisation drew it, for marks
+     whose detail is lost in silhouette; every other mark is a navy silhouette that
+     turns `logoHover` on hover (the white-drawn files would vanish on white).
+     `size` is the logo's width as a share of its tile, tuned by eye so every mark
+     carries the same visual weight. `wide` lets a long, thin wordmark take a full
+     row on phones, where half a row would shrink it past legibility. */
   works: [
     {
       org: 'Yale Health Care Affordability Lab',
-      role: 'Research Assistant',
       url: 'https://www.healthcareaffordabilitylab.org',
       logo: 'assets/logos/health-care-affordability-lab.svg',
-      logoHover: '#00356B'
+      logoHover: '#00356B',
+      size: 0.56
     },
     {
-      org: 'Yale Department of Economics',
+      org: 'Yale University',
       logoNote: 'Department of Economics',   // the Yale wordmark alone doesn't say which unit
-      role: 'Research Assistant',
       url: 'https://economics.yale.edu',
       logo: 'assets/logos/yale.svg',
-      logoHover: '#00356B'
+      logoHover: '#00356B',
+      size: 0.27
     },
     {
       org: 'Council on Foreign Relations',
-      role: 'Research Assistant',
       url: 'https://www.thinkglobalhealth.org',
       logo: 'assets/logos/council-on-foreign-relations.svg',
-      logoHover: 'file'
+      logoAsPublished: true,
+      size: 0.84,
+      wide: true
     },
     {
       org: 'Yale School of Management',
-      role: 'Research Assistant',
       url: 'https://som.yale.edu',
       logo: 'assets/logos/yale-school-of-management.svg',
-      logoHover: '#00356B'
+      logoHover: '#00356B',
+      size: 0.84
     },
     {
       org: 'Bank of Thailand',
-      role: 'Summer Analyst',
       url: 'https://www.bot.or.th/en/home.html',
       logo: 'assets/logos/bank-of-thailand.png',
-      logoHover: 'file'
+      logoAsPublished: true,           // the emblem inside the roundel is lost in silhouette
+      size: 0.68
     },
     {
-      org: 'Yale Law Journal',
-      role: 'Intern',
+      org: 'The Yale Law Journal',
       url: 'https://yalelawjournal.org',
       logo: 'assets/logos/yale-law-journal.svg',
-      logoHover: '#00356B'
+      logoHover: '#00356B',
+      size: 0.7,
+      wide: true
     }
   ],
 
@@ -97,16 +103,18 @@ const SITE = {
     }
   ],
 
-  /* Awards — in your order. `note` is the small grey line underneath. */
+  /* Awards — in your order. Every entry is the same three parts:
+     `title`, `context` (the organisation or where it happened), and `year`. */
   awards: [
-    { name: '#1 Collegiate Debate Team in the U.S., 2025–26' },
-    { name: 'Finalist, Bridgewater’s Forecasting the Future Macroeconomics Challenge', note: 'Top 40 of 10,000+ participants' },
-    { name: 'Bronze Medal, International Philosophy Olympiad 2024', note: 'Second person in Thailand’s history to medal' },
-    { name: 'Richard U. Light Fellowship', note: 'Full scholarship for intensive Chinese study at Princeton in Beijing, Summer 2025' },
-    { name: 'Two-time Best Speaker in Thailand' },
-    { name: 'Three-time Thai National Debate Champion' },
-    { name: 'First Prize, 9th Hong Kong International Youth Performance Arts Festival' },
-    { name: 'Fourth Prize, London Classical Music Competition 2021' }
+    { title: 'Team of the Year', context: 'American Parliamentary Debate Association (APDA)', year: '2025–26' },
+    { title: 'National Finalist', context: 'American Parliamentary Debate Association (APDA)', year: '2026' },
+    { title: 'Finalist, Top 40 of 10,000+', context: 'Bridgewater’s Forecasting the Future Macroeconomics Challenge', year: '2025' },
+    { title: 'Bronze Medal', context: 'International Philosophy Olympiad, second medalist in Thailand’s history', year: '2024' },
+    { title: 'Richard U. Light Fellowship', context: 'Intensive Chinese study at Princeton in Beijing, full scholarship', year: '2025' },
+    { title: '2x Best Speaker in Thailand', context: 'THSDC and TNTC', year: '2021–23' },
+    { title: '3x Thai National Debate Champion', context: 'TWSDC, TNTC, and THSDC', year: '2021–23' },
+    { title: 'First Prize', context: '9th Hong Kong International Youth Performance Arts Festival', year: '2021' },
+    { title: 'Fourth Prize', context: 'London Classical Music Competition', year: '2021' }
   ]
 
 };
@@ -232,6 +240,35 @@ function startTicker(firstBook) {
 
 /* -------------------------------------------------------------- now cards -- */
 
+/** Fill a hover veil: one serif line and one small line, centered in the card. */
+function setVeil(id, big, small) {
+  const el = $(id);
+  if (!el) return;
+  el.innerHTML = `<p class="veil-big">${big}</p>${small ? `<p class="veil-small">${small}</p>` : ''}`;
+}
+
+/** The race countdown: its own small tile under the Running card. */
+function renderGoal() {
+  const tile = $('card-goal');
+  if (!tile) return;
+  const race = localDate(SITE.race.date);
+  if (!race) { tile.remove(); return; }
+
+  const days = Math.round((midnight(race) - midnight(new Date())) / 86400000);
+  const when = race.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+
+  const parts = days > 0
+    ? [String(days), `${days === 1 ? 'day' : 'days'} to ${esc(SITE.race.name)}`, `${esc(when)} · ${esc(SITE.race.where)}`]
+    : days === 0
+      ? ['Today', esc(SITE.race.longName), esc(SITE.race.where)]
+      : ['Ran it', `Ran ${esc(SITE.race.name)}`, `${esc(when)} · next one to be decided`];
+
+  tile.innerHTML = `
+    <p class="card-label">Next race</p>
+    <p class="goal-days">${parts[0]}</p>
+    <p class="goal-copy"><b>${parts[1]}</b><span>${parts[2]}</span></p>`;
+}
+
 function renderRunning(data) {
   const body = $('card-running');
   const foot = $('foot-running');
@@ -240,6 +277,7 @@ function renderRunning(data) {
   if (!data || data.miles == null) {
     body.innerHTML = '<p class="is-empty">No runs logged yet.</p>';
     foot.textContent = '—';
+    setVeil('veil-running', 'Training for the Boston Half', 'Year-to-date totals from Strava');
     return;
   }
 
@@ -251,50 +289,20 @@ function renderRunning(data) {
   body.innerHTML = `
     <div class="figures">
       <div class="figure">
-        <p class="figure-num">${miles}<span class="figure-unit">mi</span></p>
-        <p class="figure-cap">this year</p>
+        <p class="figure-num">${miles}</p>
+        <p class="figure-cap">miles this year</p>
       </div>
       <div class="figure figure-sm">
         <p class="figure-num">${esc(data.runs ?? '—')}</p>
         <p class="figure-cap">runs</p>
       </div>
-    </div>
-    ${last ? revealLine(`Last run: ${esc(longDay(last.date))} · ${Number(last.miles).toFixed(1)} mi`) : ''}`;
+    </div>`;
+
+  setVeil('veil-running',
+    last ? `Last run: ${esc(longDay(last.date))}, ${Number(last.miles).toFixed(1)} mi` : 'Year-to-date running',
+    `Training for ${esc(SITE.race.longName)} on ${esc(longDay(SITE.race.date))}`);
 
   foot.textContent = updatedAgo(data.updated);
-}
-
-function renderGoal() {
-  const strip = $('card-goal');
-  if (!strip) return;
-  const race = localDate(SITE.race.date);
-  if (!race) { strip.innerHTML = ''; return; }
-
-  const days = Math.round((midnight(race) - midnight(new Date())) / 86400000);
-  const when = race.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
-
-  if (days > 0) {
-    strip.innerHTML = `
-      <span class="goal-days">${days}</span>
-      <span class="goal-copy">
-        <b>${days === 1 ? 'day' : 'days'} to ${esc(SITE.race.name)}</b>
-        <span>${esc(when)} · ${esc(SITE.race.where)}</span>
-      </span>`;
-  } else if (days === 0) {
-    strip.innerHTML = `
-      <span class="goal-days">Today</span>
-      <span class="goal-copy">
-        <b>${esc(SITE.race.longName)}</b>
-        <span>${esc(SITE.race.where)}</span>
-      </span>`;
-  } else {
-    strip.innerHTML = `
-      <span class="goal-days">Ran it</span>
-      <span class="goal-copy">
-        <b>Ran ${esc(SITE.race.name)}</b>
-        <span>${esc(when)} · next one to be decided</span>
-      </span>`;
-  }
 }
 
 function renderSleep(data) {
@@ -304,32 +312,53 @@ function renderSleep(data) {
   if (!data || (data.sleepScore == null && data.recoveryScore == null)) {
     body.innerHTML = '<p class="is-empty">No recent data.</p>';
     foot.textContent = '—';
+    setVeil('veil-sleep', 'Sleep and recovery', 'Scored by Whoop each morning');
     return;
   }
 
-  const meter = (name, value) => `
-    <div class="meter">
-      <div class="meter-head">
-        <span class="meter-name">${name}</span>
-        <span class="meter-value">${value == null ? '—' : esc(value) + '<span class="pct">%</span>'}</span>
-      </div>
-      <div class="meter-track"><div class="meter-fill" data-fill="${value == null ? 0 : Number(value)}"></div></div>
-    </div>`;
+  // pathLength="100" lets the dash offset be the percentage itself
+  const ring = (name, value) => {
+    const v = value == null ? 0 : Math.max(0, Math.min(100, Number(value)));
+    return `
+      <figure class="ring">
+        <div class="ring-dial">
+          <svg viewBox="0 0 120 120" aria-hidden="true">
+            <circle class="ring-track" cx="60" cy="60" r="54" pathLength="100" />
+            <circle class="ring-fill" cx="60" cy="60" r="54" pathLength="100" data-value="${v}" />
+          </svg>
+          <span class="ring-value">${value == null ? '—' : esc(value) + '<span class="pct">%</span>'}</span>
+        </div>
+        <figcaption class="ring-name">${name}</figcaption>
+      </figure>`;
+  };
 
   body.innerHTML = `
-    <div class="meter-list">
-      ${meter('Sleep', data.sleepScore)}
-      ${meter('Recovery', data.recoveryScore)}
-    </div>
-    ${data.date ? revealLine(`Measured ${esc(longDay(data.date))}`) : ''}`;
+    <div class="rings">
+      ${ring('Sleep', data.sleepScore)}
+      ${ring('Recovery', data.recoveryScore)}
+    </div>`;
 
-  requestAnimationFrame(() => {
-    body.querySelectorAll('.meter-fill').forEach((el) => {
-      el.style.width = Math.max(0, Math.min(100, Number(el.dataset.fill))) + '%';
-    });
-  });
+  setVeil('veil-sleep',
+    data.date ? `Measured ${esc(longDay(data.date))}` : 'Last night',
+    'Sleep performance and recovery, scored by Whoop');
 
+  drawRings(body);
   foot.textContent = updatedAgo(data.updated);
+}
+
+/** Rings draw from 0 to their value once the card scrolls into view. */
+function drawRings(scope) {
+  const fills = [...scope.querySelectorAll('.ring-fill')];
+  const draw = () => fills.forEach((el) => { el.style.strokeDashoffset = String(100 - Number(el.dataset.value)); });
+  if (REDUCED.matches || !('IntersectionObserver' in window)) { draw(); return; }
+
+  const io = new IntersectionObserver(([entry]) => {
+    if (!entry.isIntersecting) return;
+    io.disconnect();
+    // one frame at zero first, so the transition has somewhere to start from
+    requestAnimationFrame(() => requestAnimationFrame(draw));
+  }, { threshold: 0.35 });
+  io.observe(scope);
 }
 
 /* ---------------------------------------------------------------- library -- */
@@ -365,11 +394,16 @@ function renderLibrary(data) {
       </div>
     </a>`;
 
-  mini.innerHTML = rest.slice(0, 8).map((b) => `
+  // nine covers: phones show a 3 by 3 grid, wider screens hide the ninth for 4 by 2
+  mini.innerHTML = rest.slice(0, 9).map((b) => `
     <a class="mini" href="${esc(b.link || '#')}" target="_blank" rel="noopener noreferrer">
       <div class="book-cover mini-cover">
         ${b.cover ? `<img src="${esc(coverAt(b.cover, 360))}" alt="Cover of ${esc(b.title)}" loading="lazy" decoding="async" />` : ''}
-        <span class="mini-title"><span>${esc(b.title)}</span></span>
+        <span class="veil veil-cover">
+          <span class="veil-big">${esc(b.title)}</span>
+          <span class="veil-small">${esc(b.author)}</span>
+          ${stars(b.rating)}
+        </span>
       </div>
     </a>`).join('');
 
@@ -466,29 +500,32 @@ function renderWorks() {
   if (!grid) return;
 
   grid.innerHTML = SITE.works.map((w, i) => {
-    const hoverFile = w.logoHover === 'file';
-    const mark = w.logo
-      ? `<div class="work-logo${hoverFile ? ' hover-file' : ''}">
-           <span class="mono" style="-webkit-mask-image:url('${esc(w.logo)}');mask-image:url('${esc(w.logo)}')"></span>
-           ${hoverFile
-             ? `<img src="${esc(w.logo)}" alt="" loading="lazy" decoding="async" />`
-             : `<span class="mono tint" style="-webkit-mask-image:url('${esc(w.logo)}');mask-image:url('${esc(w.logo)}');background:${esc(w.logoHover || '#00356B')}"></span>`}
+    const mask = `-webkit-mask-image:url('${esc(w.logo)}');mask-image:url('${esc(w.logo)}')`;
+    const logo = w.logoAsPublished
+      ? `<div class="work-logo as-published" style="--logo-w:${Number(w.size) || 0.6}">
+           <img src="${esc(w.logo)}" alt="" loading="lazy" decoding="async" />
          </div>`
+      : `<div class="work-logo" style="--logo-w:${Number(w.size) || 0.6}">
+           <span class="mono" style="${mask}"></span>
+           <span class="mono tint" style="${mask};background:${esc(w.logoHover || '#00356B')}"></span>
+         </div>`;
+
+    const mark = w.logo
+      ? `<span class="work-mark">${logo}${w.logoNote ? `<span class="work-note">${esc(w.logoNote)}</span>` : ''}</span>`
       : `<span class="work-wordmark">${esc(w.org)}</span>`;
 
-    const inner = `
-      <div class="work-mark">
-        ${mark}
-        ${w.logoNote ? `<span class="work-note">${esc(w.logoNote)}</span>` : ''}
-      </div>
-      <div class="work-body">
-        <h3 class="work-role">${esc(w.role)}</h3>
-        ${w.url ? `<span class="work-cue">Visit ${ARROW}</span>` : ''}
-      </div>`;
+    const veil = `
+      <span class="veil">
+        <span class="veil-big">${esc(w.org)}</span>
+        ${w.logoNote ? `<span class="veil-small">${esc(w.logoNote)}</span>` : ''}
+        ${w.url ? `<span class="veil-cue">Visit ${ARROW}</span>` : ''}
+      </span>`;
 
+    const label = [w.org, w.logoNote].filter(Boolean).join(', ');
+    const cls = `work${w.wide ? ' is-wide' : ''}`;
     return w.url
-      ? `<a class="work" href="${esc(w.url)}" target="_blank" rel="noopener noreferrer" aria-label="${esc(w.role)}, ${esc(w.org)}" data-reveal style="--i:${i % 4}">${inner}</a>`
-      : `<article class="work" data-reveal style="--i:${i % 4}">${inner}</article>`;
+      ? `<a class="${cls}" href="${esc(w.url)}" target="_blank" rel="noopener noreferrer" aria-label="${esc(label)}" data-reveal style="--i:${i % 3}">${mark}${veil}</a>`
+      : `<article class="${cls}" tabindex="0" aria-label="${esc(label)}" data-reveal style="--i:${i % 3}">${mark}${veil}</article>`;
   }).join('');
 }
 
@@ -552,8 +589,11 @@ function renderAwards() {
   list.innerHTML = SITE.awards.map((a, i) => `
     <li class="award" data-reveal style="--i:${i % 4}">
       <span class="award-num">${String(i + 1).padStart(2, '0')}</span>
-      <span class="award-name">${esc(a.name)}</span>
-      ${a.note ? `<span class="award-note">${esc(a.note)}</span>` : ''}
+      <span class="award-text">
+        <span class="award-name">${esc(a.title)}</span>
+        <span class="award-context">${esc(a.context)}</span>
+      </span>
+      <span class="award-year">${esc(a.year)}</span>
     </li>`).join('');
 }
 

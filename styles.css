@@ -126,7 +126,7 @@ button { font: inherit; color: inherit; }
 
 .wrap {
   width: 100%;
-  max-width: 72rem;
+  max-width: 75rem;
   margin: 0 auto;
   padding-inline: var(--gutter);
 }
@@ -136,12 +136,13 @@ button { font: inherit; color: inherit; }
 
 .section-head {
   display: flex;
-  align-items: baseline;
-  gap: 0.9rem;
-  margin-bottom: clamp(1.5rem, 3vw, 2.25rem);
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.4rem;
+  margin-bottom: clamp(1.75rem, 3.4vw, 2.75rem);
 }
 /* a head with no tagline leaves the same gap as one with */
-.section-head:not(:has(.sub)) { padding-bottom: 1.35rem; }
+.section-head:not(:has(.sub)) { padding-bottom: 1.55rem; }
 
 .section-num {
   font-size: 0.6875rem;
@@ -153,10 +154,11 @@ button { font: inherit; color: inherit; }
   flex: none;
 }
 
+/* every section heading is the same size, on every screen */
 .section-title {
   font-family: var(--display);
   font-weight: 400;
-  font-size: clamp(2rem, 4.6vw, 3.1rem);
+  font-size: clamp(2.125rem, 4.4vw, 3rem);
   line-height: 1.04;
   letter-spacing: -0.018em;
 }
@@ -180,12 +182,12 @@ button { font: inherit; color: inherit; }
 .section-title .sub {
   display: block;
   font-family: var(--sans);
-  font-size: 0.875rem;
+  font-size: 0.9375rem;
   font-weight: 400;
   letter-spacing: 0.01em;
-  line-height: 1.6;
+  line-height: 1.55;
   color: var(--ink-muted);
-  margin-top: 0.55rem;
+  margin-top: 0.7rem;
   max-width: var(--measure);
 }
 
@@ -417,6 +419,56 @@ a { color: inherit; }
   margin-top: auto;
 }
 
+/* the hover veil: a sheer white layer fades in over a card, its note centered.
+   Cards carry tabindex so keyboard focus (and a tap on phones) shows it too. */
+.veil {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.35rem;
+  padding: var(--card-pad);
+  text-align: center;
+  color: var(--ink);
+  background: rgba(255, 255, 255, 0.85);
+  -webkit-backdrop-filter: blur(4px);
+  backdrop-filter: blur(4px);
+  border-radius: inherit;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--fast) var(--ease);
+}
+.card:hover .veil, .card:focus-visible .veil, .card:focus-within .veil,
+.work:hover .veil, .work:focus-visible .veil,
+.mini:hover .veil, .mini:focus-visible .veil { opacity: 1; }
+
+.veil-big {
+  display: block;
+  font-family: var(--display);
+  font-size: clamp(1.25rem, 2.2vw, 1.625rem);
+  line-height: 1.15;
+  letter-spacing: -0.012em;
+  max-width: 22ch;
+}
+.veil-small {
+  display: block;
+  font-size: 0.8125rem;
+  line-height: 1.45;
+  color: var(--ink-link);
+  max-width: 30ch;
+}
+.veil-cue {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  margin-top: 0.3rem;
+  font-size: 0.8125rem;
+  color: var(--ink-link);
+}
+
 /* a detail line that slides in on hover / focus */
 .reveal-line {
   display: grid;
@@ -435,97 +487,116 @@ a { color: inherit; }
   transform: none;
 }
 
-/* -------------------------------------------------------- health bento -- */
+/* --------------------------------------------------------------- health --
+   Two cards, one composition: Running on the left, Last Night on the right,
+   the same padding, label, foot, and serif numerals at related sizes.
+   ------------------------------------------------------------------------ */
 
-.bento {
+.health-pair {
   display: grid;
-  grid-template-columns: 1fr;
+  grid-template-columns: minmax(0, 1fr);
   gap: 1rem;
   align-items: stretch;
 }
-
-/* the wide one: big numerals, with the race countdown living inside it */
-.card-run { gap: 1.25rem; }
-.card-goal-tile .goal-copy b { font-size: 1rem; }
+.health-pair .card {
+  gap: 1.25rem;
+  padding: clamp(1.125rem, 2.4vw, 1.75rem);
+  outline-offset: 4px;
+}
+.health-pair .card-body {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 1.5rem;
+}
 
 .figures {
   display: flex;
   flex-wrap: wrap;
   align-items: flex-end;
-  gap: clamp(1.5rem, 5vw, 3.5rem);
+  gap: clamp(1.75rem, 5vw, 3.5rem);
 }
 .figure-num {
   font-family: var(--display);
-  font-size: clamp(3.25rem, 9vw, 5.75rem);
+  font-size: clamp(5rem, 16vw, 9.5rem);
+  line-height: 0.82;
+  letter-spacing: -0.035em;
+  font-variant-numeric: tabular-nums;
+}
+.figure-sm .figure-num { font-size: clamp(2.75rem, 7vw, 4rem); }
+.figure-cap {
+  font-size: 0.8125rem;
+  color: var(--ink-muted);
+  margin-top: 0.65rem;
+}
+
+/* the countdown tile: a third the height of Running, in the tinted fill */
+.card-goal {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  grid-template-rows: auto auto;
+  align-items: baseline;
+  gap: 0.2rem 1.1rem;
+  background: var(--tint);
+  border-color: #DCE3F0;
+  box-shadow: none;
+}
+.card-goal .card-label { grid-column: 1 / -1; }
+.goal-days {
+  font-family: var(--display);
+  font-size: clamp(3rem, 6vw, 4rem);
   line-height: 0.86;
   letter-spacing: -0.03em;
   font-variant-numeric: tabular-nums;
 }
-.figure-sm .figure-num { font-size: clamp(2.25rem, 5.5vw, 3.25rem); color: var(--ink); }
-.figure-unit {
-  font-family: var(--sans);
-  font-size: 0.875rem;
-  letter-spacing: 0.01em;
-  color: var(--ink-muted);
-  margin-left: 0.35rem;
-}
-.figure-cap {
-  font-size: 0.8125rem;
-  color: var(--ink-muted);
-  margin-top: 0.5rem;
-}
-
-.card-goal-tile {
-  flex-direction: row;
-  align-items: center;
-  gap: 1.1rem;
-  background: var(--tint);
-  padding-block: 1.1rem;
-}
-.goal-days {
-  font-family: var(--display);
-  font-size: clamp(2.25rem, 5vw, 3rem);
-  line-height: 0.9;
-  letter-spacing: -0.02em;
-  font-variant-numeric: tabular-nums;
-  flex: none;
-}
 .goal-copy { display: grid; gap: 0.15rem; min-width: 0; }
-.goal-copy b { font-weight: 500; font-size: 0.9375rem; }
-.goal-copy span { font-size: 0.8125rem; color: var(--ink-muted); }
-
-/* the tall one: two meters with room to breathe */
-.card-whoop { gap: 1.25rem; }
-.card-whoop .card-body { display: flex; align-items: center; }
-.meter-list {
-  display: flex;
-  flex-direction: column;
-  gap: clamp(1.25rem, 3vw, 2.25rem);
-  width: 100%;
+.goal-copy b {
+  font-family: var(--display);
+  font-weight: 400;
+  font-size: clamp(1.125rem, 2vw, 1.375rem);
+  line-height: 1.15;
+  letter-spacing: -0.01em;
 }
-.meter-head {
+.goal-copy span { font-size: 0.8125rem; line-height: 1.45; color: var(--ink-muted); }
+
+/* Last Night: two ring gauges */
+.rings {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(1rem, 3vw, 2rem);
+  justify-items: center;
+}
+.ring { margin: 0; display: grid; justify-items: center; gap: 0.75rem; }
+.ring-dial {
+  position: relative;
+  width: clamp(7.25rem, 30vw, 9.75rem);
+  aspect-ratio: 1;
+}
+.ring-dial svg { width: 100%; height: 100%; transform: rotate(-90deg); display: block; }
+.ring-track, .ring-fill { fill: none; stroke-width: 5; }
+.ring-track { stroke: var(--tint-deep); }
+.ring-fill {
+  stroke: var(--ink-link);
+  stroke-linecap: round;
+  stroke-dasharray: 100 100;
+  stroke-dashoffset: 100;
+  transition: stroke-dashoffset 600ms var(--ease);
+}
+.ring-value {
+  position: absolute;
+  inset: 0;
   display: flex;
   align-items: baseline;
-  justify-content: space-between;
-  gap: 1rem;
-  margin-bottom: 0.5rem;
-}
-.meter-name { font-size: 0.875rem; color: var(--ink-muted); }
-.meter-value {
+  padding-top: calc(50% - 0.5em);
+  justify-content: center;
   font-family: var(--display);
-  font-size: clamp(2rem, 4.5vw, 2.75rem);
-  line-height: 0.95;
-  letter-spacing: -0.02em;
+  font-size: clamp(2.5rem, 7vw, 3.5rem);
+  line-height: 1;
+  letter-spacing: -0.03em;
   font-variant-numeric: tabular-nums;
 }
-.meter-value .pct { font-size: 0.5em; margin-left: 0.1em; color: var(--ink-muted); }
-.meter-track { height: 5px; border-radius: 99px; background: var(--tint-deep); overflow: hidden; }
-.meter-fill {
-  height: 100%; width: 0;
-  border-radius: 99px;
-  background: var(--ink-link);
-  transition: width 900ms var(--ease);
-}
+.ring-value .pct { font-size: 0.42em; margin-left: 0.06em; color: var(--ink-muted); }
+.ring-name { font-size: 0.8125rem; color: var(--ink-muted); }
 
 .is-empty { font-size: 0.9375rem; color: var(--ink-faint); }
 
@@ -776,6 +847,7 @@ a { color: inherit; }
 }
 .team-what { display: block; font-size: 0.8125rem; color: var(--ink-muted); margin-top: 0.25rem; }
 
+.affil-label + .elsewhere li:first-child { border-top: 0; }
 .affil-label {
   font-size: 0.6875rem;
   font-weight: 500;
@@ -787,19 +859,28 @@ a { color: inherit; }
   margin-bottom: 1rem;
 }
 
-/* ---------------------------------------------------------------- works -- */
+/* ---------------------------------------------------------------- works --
+   A logo band: equal tiles, marks balanced by eye (`size` in main.js),
+   navy at rest, colour on hover under the veil.
+   ------------------------------------------------------------------------ */
 
-.work-grid { display: grid; grid-template-columns: 1fr; gap: 1rem; }
+.work-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.75rem;
+}
 
 .work {
+  position: relative;
   display: flex;
-  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  aspect-ratio: 16 / 9;
   background: var(--surface);
   border: 1px solid var(--rule);
   border-radius: 14px;
   overflow: hidden;
   text-decoration: none;
-  box-shadow: var(--lift);
   transition: transform var(--fast) var(--ease), box-shadow var(--fast) var(--ease), border-color var(--fast) var(--ease);
 }
 .work:hover {
@@ -807,50 +888,45 @@ a { color: inherit; }
   box-shadow: var(--lift-hover);
   border-color: #D5DDEC;
 }
+/* long, thin wordmarks take a whole row on phones */
+.work.is-wide { grid-column: 1 / -1; aspect-ratio: auto; height: 5.5rem; }
 
-/* wordmark header — no official logo file exists for most of these orgs */
-.work-mark {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  gap: 0.35rem;
-  height: 5rem;
-  padding: var(--card-pad);
-  background: var(--tint);
-  border-bottom: 1px solid var(--rule);
-  overflow: hidden;
-}
 .work-wordmark {
-  position: relative;
   font-family: var(--display);
   font-size: 1.25rem;
   line-height: 1.12;
-  letter-spacing: -0.012em;
-  color: var(--ink);
-  max-width: 15ch;
+  text-align: center;
+  padding: var(--card-pad);
+}
+
+.work-mark {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.6rem;
+  width: 100%;
+  padding-inline: 0.75rem;
+}
+.work-note {
+  font-size: 0.6875rem;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  text-align: center;
   transition: color var(--fast) var(--ease);
 }
-.work-wordmark::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  bottom: -0.45rem;
-  width: 1.75rem;
-  height: 1px;
-  background: var(--ink-link);
-  transition: width var(--mid) var(--ease);
-}
-.work:hover .work-wordmark { color: var(--ink-link); }
-.work:hover .work-wordmark::after { width: 3.25rem; }
+.work:hover .work-note { color: var(--ink-link); }
 
-/* official logo file, where the organisation publishes one */
 .work-logo {
   position: relative;
-  height: 2.5rem;
-  width: 100%;
-  max-width: 11rem;
+  width: calc(var(--logo-w, 0.6) * 100%);
+  aspect-ratio: 8 / 3;
+  max-height: 4.5rem;
 }
+/* marks whose own artwork carries the detail are shown exactly as published */
+.work-logo.as-published img { opacity: 1; }
+.work.is-wide .work-logo { width: min(calc(var(--logo-w) * 100%), 18rem); }
 .work-logo .mono,
 .work-logo img {
   position: absolute;
@@ -858,13 +934,13 @@ a { color: inherit; }
   height: 100%;
   width: 100%;
   object-fit: contain;
-  object-position: left center;
+  object-position: center;
   transition: opacity var(--fast) var(--ease);
 }
 .work-logo .mono {
   background: var(--ink);
-  -webkit-mask-position: left center;
-  mask-position: left center;
+  -webkit-mask-position: center;
+  mask-position: center;
   -webkit-mask-repeat: no-repeat;
   mask-repeat: no-repeat;
   -webkit-mask-size: contain;
@@ -872,35 +948,10 @@ a { color: inherit; }
 }
 .work-logo img,
 .work-logo .mono.tint { opacity: 0; }
-.work:hover .work-logo .mono { opacity: 0; }
-.work:hover .work-logo img,
-.work:hover .work-logo .mono.tint { opacity: 1; }
-
-.work-body { padding: var(--card-pad); display: flex; align-items: flex-start; justify-content: space-between; gap: 0.75rem; flex: 1; }
-.work-note {
-  font-size: 0.6875rem;
-  letter-spacing: 0.06em;
-  color: var(--ink-faint);
-}
-.work-role {
-  font-family: var(--display);
-  font-size: 1.1875rem;
-  line-height: 1.16;
-  letter-spacing: -0.014em;
-}
-.work:hover .work-role { color: var(--ink-link); }
-.work-cue {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.35rem;
-  flex: none;
-  margin-top: 0.15rem;
-  color: var(--ink-link);
-  opacity: 0;
-  transform: translateX(-3px);
-  transition: opacity var(--fast) var(--ease), transform var(--fast) var(--ease);
-}
-.work:hover .work-cue, .work:focus-within .work-cue { opacity: 1; transform: none; }
+.work:hover .work-logo .mono, .work:focus-visible .work-logo .mono { opacity: 0; }
+.work:hover .work-logo img, .work:hover .work-logo .mono.tint,
+.work:focus-visible .work-logo img, .work:focus-visible .work-logo .mono.tint { opacity: 1; }
+.work .veil-big { font-size: clamp(1.0625rem, 1.8vw, 1.375rem); }
 
 /* -------------------------------------------------------------- library -- */
 
@@ -975,27 +1026,10 @@ a { color: inherit; }
   gap: clamp(0.65rem, 1.6vw, 1rem);
 }
 .mini { display: block; text-decoration: none; min-width: 0; }
-.mini-title {
-  position: absolute;
-  inset: auto 0 0 0;
-  display: flex;
-  align-items: flex-end;
-  padding: 0.45rem 0.45rem 0.4rem;
-  background: linear-gradient(to top, rgba(15, 32, 68, 0.92), rgba(15, 32, 68, 0));
-  opacity: 0;
-  transition: opacity var(--fast) var(--ease);
-}
-.mini-title span {
-  color: #fff;
-  font-size: 0.625rem;
-  line-height: 1.25;
-  display: -webkit-box;
-  -webkit-line-clamp: 3;
-  line-clamp: 3;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-}
-.mini:hover .mini-title, .mini:focus-visible .mini-title { opacity: 1; }
+.veil-cover { padding: 0.5rem; gap: 0.2rem; border-radius: 0; }
+.veil-cover .veil-big { font-size: clamp(0.875rem, 1.3vw, 1.0625rem); line-height: 1.1; }
+.veil-cover .veil-small { font-size: 0.6875rem; line-height: 1.3; }
+.veil-cover .stars { font-size: 0.625rem; }
 
 .stars { font-size: 0.8125rem; letter-spacing: 0.06em; color: var(--ink-link); white-space: nowrap; }
 .stars .off { color: var(--rule); }
@@ -1123,19 +1157,17 @@ a { color: inherit; }
 }
 .tile:hover .tile-title { color: var(--ink-link); }
 
-/* ---------------------------------------------------------------- awards -- */
+/* ---------------------------------------------------------------- awards --
+   Every row the same: number · title and context · year.
+   ------------------------------------------------------------------------ */
 
-.award-list {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 0;
-  border-top: 1px solid var(--rule);
-}
+.award-list { border-top: 1px solid var(--rule); }
 .award {
   display: grid;
-  grid-template-columns: 2.25rem 1fr;
-  gap: 0.25rem 0.75rem;
-  padding: 0.95rem 0;
+  grid-template-columns: 2rem minmax(0, 1fr) auto;
+  align-items: baseline;
+  gap: 0 0.75rem;
+  padding: 0.9rem 0.25rem;
   border-bottom: 1px solid var(--rule);
   transition: background-color var(--fast) var(--ease);
 }
@@ -1145,16 +1177,17 @@ a { color: inherit; }
   letter-spacing: 0.14em;
   color: var(--ink-faint);
   font-variant-numeric: tabular-nums;
-  padding-top: 0.25rem;
   transition: color var(--fast) var(--ease);
 }
 .award:hover .award-num { color: var(--ink-link); }
-.award-name { font-size: 0.9375rem; line-height: 1.45; }
-.award-note {
-  grid-column: 2;
+.award-text { display: flex; flex-direction: column; gap: 0.1rem; min-width: 0; }
+.award-name { font-family: var(--display); font-size: 1.25rem; line-height: 1.2; letter-spacing: -0.01em; }
+.award-context { font-size: 0.875rem; line-height: 1.45; color: var(--ink-muted); }
+.award-year {
   font-size: 0.8125rem;
-  color: var(--ink-muted);
-  line-height: 1.5;
+  color: var(--ink-faint);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
 }
 
 /* -------------------------------------------------------------- contact -- */
@@ -1211,39 +1244,130 @@ a { color: inherit; }
 }
 [data-reveal].is-in { opacity: 1; transform: none; }
 
+/* ------------------------------------------------------------ phones --
+   Phones get their own layout, not a squeezed desktop.
+   ------------------------------------------------------------------------ */
+
+.contact-grid .prose { max-width: none; }
+
+@media (max-width: 39.99rem) {
+  :root { --section-gap: 3.5rem; }
+
+  .hero-name { font-size: clamp(2.25rem, 11vw, 3rem); }
+  .section-title { font-size: 2.125rem; }
+
+  /* library: a 3 by 3 cover grid under the lead book */
+  .book-lead { grid-template-columns: minmax(0, 42%) 1fr; }
+  .book-mini-grid { grid-template-columns: repeat(3, 1fr); }
+  .veil-cover .veil-small, .veil-cover .stars { display: none; }
+
+  /* interests: sideways strips, the next poster peeking in from the edge */
+  .tiles {
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: 38%;
+    grid-template-columns: none;
+    overflow-x: auto;
+    margin-inline: calc(var(--gutter) * -1);
+    padding-inline: var(--gutter);
+    padding-bottom: 0.5rem;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+  }
+  .tiles::-webkit-scrollbar { display: none; }
+  .tile.is-hidden { display: block; }
+  .shelf-toggle { display: none; }
+  .tile:hover .poster { transform: none; }
+
+  /* awards: the year sits under the context instead of in its own column */
+  .award { grid-template-columns: 1.75rem minmax(0, 1fr); }
+  .award-year { grid-column: 2; margin-top: 0.2rem; }
+  .award-year:empty { display: none; }
+
+  .contact-email { font-size: 1.1875rem; }
+
+  /* half-row logos get a little more width back */
+  .work:not(.is-wide) .work-logo { width: min(calc(var(--logo-w) * 118%), 88%); }
+  .tiles { grid-auto-columns: 34%; }
+  .hero-eyebrow { align-items: flex-start; line-height: 1.5; }
+  /* when the rotating line wraps, the dot stays with its first line */
+  .ticker { align-items: flex-start; }
+  .ticker-dot { transform: none; margin-top: 0.62em; }
+  .map-panel { min-height: 260px; }
+  .hero-num { padding-top: 0.2em; }
+}
+
+
 /* ----------------------------------------------------------- breakpoints -- */
 
 @media (min-width: 40rem) {
-  .work-grid { grid-template-columns: repeat(2, 1fr); }
   .contact-grid { grid-template-columns: 1.15fr 0.85fr; }
-  .award-list { grid-template-columns: repeat(2, 1fr) ; column-gap: clamp(1.5rem, 4vw, 3.5rem); }
-  .award:nth-last-child(-n+2) { border-bottom: 0; }
+  /* Running takes two thirds of its column, the countdown the last third */
+  .health-pair {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-rows: 2fr 1fr;
+  }
+  .health-pair .card-run   { grid-column: 1; grid-row: 1; }
+  .health-pair .card-goal  { grid-column: 1; grid-row: 2; }
+  .health-pair .card-whoop { grid-column: 2; grid-row: 1 / span 2; }
 
+  .section-head { flex-direction: row; align-items: baseline; gap: 1.25rem; }
+  /* headings that lead from the right */
+  .section-head.is-right { flex-direction: row-reverse; text-align: right; }
+  .section-head.is-right .sub { margin-left: auto; }
+  .section-head.is-right .sweep::after { transform-origin: right; }
+  .section-head.is-center { flex-direction: column; align-items: center; gap: 0.5rem; text-align: center; }
+  .section-head.is-center .sweep::after { transform-origin: center; }
+
+  .work-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1rem; }
+  /* three narrow tiles: the marks need a little more of each tile's width */
+  .work-logo { width: min(calc(var(--logo-w) * 112%), 90%); }
+  .work.is-wide { grid-column: auto; aspect-ratio: 16 / 9; height: auto; }
+
+  .book-mini-grid .mini:nth-child(9) { display: none; }
   .tiles { grid-template-columns: repeat(4, 1fr); }
 }
 
 @media (min-width: 60rem) {
+  .work-logo { width: calc(var(--logo-w, 0.6) * 100%); }
   .about-grid { grid-template-columns: repeat(12, minmax(0, 1fr)); }
-  .map-panel  { grid-column: span 7; min-height: 360px; }
+  .map-panel  { grid-column: span 7; min-height: 380px; }
   .about-side { grid-column: span 5; }
 
-  .bento {
-    grid-template-columns: 1.55fr 1fr;
-    grid-template-rows: 1fr auto;
-  }
-  .bento .card-run       { grid-column: 1; grid-row: 1; }
-  .bento .card-goal-tile { grid-column: 1; grid-row: 2; }
-  .bento .card-whoop     { grid-column: 2; grid-row: 1 / span 2; }
-  .library-grid { grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr); }
-  .book-lead { grid-template-columns: minmax(0, 15rem) 1fr; }
-  .work-grid { grid-template-columns: repeat(4, 1fr); }
+  .library-grid { grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr); }
+  .book-lead { grid-template-columns: minmax(0, 19rem) 1fr; }
   .tiles { grid-template-columns: repeat(6, 1fr); }
-    .section-head { gap: 1.25rem; }
+
+  /* Awards: the heading holds the left column while the list runs down the right */
+  .split {
+    display: grid;
+    grid-template-columns: minmax(0, 4fr) minmax(0, 8fr);
+    gap: clamp(2rem, 5vw, 4.5rem);
+    align-items: start;
+  }
+  .split > .section-head { position: sticky; top: 5.5rem; flex-direction: column; gap: 0.5rem; margin-bottom: 0; }
+
+  /* Library leads from the right, so its shelf line mirrors too */
+  #library .shelf-foot { flex-direction: row-reverse; }
 }
 
 @media (min-width: 80rem) {
   .tiles { grid-template-columns: repeat(8, 1fr); }
-  }
+}
+
+/* ----------------------------------------------------------------- band --
+   Professional Experiences is a full-bleed tinted band with its heading
+   centered over the logos.
+   ------------------------------------------------------------------------ */
+
+.section.band {
+  background: var(--tint);
+  border-block: 1px solid var(--rule);
+  padding-block: clamp(2.5rem, 5vw, 4.5rem);
+  margin-bottom: var(--section-gap);
+}
+.band .section-head { flex-direction: column; align-items: center; gap: 0.5rem; text-align: center; }
+.band .sweep::after { transform-origin: center; }
 
 /* ------------------------------------------------------- reduced motion -- */
 

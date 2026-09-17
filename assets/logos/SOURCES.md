@@ -28,5 +28,9 @@ attribute pointing at a clipPath that is not defined anywhere on som.yale.edu â€
 reference in their own markup that stops the file rendering on its own. The attribute was
 removed. No path data was touched.
 
+The SOM artwork is drawn into the right-hand two-thirds of its own canvas, which left
+the mark visibly off-centre in its tile; its `viewBox` was cropped to the drawing's own
+bounds (`85 6 407 31`). No path data was touched.
+
 The SOM file also carried a duplicated `xmlns` attribute (a fatal XML parse error that
 stops any standalone SVG from loading); the duplicate was removed.
