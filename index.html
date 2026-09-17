@@ -2,163 +2,274 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>zander jein</title>
-  <meta name="description" content="zander jein—yale student studying economics and mathematics, thinking about the U.S. healthcare system." />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Zander Jeinthanuttkanont</title>
+  <meta name="description" content="Zander Jeinthanuttkanont — Yale, Economics &amp; Mathematics. Thinking about the U.S. healthcare system." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="assets/style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-  <header class="hero">
-    <div class="container">
-      <p class="eyebrow">welcome to a microcosm of my brain!</p>
-      <nav class="quicklinks">
-        <a href="#about">01 about</a>
-        <a href="#writing">02 writing</a>
-        <a href="#reading">03 reading</a>
-        <a href="#travels">04 travels</a>
-        <a href="#contact">05 say hi</a>
+
+  <!-- scroll progress hairline -->
+  <div class="progress" aria-hidden="true"><span id="progress-bar"></span></div>
+
+  <!-- sticky rail, fades in past the hero -->
+  <header class="topbar" id="topbar">
+    <div class="wrap">
+      <a class="topbar-name" href="#top">Zander J.</a>
+      <nav class="topbar-nav" aria-label="Sections">
+        <a href="#health">Health</a>
+        <a href="#about">About</a>
+        <a href="#experience">Professional Experiences</a>
+        <a href="#library">Library</a>
+        <a href="#interests">Interests</a>
+        <a href="#awards">Awards</a>
+        <a href="#connect">Connect</a>
       </nav>
     </div>
   </header>
 
-  <hr class="rule" />
+  <main id="top">
 
-  <!-- 01 ABOUT -->
-  <section id="about" class="about">
-    <div class="container">
-      <div class="section-head">
-        <span class="section-num">01</span>
-        <h2 class="section-title">about <span class="emoji">🪴</span></h2>
+    <!-- ======================================================== 01 HERO -->
+    <section class="hero" id="hero">
+      <div class="wrap">
+        <p class="hero-eyebrow" data-reveal style="--i:0">
+          <span class="hero-num">01</span> Welcome to a microcosm of my brain!
+        </p>
+
+        <h1 class="hero-name" data-reveal style="--i:1">Zander Jeinthanuttkanont</h1>
+
+        <p class="hero-line" data-reveal style="--i:2">
+          Yale, studying <em>Economics &amp; Mathematics</em> — thinking mostly
+          about the U.S. healthcare system.
+        </p>
+
+        <p class="ticker" data-reveal style="--i:3">
+          <span class="ticker-dot" aria-hidden="true"></span>
+          <span class="ticker-slot">
+            <span class="ticker-text" id="ticker" aria-live="polite"></span>
+          </span>
+        </p>
+
+        <nav class="hero-nav" aria-label="Page sections" data-reveal style="--i:4">
+          <a href="#health"><span class="n">02</span> Health</a>
+          <a href="#about"><span class="n">03</span> About</a>
+          <a href="#experience"><span class="n">04</span> Professional Experiences</a>
+          <a href="#library"><span class="n">05</span> Library</a>
+          <a href="#interests"><span class="n">06</span> Interests</a>
+          <a href="#awards"><span class="n">07</span> Awards</a>
+          <a href="#connect"><span class="n">08</span> Connect</a>
+        </nav>
       </div>
-      <p>im zander, a student at yale studying econ + math!</p>
-      <p>my current fixation is on AI and the U.S. healthcare system and what can be done about both.</p>
-      <p>im interested in competitive debating, orchestral music, philosophy, reading, and studying mandarin.</p>
-    </div>
-  </section>
+    </section>
 
-  <hr class="rule" />
+    <hr class="rule" />
 
-  <!-- 02 WRITING -->
-  <section id="writing" class="writing">
-    <div class="container">
-      <div class="section-head">
-        <span class="section-num">02</span>
-        <h2 class="section-title">things i'm writing <span class="emoji">✍️</span></h2>
-        <p class="descriptors">healthcare · ideas · life</p>
+    <!-- ====================================================== 02 HEALTH -->
+    <section class="section" id="health">
+      <div class="wrap">
+        <div class="section-head" data-reveal>
+          <span class="section-num">02</span>
+          <h2 class="section-title">
+            <span class="sweep">Health</span>
+            <span class="sub">Miles from Strava, sleep from Whoop.</span>
+          </h2>
+        </div>
+
+        <div class="bento">
+          <article class="card card-run" data-reveal style="--i:0">
+            <p class="card-label">Running <span id="run-year"></span></p>
+            <div class="card-body" id="card-running">
+              <p class="is-empty">Loading…</p>
+            </div>
+            <p class="card-foot" id="foot-running">—</p>
+          </article>
+
+          <article class="card card-goal-tile" id="card-goal" data-reveal style="--i:1"></article>
+
+          <article class="card card-whoop" data-reveal style="--i:2">
+            <p class="card-label">Last Night</p>
+            <div class="card-body" id="card-sleep">
+              <p class="is-empty">Loading…</p>
+            </div>
+            <p class="card-foot" id="foot-sleep">—</p>
+          </article>
+        </div>
       </div>
-      <ul class="feed">
-        <li>
-          <span class="date">05.25.26</span>
-          <div class="body">
-            <h3 class="item-title"><a href="https://substack.com/home/post/p-197083535" target="_blank" rel="noopener noreferrer">why you should care about the U.S. healthcare system</a></h3>
-            <div class="tags"><span class="chip healthcare">healthcare</span></div>
+    </section>
+
+    <!-- ======================================================= 03 ABOUT -->
+    <section class="section" id="about">
+      <div class="wrap">
+        <div class="section-head" data-reveal>
+          <span class="section-num">03</span>
+          <h2 class="section-title"><span class="sweep">About</span></h2>
+        </div>
+
+        <div class="about-top" data-reveal>
+          <p class="about-lede">I'm Zander, a student at Yale!</p>
+          <div class="marquee" id="marquee">
+            <div class="marquee-track" id="marquee-track"></div>
           </div>
-        </li>
-      </ul>
-    </div>
-  </section>
+        </div>
 
-  <hr class="rule" />
+        <div class="about-grid">
+          <div class="map-panel" id="place" data-reveal style="--i:0"></div>
 
-  <!-- 03 READING -->
-  <section id="reading" class="reading">
-    <div class="container">
-      <div class="section-head">
-        <span class="section-num">03</span>
-        <h2 class="section-title">what i'm reading <span class="emoji">📚</span></h2>
-        <p class="descriptors">books · essays · papers</p>
+          <div class="about-side" data-reveal style="--i:1">
+            <p class="side-label">Three national teams</p>
+
+            <ul class="teams-col">
+              <li class="team">
+                <span class="team-dot" aria-hidden="true"></span>
+                <span class="team-name">Thai National Debate Team</span>
+                <span class="team-what">2023–24 · The Netherlands &amp; Vietnam</span>
+              </li>
+              <li class="team">
+                <span class="team-dot" aria-hidden="true"></span>
+                <span class="team-name">Thai National Youth Orchestra</span>
+                <span class="team-what">2018–2023 · Flute &amp; piccolo</span>
+              </li>
+              <li class="team">
+                <span class="team-dot" aria-hidden="true"></span>
+                <span class="team-name">Thai Philosophy Olympiad Team</span>
+                <span class="team-what">2024 · Finland</span>
+              </li>
+            </ul>
+
+            <dl class="facts">
+              <dt class="side-label">Languages</dt>
+              <dd class="fact-v">English and Thai (natively), Chinese (intermediate)</dd>
+            </dl>
+          </div>
+        </div>
       </div>
-      <ul class="feed">
-        <li>
-          <span class="date">05.24.26</span>
-          <div class="body">
-            <h3 class="item-title"><a href="reading/the-bell-jar.html">the bell jar</a> <span class="stars">★★★★☆</span></h3>
-            <div class="tags"><span class="chip">book</span></div>
-          </div>
-        </li>
-        <li>
-          <span class="date">05.21.26</span>
-          <div class="body">
-            <h3 class="item-title"><a href="reading/the-great-gatsby.html">the great gatsby</a> <span class="stars">★★☆☆☆</span></h3>
-            <div class="tags"><span class="chip">book</span></div>
-          </div>
-        </li>
-        <li>
-          <span class="date">05.20.26</span>
-          <div class="body">
-            <h3 class="item-title"><a href="reading/the-communist-manifesto.html">the communist manifesto</a> <span class="stars">★★★☆☆</span></h3>
-            <div class="tags"><span class="chip">book</span></div>
-          </div>
-        </li>
-        <li>
-          <span class="date">05.18.26</span>
-          <div class="body">
-            <h3 class="item-title"><a href="reading/when-breath-becomes-air.html">when breath becomes air</a> <span class="stars">★★★★★</span></h3>
-            <div class="tags"><span class="chip">book</span></div>
-          </div>
-        </li>
-        <li>
-          <span class="date">12.11.23</span>
-          <div class="body">
-            <h3 class="item-title"><a href="reading/the-house-on-the-cerulean-sea.html">the house on the cerulean sea</a> <span class="stars">★★★★☆</span></h3>
-            <div class="tags"><span class="chip">book</span></div>
-          </div>
-        </li>
-      </ul>
-    </div>
-  </section>
+    </section>
 
-  <hr class="rule" />
+    <!-- ======================================================= 04 WORKS -->
+    <section class="section" id="experience">
+      <div class="wrap">
+        <div class="section-head" data-reveal>
+          <span class="section-num">04</span>
+          <h2 class="section-title">
+            <span class="sweep">Professional Experiences</span>
+            <span class="sub">Places I've worked at.</span>
+          </h2>
+        </div>
 
-  <!-- 04 TRAVELS -->
-  <section id="travels" class="travels">
-    <div class="container">
-      <div class="section-head">
-        <span class="section-num">04</span>
-        <h2 class="section-title">places i've been <span class="emoji">✈️</span></h2>
-        <p class="descriptors">places · memories · photos</p>
+        <div class="work-grid" id="work-grid"></div>
       </div>
-      <p class="empty-note">more soon — still putting these together.</p>
-    </div>
-  </section>
+    </section>
 
-  <hr class="rule" />
+    <!-- ===================================================== 06 LIBRARY -->
+    <section class="section" id="library">
+      <div class="wrap">
+        <div class="section-head" data-reveal>
+          <span class="section-num">05</span>
+          <h2 class="section-title">
+            <span class="sweep">Library</span>
+            <span class="sub">Everything I've finished, straight from the Goodreads shelf.</span>
+          </h2>
+        </div>
 
-  <!-- 05 CONTACT -->
-  <section id="contact" class="contact">
-    <div class="container">
-      <div class="section-head">
-        <span class="section-num">05</span>
-        <h2 class="section-title">please say hi! <span class="emoji">💌</span></h2>
+        <div class="library-grid">
+          <div class="book-feature" id="book-feature" data-reveal style="--i:0">
+            <p class="is-empty">Loading the shelf…</p>
+          </div>
+          <div class="book-mini-grid" id="book-mini" data-reveal style="--i:1"></div>
+        </div>
+
+        <div class="shelf-foot" data-reveal>
+          <span id="shelf-count"></span>
+          <a class="link" href="https://www.goodreads.com/user/show/65803906-zander-jeinthanuttkanont" target="_blank" rel="noopener noreferrer">See all on Goodreads</a>
+        </div>
       </div>
-      <p class="lead">i love hearing from people—about healthcare, books, music, or anything! the best way to reach me is email.</p>
-      <p class="email-line">📧: zander [dot] jeinthanuttkanont [at] yale [dot] edu</p>
-      <div class="contact-links">
-        <a href="https://www.linkedin.com/in/zander-jein" target="_blank" rel="noopener">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-4 0v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
-          linkedin
-        </a>
-        <a href="https://substack.com/@zanderjein" target="_blank" rel="noopener">
-          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M22 4.5H2v2.6h20V4.5zM2 9.7V21l10-4.4L22 21V9.7H2z"/></svg>
-          substack
-        </a>
-      </div>
-    </div>
-  </section>
+    </section>
 
-  <hr class="rule" />
+    <!-- =================================================== 07 INTERESTS -->
+    <section class="section" id="interests">
+      <div class="wrap">
+        <div class="section-head" data-reveal>
+          <span class="section-num">06</span>
+          <h2 class="section-title">
+            <span class="sweep">Interests</span>
+            <span class="sub">Two shelves I will defend at length.</span>
+          </h2>
+        </div>
+
+        <div id="shelves"></div>
+      </div>
+    </section>
+
+    <!-- ====================================================== 08 AWARDS -->
+    <section class="section" id="awards">
+      <div class="wrap">
+        <div class="section-head" data-reveal>
+          <span class="section-num">07</span>
+          <h2 class="section-title">
+            <span class="sweep">Awards</span>
+            <span class="sub">Debate, philosophy, language and music.</span>
+          </h2>
+        </div>
+
+        <ol class="award-list" id="award-list"></ol>
+      </div>
+    </section>
+
+    <!-- ====================================================== 09 SAY HI -->
+    <section class="section" id="connect">
+      <div class="wrap">
+        <div class="section-head" data-reveal>
+          <span class="section-num">08</span>
+          <h2 class="section-title"><span class="sweep">Connect</span></h2>
+        </div>
+
+        <div class="contact-grid">
+          <div class="prose" data-reveal style="--i:0">
+            <p class="lede">Please say hi!</p>
+            <p>I love hearing from people—about healthcare, books, music, or anything! The best way to reach me is email.</p>
+            <p class="contact-email">zander [dot] jeinthanuttkanont [at] yale [dot] edu</p>
+          </div>
+
+          <div data-reveal style="--i:1">
+            <p class="affil-label">Elsewhere</p>
+            <ul class="elsewhere">
+              <li>
+                <a href="https://www.linkedin.com/in/zander-jein" target="_blank" rel="noopener noreferrer">
+                  LinkedIn
+                  <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 9L9 3M9 3H4M9 3v5"/></svg>
+                </a>
+              </li>
+              <li>
+                <a href="https://substack.com/@zanderjein" target="_blank" rel="noopener noreferrer">
+                  Substack
+                  <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 9L9 3M9 3H4M9 3v5"/></svg>
+                </a>
+              </li>
+              <li>
+                <a href="https://www.goodreads.com/user/show/65803906-zander-jeinthanuttkanont" target="_blank" rel="noopener noreferrer">
+                  Goodreads
+                  <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 9L9 3M9 3H4M9 3v5"/></svg>
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
 
   <footer class="colophon">
-    <div class="container">
-      <p>© <span id="year"></span> zander jein · new haven, ct</p>
+    <div class="wrap">
+      <p>© <span id="year"></span> Zander Jeinthanuttkanont · New Haven, CT</p>
+      <p class="colophon-fine">Posters via TMDB</p>
     </div>
   </footer>
 
-  <script>
-    document.getElementById('year').textContent = new Date().getFullYear();
-  </script>
+  <script src="main.js"></script>
 </body>
 </html>

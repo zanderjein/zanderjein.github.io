@@ -1,0 +1,12 @@
+{
+  "updated": "2026-09-16T06:02:14Z",
+  "_note": "PLACEHOLDER sample data for Phase 1 layout only. Phase 3 replaces this with live Strava data.",
+  "year": 2026,
+  "runs": 118,
+  "miles": 642.4,
+  "lastRun": {
+    "name": "East Rock loop",
+    "date": "2026-09-15",
+    "miles": 7.2
+  }
+}
