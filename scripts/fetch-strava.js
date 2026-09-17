@@ -140,7 +140,8 @@ async function main() {
     runs: runs.length,
     miles: totalMiles,
     lastRun: last
-      ? { name: last.name || 'Run', date: String(last.start_date_local).slice(0, 10), miles: toMiles(last.distance) }
+      // no activity title: run names stay off the public site
+      ? { date: String(last.start_date_local).slice(0, 10), miles: toMiles(last.distance) }
       : null
   };
 

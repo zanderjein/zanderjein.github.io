@@ -256,7 +256,7 @@ function renderRunning(data) {
         <p class="figure-cap">runs</p>
       </div>
     </div>
-    ${last ? revealLine(`Last run: ${esc(last.name)} · ${Number(last.miles).toFixed(1)} mi`) : ''}`;
+    ${last ? revealLine(`Last run: ${esc(longDay(last.date))} · ${Number(last.miles).toFixed(1)} mi`) : ''}`;
 
   foot.textContent = updatedAgo(data.updated);
 }
