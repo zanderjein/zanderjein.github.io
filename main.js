@@ -98,7 +98,8 @@ const SITE = {
     {
       name: 'Movies',
       items: ['Crazy Rich Asians', 'Top Gun: Maverick', 'The Meg', 'Spider-Man: Brand New Day',
-              'The Intern', 'Ratatouille', 'Jurassic Park', 'Hoppers', 'The Farewell', 'Barbie',
+              'The Intern', 'Ratatouille', 'Jurassic Park', 'The Odyssey', 'Hoppers', 'The Farewell',
+              'Barbie',
               'The Dark Knight', 'Oppenheimer', 'Memento', 'Better Off Dead']
     }
   ],
@@ -265,8 +266,10 @@ function renderGoal() {
 
   tile.innerHTML = `
     <p class="card-label">Next race</p>
-    <p class="goal-days">${parts[0]}</p>
-    <p class="goal-copy"><b>${parts[1]}</b><span>${parts[2]}</span></p>`;
+    <div class="goal-row">
+      <p class="goal-days">${parts[0]}</p>
+      <p class="goal-copy"><b>${parts[1]}</b><span>${parts[2]}</span></p>
+    </div>`;
 }
 
 function renderRunning(data) {

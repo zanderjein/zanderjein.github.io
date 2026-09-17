@@ -1,5 +1,5 @@
 {
-  "updated": "2026-09-17T04:17:46.777Z",
+  "updated": "2026-09-17T18:20:05.902Z",
   "source": "TMDB — this product uses the TMDB API but is not endorsed or certified by TMDB.",
   "posters": {
     "Ragtime": "assets/posters/ragtime.jpg",
@@ -18,6 +18,7 @@
     "The Intern": "assets/posters/the-intern.jpg",
     "Ratatouille": "assets/posters/ratatouille.jpg",
     "Jurassic Park": "assets/posters/jurassic-park.jpg",
+    "The Odyssey": "assets/posters/the-odyssey.jpg",
     "Hoppers": "assets/posters/hoppers.jpg",
     "The Farewell": "assets/posters/the-farewell.jpg",
     "Barbie": "assets/posters/barbie.jpg",
@@ -121,6 +122,12 @@
       "tmdb": "movie/329",
       "title": "Jurassic Park",
       "year": "1993",
+      "pinned": false
+    },
+    "The Odyssey": {
+      "tmdb": "movie/1368337",
+      "title": "The Odyssey",
+      "year": "2026",
       "pinned": false
     },
     "Hoppers": {
