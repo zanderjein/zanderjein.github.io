@@ -1,7 +1,8 @@
 {
-  "updated": "2026-09-17T04:07:04.083Z",
+  "updated": "2026-09-17T04:17:46.777Z",
   "source": "TMDB — this product uses the TMDB API but is not endorsed or certified by TMDB.",
   "posters": {
+    "Ragtime": "assets/posters/ragtime.jpg",
     "Merrily We Roll Along": "assets/posters/merrily-we-roll-along.jpg",
     "Hamilton": "assets/posters/hamilton.jpg",
     "West Side Story": "assets/posters/west-side-story.jpg",
@@ -26,6 +27,12 @@
     "Better Off Dead": "assets/posters/better-off-dead.jpg"
   },
   "matches": {
+    "Ragtime": {
+      "tmdb": "movie/1244956",
+      "title": "Ragtime, The Musical: All-Star Reunion Concert",
+      "year": "2024",
+      "pinned": true
+    },
     "Merrily We Roll Along": {
       "tmdb": "movie/1306400",
       "title": "Merrily We Roll Along",
@@ -159,7 +166,5 @@
       "pinned": false
     }
   },
-  "missing": [
-    "Ragtime"
-  ]
+  "missing": []
 }

@@ -30,9 +30,8 @@ const IMG_BASE = 'https://image.tmdb.org/t/p/w342';
    e.g. 'West Side Story': { kind: 'movie', id: 1725 }.
    A value of null forces the typographic tile. */
 const OVERRIDES = {
-  // search matched a 2021 short about gym bullying; the musical has never been filmed,
-  // and Lincoln Center's press page offers no downloadable Broadway artwork
-  'Ragtime': null,
+  // search matched a 2021 short about gym bullying; this is the musical itself
+  'Ragtime': { kind: 'movie', id: 1244956 },          // Ragtime, The Musical: All-Star Reunion Concert (2024)
   // search matched a 2006 BBC drama that isn't the musical
   'Sweeney Todd': { kind: 'movie', id: 13885 },      // Sweeney Todd: The Demon Barber of Fleet Street (2007)
   // listed on TMDB under a longer title, so exact search missed it

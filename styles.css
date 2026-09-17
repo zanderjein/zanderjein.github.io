@@ -626,14 +626,13 @@ a { color: inherit; }
 }
 .map-panel:hover path { fill: #E4EAF6; }
 
-/* Connecticut, about a quarter the height, in the top-right corner */
+/* Connecticut, about a third of the panel height, in from the top-right corner */
 .map-inset {
   position: absolute;
   top: 0;
-  right: 0;
-  height: 25%;
+  right: 14%;
+  height: 32%;
 }
-.map-inset { position: absolute; }
 .map-inset > svg { height: 100%; width: auto; display: block; overflow: visible; }
 
 /* --- pins --- */
