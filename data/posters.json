@@ -1,4 +1,165 @@
 {
-  "posters": {},
-  "missing": []
+  "updated": "2026-09-17T04:07:04.083Z",
+  "source": "TMDB — this product uses the TMDB API but is not endorsed or certified by TMDB.",
+  "posters": {
+    "Merrily We Roll Along": "assets/posters/merrily-we-roll-along.jpg",
+    "Hamilton": "assets/posters/hamilton.jpg",
+    "West Side Story": "assets/posters/west-side-story.jpg",
+    "Hadestown": "assets/posters/hadestown.jpg",
+    "The Sound of Music": "assets/posters/the-sound-of-music.jpg",
+    "Into the Woods": "assets/posters/into-the-woods.jpg",
+    "Sweeney Todd": "assets/posters/sweeney-todd.jpg",
+    "Fiddler on the Roof": "assets/posters/fiddler-on-the-roof.jpg",
+    "Crazy Rich Asians": "assets/posters/crazy-rich-asians.jpg",
+    "Top Gun: Maverick": "assets/posters/top-gun-maverick.jpg",
+    "The Meg": "assets/posters/the-meg.jpg",
+    "Spider-Man: Brand New Day": "assets/posters/spider-man-brand-new-day.jpg",
+    "The Intern": "assets/posters/the-intern.jpg",
+    "Ratatouille": "assets/posters/ratatouille.jpg",
+    "Jurassic Park": "assets/posters/jurassic-park.jpg",
+    "Hoppers": "assets/posters/hoppers.jpg",
+    "The Farewell": "assets/posters/the-farewell.jpg",
+    "Barbie": "assets/posters/barbie.jpg",
+    "The Dark Knight": "assets/posters/the-dark-knight.jpg",
+    "Oppenheimer": "assets/posters/oppenheimer.jpg",
+    "Memento": "assets/posters/memento.jpg",
+    "Better Off Dead": "assets/posters/better-off-dead.jpg"
+  },
+  "matches": {
+    "Merrily We Roll Along": {
+      "tmdb": "movie/1306400",
+      "title": "Merrily We Roll Along",
+      "year": "2025",
+      "pinned": false
+    },
+    "Hamilton": {
+      "tmdb": "movie/556574",
+      "title": "Hamilton",
+      "year": "2025",
+      "pinned": false
+    },
+    "West Side Story": {
+      "tmdb": "movie/511809",
+      "title": "West Side Story",
+      "year": "2021",
+      "pinned": false
+    },
+    "Hadestown": {
+      "tmdb": "movie/1439808",
+      "title": "Hadestown: The Musical",
+      "year": "2026",
+      "pinned": true
+    },
+    "The Sound of Music": {
+      "tmdb": "movie/15121",
+      "title": "The Sound of Music",
+      "year": "1965",
+      "pinned": false
+    },
+    "Into the Woods": {
+      "tmdb": "movie/224141",
+      "title": "Into the Woods",
+      "year": "2014",
+      "pinned": false
+    },
+    "Sweeney Todd": {
+      "tmdb": "movie/13885",
+      "title": "Sweeney Todd: The Demon Barber of Fleet Street",
+      "year": "2007",
+      "pinned": true
+    },
+    "Fiddler on the Roof": {
+      "tmdb": "movie/14811",
+      "title": "Fiddler on the Roof",
+      "year": "1971",
+      "pinned": false
+    },
+    "Crazy Rich Asians": {
+      "tmdb": "movie/455207",
+      "title": "Crazy Rich Asians",
+      "year": "2018",
+      "pinned": false
+    },
+    "Top Gun: Maverick": {
+      "tmdb": "movie/361743",
+      "title": "Top Gun: Maverick",
+      "year": "2022",
+      "pinned": false
+    },
+    "The Meg": {
+      "tmdb": "movie/345940",
+      "title": "The Meg",
+      "year": "2018",
+      "pinned": false
+    },
+    "Spider-Man: Brand New Day": {
+      "tmdb": "movie/969681",
+      "title": "Spider-Man: Brand New Day",
+      "year": "2026",
+      "pinned": false
+    },
+    "The Intern": {
+      "tmdb": "movie/257211",
+      "title": "The Intern",
+      "year": "2015",
+      "pinned": false
+    },
+    "Ratatouille": {
+      "tmdb": "movie/2062",
+      "title": "Ratatouille",
+      "year": "2007",
+      "pinned": false
+    },
+    "Jurassic Park": {
+      "tmdb": "movie/329",
+      "title": "Jurassic Park",
+      "year": "1993",
+      "pinned": false
+    },
+    "Hoppers": {
+      "tmdb": "movie/1327819",
+      "title": "Hoppers",
+      "year": "2026",
+      "pinned": false
+    },
+    "The Farewell": {
+      "tmdb": "movie/565310",
+      "title": "The Farewell",
+      "year": "2019",
+      "pinned": false
+    },
+    "Barbie": {
+      "tmdb": "movie/346698",
+      "title": "Barbie",
+      "year": "2023",
+      "pinned": false
+    },
+    "The Dark Knight": {
+      "tmdb": "movie/155",
+      "title": "The Dark Knight",
+      "year": "2008",
+      "pinned": false
+    },
+    "Oppenheimer": {
+      "tmdb": "movie/872585",
+      "title": "Oppenheimer",
+      "year": "2023",
+      "pinned": false
+    },
+    "Memento": {
+      "tmdb": "movie/77",
+      "title": "Memento",
+      "year": "2000",
+      "pinned": false
+    },
+    "Better Off Dead": {
+      "tmdb": "movie/13667",
+      "title": "Better Off Dead...",
+      "year": "1985",
+      "pinned": false
+    }
+  },
+  "missing": [
+    "Ragtime"
+  ]
 }
