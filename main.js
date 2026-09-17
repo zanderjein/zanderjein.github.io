@@ -170,6 +170,9 @@ function updatedAgo(iso) {
   return `Updated ${d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}`;
 }
 
+/** Ask Goodreads' image server for a cover at a given pixel height. */
+const coverAt = (url, height) => (url || '').replace(/\._S[XY]\d+_(?=\.jpg$)/, `._SY${height}_`);
+
 function stars(n) {
   const filled = Math.max(0, Math.min(5, Math.round(Number(n) || 0)));
   if (!filled) return '';
@@ -350,7 +353,7 @@ function renderLibrary(data) {
   feature.innerHTML = `
     <a class="book-lead" href="${esc(first.link || '#')}" target="_blank" rel="noopener noreferrer">
       <div class="book-cover lead-cover">
-        ${first.cover ? `<img src="${esc(first.cover)}" alt="Cover of ${esc(first.title)}" decoding="async" />` : ''}
+        ${first.cover ? `<img src="${esc(coverAt(first.cover, 720))}" alt="Cover of ${esc(first.title)}" loading="lazy" decoding="async" />` : ''}
       </div>
       <div class="lead-meta">
         <p class="lead-kicker">Most recently finished</p>
@@ -365,7 +368,7 @@ function renderLibrary(data) {
   mini.innerHTML = rest.slice(0, 8).map((b) => `
     <a class="mini" href="${esc(b.link || '#')}" target="_blank" rel="noopener noreferrer">
       <div class="book-cover mini-cover">
-        ${b.cover ? `<img src="${esc(b.cover)}" alt="Cover of ${esc(b.title)}" loading="lazy" decoding="async" />` : ''}
+        ${b.cover ? `<img src="${esc(coverAt(b.cover, 360))}" alt="Cover of ${esc(b.title)}" loading="lazy" decoding="async" />` : ''}
         <span class="mini-title"><span>${esc(b.title)}</span></span>
       </div>
     </a>`).join('');

@@ -50,6 +50,14 @@ function isoDay(raw) {
   return raw && !isNaN(d) ? d.toISOString().slice(0, 10) : '';
 }
 
+/* The feed hands back some covers as the full original (up to 2560px, ~1MB) and
+   others pre-sized. Normalise every one to Goodreads' ._SY475_ variant; the page
+   swaps in the exact height it needs. */
+function sizedCover(url) {
+  if (!url) return '';
+  return url.replace(/\._S[XY]\d+_(?=\.jpg$)/, '').replace(/\.jpg$/, '._SY475_.jpg');
+}
+
 async function fetchPage(page) {
   const url = `https://www.goodreads.com/review/list_rss/${USER_ID}?shelf=${SHELF}&page=${page}`;
   const res = await fetch(url, { headers: { 'User-Agent': UA } });
@@ -68,8 +76,7 @@ function parse(xml) {
     return {
       title: tag(block, 'title'),
       author: tag(block, 'author_name'),
-      // the ._SY475_ variant is ~475px tall; the unsuffixed original can exceed 1MB
-      cover: tag(block, 'book_large_image_url') || tag(block, 'book_image_url'),
+      cover: sizedCover(tag(block, 'book_large_image_url') || tag(block, 'book_image_url')),
       rating: Number(tag(block, 'user_rating')) || 0,
       readAt: isoDay(tag(block, 'user_read_at')) || isoDay(tag(block, 'user_date_added')),
       // the book's own page, as the Library promises; the item <link> is the review page
