@@ -1,0 +1,76 @@
+# Refreshes the JSON the site reads (data/*.json) and republishes the site.
+#
+# Runs at 06:00 and 18:00 UTC, and on demand from the Actions tab.
+#
+# Why the explicit rebuild step: GitHub does not start a Pages build for commits
+# pushed with the workflow's GITHUB_TOKEN, so without it the refreshed data would
+# sit in the repo while the live site stayed stale. `pages: write` lets the
+# workflow request that build itself — no personal access token needed.
+
+name: Refresh data
+
+on:
+  schedule:
+    - cron: '0 6,18 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write   # commit the refreshed JSON
+  pages: write      # request a Pages build after committing
+
+# never let two refreshes race each other's pushes
+concurrency:
+  group: refresh-data
+  cancel-in-progress: false
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+
+      # Each integration runs on its own and may fail without stopping the rest.
+      # A failed script keeps its previous JSON, so the site never goes blank.
+      - name: Goodreads
+        id: goodreads
+        continue-on-error: true
+        run: node scripts/fetch-goodreads.js
+
+      # Phase 3: Strava and Whoop steps go here, in the same shape.
+
+      - name: Commit changed data
+        id: commit
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/
+          if git diff --cached --quiet; then
+            echo "Nothing changed — no commit."
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          git commit -m "chore: refresh data [skip ci]"
+          # pick up anything pushed while this job was running
+          git pull --rebase origin "$GITHUB_REF_NAME"
+          git push origin "HEAD:$GITHUB_REF_NAME"
+          echo "changed=true" >> "$GITHUB_OUTPUT"
+
+      - name: Rebuild the live site
+        if: steps.commit.outputs.changed == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh api --method POST "repos/$GITHUB_REPOSITORY/pages/builds"
+
+      # Runs last, so data from integrations that worked is still committed,
+      # but the run shows red so a broken integration doesn't fail silently.
+      - name: Report failed integrations
+        if: steps.goodreads.outcome == 'failure'
+        run: |
+          echo "::error title=Goodreads refresh failed::The previous books.json was kept. Open the Goodreads step for the reason."
+          exit 1
