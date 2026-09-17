@@ -18,7 +18,8 @@ permissions:
   contents: write   # commit the refreshed JSON
   pages: write      # request a Pages build after committing
 
-# never let two refreshes race each other's pushes
+# never let two refreshes run at once: they would race each other's pushes, and
+# both would spend the same single-use Strava refresh token
 concurrency:
   group: refresh-data
   cancel-in-progress: false
@@ -42,7 +43,42 @@ jobs:
         continue-on-error: true
         run: node scripts/fetch-goodreads.js
 
-      # Phase 3: Strava and Whoop steps go here, in the same shape.
+      # Skips cleanly until the three STRAVA_* secrets exist.
+      - name: Strava
+        id: strava
+        continue-on-error: true
+        env:
+          STRAVA_CLIENT_ID: ${{ secrets.STRAVA_CLIENT_ID }}
+          STRAVA_CLIENT_SECRET: ${{ secrets.STRAVA_CLIENT_SECRET }}
+          STRAVA_REFRESH_TOKEN: ${{ secrets.STRAVA_REFRESH_TOKEN }}
+          STRAVA_REFRESH_TOKEN_OUT: ${{ runner.temp }}/strava-refresh-token
+        run: node scripts/fetch-strava.js
+
+      # Strava rotates refresh tokens and the old one stops working at once, so a
+      # new one has to go back into the secret — even if the Strava step failed
+      # after receiving it. GITHUB_TOKEN can't write secrets, hence the separate
+      # fine-grained token.
+      - name: Save rotated Strava token
+        id: strava_token
+        if: always()
+        continue-on-error: true
+        env:
+          GH_TOKEN: ${{ secrets.SECRETS_WRITE_TOKEN }}
+          TOKEN_FILE: ${{ runner.temp }}/strava-refresh-token
+        run: |
+          if [ ! -s "$TOKEN_FILE" ]; then
+            echo "No new Strava token to save."
+            exit 0
+          fi
+          if [ -z "$GH_TOKEN" ]; then
+            echo "The SECRETS_WRITE_TOKEN secret is missing, so the new token could not be saved."
+            exit 1
+          fi
+          gh secret set STRAVA_REFRESH_TOKEN --repo "$GITHUB_REPOSITORY" < "$TOKEN_FILE"
+          rm -f "$TOKEN_FILE"
+          echo "Saved the new Strava refresh token."
+
+      # Phase 3: Whoop goes here, in the same shape.
 
       - name: Commit changed data
         id: commit
@@ -70,7 +106,22 @@ jobs:
       # Runs last, so data from integrations that worked is still committed,
       # but the run shows red so a broken integration doesn't fail silently.
       - name: Report failed integrations
-        if: steps.goodreads.outcome == 'failure'
+        if: >-
+          steps.goodreads.outcome == 'failure' ||
+          steps.strava.outcome == 'failure' ||
+          steps.strava_token.outcome == 'failure'
+        env:
+          GOODREADS: ${{ steps.goodreads.outcome }}
+          STRAVA: ${{ steps.strava.outcome }}
+          STRAVA_TOKEN: ${{ steps.strava_token.outcome }}
         run: |
-          echo "::error title=Goodreads refresh failed::The previous books.json was kept. Open the Goodreads step for the reason."
+          if [ "$GOODREADS" = failure ]; then
+            echo "::error title=Goodreads refresh failed::The previous books.json was kept. Open the Goodreads step for the reason."
+          fi
+          if [ "$STRAVA" = failure ]; then
+            echo "::error title=Strava refresh failed::The previous strava.json was kept. Open the Strava step for the reason."
+          fi
+          if [ "$STRAVA_TOKEN" = failure ]; then
+            echo "::error title=Strava token not saved::The next Strava refresh will be rejected. Open the 'Save rotated Strava token' step."
+          fi
           exit 1
