@@ -1,12 +1,13 @@
 /* ==========================================================================
    zanderjein.com
-   Light, warm, minimal in color. Navy is the only color.
-   Tokens live on :root. Motion is calm and always reduced-motion safe.
+   Navy and white. Instrument Serif for display, Geist for reading, Geist Mono for figures.
+   Every section has its own physical structure; the tokens below are what they share.
+   Motion is calm and always reduced-motion safe.
    ========================================================================== */
 
 /* ---------------------------------------------------------------- fonts --
    Self-hosted so the first paint doesn't wait on a third-party server.
-   Instrument Serif and Inter, SIL Open Font License 1.1 — see assets/fonts/OFL-*.txt.
+   Instrument Serif, Geist and Geist Mono, SIL Open Font License 1.1 — see assets/fonts/OFL-*.txt.
    Latin and Latin Extended only; nothing else on the page needs more.
    ------------------------------------------------------------------------ */
 
@@ -43,28 +44,46 @@
   unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
 @font-face {
-  font-family: "Inter";
+  font-family: "Geist";
   font-style: normal;
-  font-weight: 400 500;
+  font-weight: 400 600;
   font-display: swap;
-  src: url("assets/fonts/inter-latin-ext.woff2") format("woff2");
+  src: url("assets/fonts/geist-latin-ext.woff2") format("woff2");
   unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
 }
 @font-face {
-  font-family: "Inter";
+  font-family: "Geist";
+  font-style: normal;
+  font-weight: 400 600;
+  font-display: swap;
+  src: url("assets/fonts/geist-latin.woff2") format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: "Geist Mono";
   font-style: normal;
   font-weight: 400 500;
   font-display: swap;
-  src: url("assets/fonts/inter-latin.woff2") format("woff2");
+  src: url("assets/fonts/geist-mono-latin-ext.woff2") format("woff2");
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face {
+  font-family: "Geist Mono";
+  font-style: normal;
+  font-weight: 400 500;
+  font-display: swap;
+  src: url("assets/fonts/geist-mono-latin.woff2") format("woff2");
   unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
 
 :root {
-  /* --- navy (Option A, chosen) --- */
-  --ink:        #0F2044;  /* headings, primary text  — 15.6:1 on bg */
-  --ink-link:   #1E3A6E;  /* links, hover states     — 10.9:1 on bg */
-  --ink-muted:  #52617E;  /* secondary text          —  6.1:1 on bg */
-  --ink-faint:  #65738F;  /* meta, section numbers   —  4.7:1 on bg */
+  color-scheme: light dark;
+
+  /* --- navy is the only colour --- */
+  --ink:        #0F2044;  /* headings, primary text  15.6:1 on bg */
+  --ink-link:   #1E3A6E;  /* links, hover states     10.9:1 on bg */
+  --ink-muted:  #52617E;  /* secondary text           6.1:1 on bg */
+  --ink-faint:  #65738F;  /* figures, stamps          4.7:1 on bg */
   --rule:       #E2E7F0;
   --tint:       #F4F6FB;
   --tint-deep:  #ECF0F8;
@@ -72,22 +91,108 @@
   --bg:      #FCFCFC;
   --surface: #FFFFFF;
 
-  /* --- type (Option A, chosen) --- */
-  --display: "Instrument Serif", "Iowan Old Style", Georgia, "Times New Roman", serif;
-  --sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+  /* the two bands that break the page: a raised strip of marks, and the navy close */
+  --strip-bg: #FFFFFF;
+  --close-bg: #0F2044;
+  --close-ink: #F4F6FB;
+  --close-muted: #A9B6D3;
 
-  /* --- rhythm (~30% tighter than round 1) --- */
+  --display: "Instrument Serif", "Iowan Old Style", Georgia, "Times New Roman", serif;
+  --sans: "Geist", -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+  --mono: "Geist Mono", ui-monospace, "SF Mono", Menlo, monospace;
+
+  /* --- type: six steps, far apart. Anything in between is a mistake.
+         (The hero name and the closing address are fitted to the window instead.) --- */
+  --t-mono: 0.75rem;
+  --t-small: 0.875rem;
+  --t-body: 1.0625rem;
+  --t-lead: clamp(1.3125rem, 1.9vw, 1.625rem);
+  --t-title: clamp(1.75rem, 3.2vw, 2.5rem);
+  --t-display: clamp(3.75rem, 8.6vw, 8.25rem);
+
+  /* --- rhythm --- */
   --gutter: clamp(1.25rem, 5vw, 4rem);
   --measure: 34rem;
-  --card-pad: 1.125rem;
-  --section-gap: clamp(3.75rem, 8.5vw, 7.5rem);
+  --section-gap: clamp(5rem, 11vw, 10rem);
+  --page: 78rem;
+  --rail: 12.5rem;
+  --rail-gap: clamp(1.5rem, 3.4vw, 3.25rem);
+  /* distance from the window edge to the start of the measure */
+  --edge: max(var(--gutter), calc((100vw - var(--page)) / 2 + var(--gutter)));
 
-  /* --- motion: interactions stay under 300ms --- */
+  /* --- shape: two radii. Printed things (covers, posters) are nearly square;
+         surfaces the page itself makes (the sheet, the bar) are soft. --- */
+  --r-s: 3px;
+  --r-m: 12px;
+
+  /* --- material: navy-tinted shadows with real falloff, tight and dark near the
+         object, wide and faint far from it, all lit from above --- */
+  --shade: 15, 32, 68;
+  --shadow-low:
+    0 1px 1px rgba(var(--shade), 0.07), 0 3px 5px rgba(var(--shade), 0.06),
+    0 10px 18px rgba(var(--shade), 0.07);
+  --shadow-rest:
+    0 1px 1px rgba(var(--shade), 0.06), 0 2px 4px rgba(var(--shade), 0.05),
+    0 6px 10px rgba(var(--shade), 0.05), 0 14px 24px rgba(var(--shade), 0.06),
+    0 32px 56px rgba(var(--shade), 0.08);
+  --shadow-high:
+    0 1px 1px rgba(var(--shade), 0.08), 0 4px 6px rgba(var(--shade), 0.07),
+    0 12px 18px rgba(var(--shade), 0.08), 0 28px 40px rgba(var(--shade), 0.10),
+    0 56px 90px rgba(var(--shade), 0.14);
+  --shadow-land:
+    drop-shadow(0 1px 1px rgba(var(--shade), 0.12)) drop-shadow(0 5px 8px rgba(var(--shade), 0.07))
+    drop-shadow(0 20px 30px rgba(var(--shade), 0.09));
+
+  /* --- layers, bottom to top. Nothing on the page uses a z-index that isn't here. --- */
+  --z-under: 0;     /* type that something lies across */
+  --z-stage: 1;     /* pinned things that content passes over */
+  --z-over: 2;      /* things that lie across other things */
+  --z-topbar: 30;
+  --z-grain: 60;
+  --z-skip: 70;
+
+  /* --- motion --- */
   --ease: cubic-bezier(0.22, 0.61, 0.36, 1);
+  --ease-out: cubic-bezier(0.32, 0.72, 0, 1);
+  --ease-expo: cubic-bezier(0.16, 1, 0.3, 1);      /* arrivals */
+  --ease-inout: cubic-bezier(0.65, 0, 0.35, 1);    /* journeys, there and back */
+  --ease-spring: cubic-bezier(0.2, 0.9, 0.3, 1.18); /* things under the hand: a touch of overshoot */
   --fast: 200ms;
-  --mid: 280ms;
-  --lift: 0 1px 2px rgba(15, 32, 68, 0.05);
-  --lift-hover: 0 10px 28px -12px rgba(15, 32, 68, 0.28), 0 2px 6px rgba(15, 32, 68, 0.06);
+  --mid: 320ms;
+}
+
+/* Dark: the same two colours, the other way up. */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --ink:        #EEF2FA;
+    --ink-link:   #BCCBEE;
+    --ink-muted:  #A5B2CD;
+    --ink-faint:  #8492B0;
+    --rule:       #1D2C4E;
+    --tint:       #111F3D;
+    --tint-deep:  #182B55;
+
+    --bg:      #0A1428;
+    --surface: #111E3B;
+
+    --strip-bg: #EEF2FA;      /* in the dark, the strip of marks is the one pale band */
+    --close-bg: #060D1B;
+    --close-ink: #EEF2FA;
+    --close-muted: #8E9CBB;
+
+    --shade: 0, 3, 12;
+    --shadow-low:
+      0 1px 1px rgba(var(--shade), 0.3), 0 3px 5px rgba(var(--shade), 0.26), 0 10px 18px rgba(var(--shade), 0.3);
+    --shadow-rest:
+      0 1px 1px rgba(var(--shade), 0.3), 0 2px 4px rgba(var(--shade), 0.26), 0 6px 10px rgba(var(--shade), 0.26),
+      0 14px 24px rgba(var(--shade), 0.3), 0 32px 56px rgba(var(--shade), 0.36);
+    --shadow-high:
+      0 1px 1px rgba(var(--shade), 0.34), 0 4px 6px rgba(var(--shade), 0.3), 0 12px 18px rgba(var(--shade), 0.34),
+      0 28px 40px rgba(var(--shade), 0.4), 0 56px 90px rgba(var(--shade), 0.5);
+    --shadow-land:
+      drop-shadow(0 1px 1px rgba(var(--shade), 0.4)) drop-shadow(0 5px 8px rgba(var(--shade), 0.3))
+      drop-shadow(0 20px 30px rgba(var(--shade), 0.4));
+  }
 }
 
 /* --------------------------------------------------------------- reset -- */
@@ -97,7 +202,7 @@
 html {
   -webkit-text-size-adjust: 100%;
   scroll-behavior: smooth;
-  scroll-padding-top: 5rem;
+  scroll-padding-top: 5.5rem;
 }
 
 body {
@@ -105,165 +210,136 @@ body {
   background: var(--bg);
   color: var(--ink);
   font-family: var(--sans);
-  font-size: 1.0625rem;
-  line-height: 1.68;
-  letter-spacing: -0.003em;
+  font-size: var(--t-body);
+  line-height: 1.65;
+  letter-spacing: -0.006em;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
-  overflow-x: hidden;
+  overflow-x: clip;   /* clip, not hidden: hidden would make body a scroll container and break sticky */
 }
 
 img { max-width: 100%; display: block; }
 ul, ol { list-style: none; margin: 0; padding: 0; }
-h1, h2, h3, p { margin: 0; }
+h1, h2, h3, p, figure { margin: 0; }
+h1, h2, h3 { font-weight: 400; }
 button { font: inherit; color: inherit; }
+a { color: inherit; }
 
-::selection { background: rgba(30, 58, 110, 0.14); }
-
+::selection { background: rgba(30, 58, 110, 0.18); }
 :focus-visible { outline: 2px solid var(--ink-link); outline-offset: 3px; border-radius: 2px; }
 
-/* ------------------------------------------------------------- layout -- */
+/* ------------------------------------------------------------- shared -- */
 
 .wrap {
   width: 100%;
-  max-width: 75rem;
+  max-width: var(--page);
   margin: 0 auto;
   padding-inline: var(--gutter);
 }
 
-.section { padding-block: var(--section-gap); }
-.section + .section { padding-top: 0; }
-
-.section-head {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 0.4rem;
-  margin-bottom: clamp(1.75rem, 3.4vw, 2.75rem);
-}
-/* a head with no tagline leaves the same gap as one with */
-.section-head:not(:has(.sub)) { padding-bottom: 1.55rem; }
-
-.section-num {
-  font-size: 0.6875rem;
-  font-weight: 500;
-  letter-spacing: 0.16em;
-  font-variant-numeric: tabular-nums;
-  color: var(--ink-faint);
-  transition: color var(--mid) var(--ease);
-  flex: none;
-}
-
-/* every section heading is the same size, on every screen */
-.section-title {
-  font-family: var(--display);
-  font-weight: 400;
-  font-size: clamp(2.125rem, 4.4vw, 3rem);
-  line-height: 1.04;
-  letter-spacing: -0.018em;
-}
-
-/* underline sweeps out from the left as the heading scrolls in */
-.sweep { position: relative; display: inline-block; }
-.sweep::after {
-  content: "";
+.skip {
   position: absolute;
-  left: 0;
-  bottom: -0.12em;
-  height: 1px;
-  width: 100%;
-  background: var(--ink-link);
-  transform: scaleX(0);
-  transform-origin: left;
-  transition: transform var(--mid) var(--ease) 120ms;
+  left: -9999px;
+  top: 0;
+  z-index: var(--z-skip);
+  background: var(--ink);
+  color: var(--bg);
+  padding: 0.7rem 1rem;
+  font-size: var(--t-small);
+  text-decoration: none;
+  border-radius: 0 0 var(--r-m) 0;
 }
-[data-reveal].is-in .sweep::after { transform: scaleX(1); }
+.skip:focus { left: 0; }
 
-.section-title .sub {
-  display: block;
-  font-family: var(--sans);
-  font-size: 0.9375rem;
-  font-weight: 400;
-  letter-spacing: 0.01em;
-  line-height: 1.55;
-  color: var(--ink-muted);
-  margin-top: 0.7rem;
-  max-width: var(--measure);
+/* paper grain: fixed, so it never repaints on scroll, and never clickable */
+.grain {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-grain);
+  pointer-events: none;
+  opacity: 0.04;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 160px 160px;
 }
+@media (prefers-color-scheme: dark) { .grain { opacity: 0.07; mix-blend-mode: screen; } }
 
-.rule { height: 1px; background: var(--rule); border: 0; margin: 0; }
+.section { padding-top: var(--section-gap); }
 
-/* --------------------------------------------------------------- links -- */
+/* section names: serif, sentence case, no label above them */
+.title {
+  font-family: var(--display);
+  font-size: var(--t-title);
+  line-height: 1;
+  letter-spacing: -0.02em;
+}
+.title-xl { font-size: var(--t-display); line-height: 0.86; letter-spacing: -0.04em; }
 
-a { color: inherit; }
-
-.link {
+.text-link {
   color: var(--ink-link);
   text-decoration: none;
   background-image: linear-gradient(currentColor, currentColor);
   background-repeat: no-repeat;
   background-position: 0 100%;
-  background-size: 0% 1px;
-  padding-bottom: 1px;
-  transition: background-size var(--mid) var(--ease), color var(--fast) var(--ease);
+  background-size: 100% 1px;
+  padding-bottom: 2px;
+  transition: background-size var(--mid) var(--ease-out);
 }
-.link:hover, .link:focus-visible { background-size: 100% 1px; }
+.text-link:hover { background-size: 0% 1px; background-position: 100% 100%; }
 
-/* ------------------------------------------------------ scroll progress -- */
+.stamp { font-family: var(--mono); font-size: var(--t-mono); color: var(--ink-faint); }
+.is-empty { color: var(--ink-faint); font-size: var(--t-small); }
 
-.progress {
-  position: fixed;
-  top: 0; left: 0; right: 0;
-  height: 2px;
-  z-index: 40;
-  pointer-events: none;
-}
-.progress span {
-  display: block;
-  height: 100%;
-  width: 0;
-  background: var(--ink);
-  transform-origin: left;
+.stars { display: inline-block; color: var(--ink-link); font-size: var(--t-small); letter-spacing: 0.1em; }
+.stars .off { color: var(--rule); }
+
+/* the rail: About's two-track opening */
+.rail-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  column-gap: var(--rail-gap);
+  row-gap: 1.25rem;
+  align-items: start;
 }
 
-/* ----------------------------------------------------------- top rail -- */
+/* ------------------------------------------------------------- top bar --
+   A bar that floats clear of the window edge, on the same soft radius as the
+   sheet in Health. It arrives once the hero has gone by.
+   ------------------------------------------------------------------------ */
 
 .topbar {
   position: fixed;
-  inset: 2px 0 auto 0;
-  z-index: 30;
-  background: rgba(252, 252, 252, 0.84);
-  backdrop-filter: saturate(180%) blur(12px);
-  -webkit-backdrop-filter: saturate(180%) blur(12px);
-  border-bottom: 1px solid transparent;
-  opacity: 0;
-  transform: translateY(-100%);
-  transition: opacity var(--mid) var(--ease), transform var(--mid) var(--ease), border-color var(--mid) var(--ease);
-  pointer-events: none;
-}
-.topbar.is-visible {
-  opacity: 1;
-  transform: none;
-  border-bottom-color: var(--rule);
-  pointer-events: auto;
-}
-.topbar .wrap {
+  top: 0.75rem;
+  left: 50%;
+  z-index: var(--z-topbar);
+  width: min(calc(var(--page) - 2 * var(--gutter) + 2.5rem), calc(100vw - 1.5rem));
+  height: 3.25rem;
+  padding-inline: 1.25rem;
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 1.25rem;
-  height: 3.25rem;
+  border-radius: var(--r-m);
+  border: 1px solid var(--rule);
+  background: color-mix(in srgb, var(--bg) 82%, transparent);
+  backdrop-filter: saturate(180%) blur(14px);
+  -webkit-backdrop-filter: saturate(180%) blur(14px);
+  box-shadow: var(--shadow-low);
+  opacity: 0;
+  transform: translate(-50%, -150%);
+  transition: opacity var(--mid) var(--ease-out), transform 520ms var(--ease-expo);
+  pointer-events: none;
 }
+.topbar.is-visible { opacity: 1; transform: translate(-50%, 0); pointer-events: auto; }
 .topbar-name {
   font-family: var(--display);
-  font-size: 1.125rem;
+  font-size: var(--t-lead);
   letter-spacing: -0.01em;
   text-decoration: none;
   white-space: nowrap;
 }
 .topbar-nav {
   display: flex;
-  gap: clamp(0.7rem, 1.8vw, 1.5rem);
+  gap: clamp(0.8rem, 1.8vw, 1.5rem);
   overflow-x: auto;
   scrollbar-width: none;
   -webkit-overflow-scrolling: touch;
@@ -271,1107 +347,808 @@ a { color: inherit; }
 .topbar-nav::-webkit-scrollbar { display: none; }
 .topbar-nav a {
   position: relative;
-  font-size: 0.8125rem;
+  font-size: var(--t-small);
   color: var(--ink-muted);
   text-decoration: none;
   white-space: nowrap;
-  padding-bottom: 2px;
+  padding-block: 0.35rem;
   transition: color var(--fast) var(--ease);
 }
 .topbar-nav a::after {
   content: "";
   position: absolute;
-  left: 0; bottom: 0;
+  left: 0; bottom: 0.15rem;
   height: 1px; width: 100%;
   background: currentColor;
   transform: scaleX(0);
   transform-origin: left;
-  transition: transform var(--fast) var(--ease);
+  transition: transform var(--mid) var(--ease-out);
 }
-.topbar-nav a:hover { color: var(--ink-link); }
-.topbar-nav a:hover::after { transform: scaleX(1); }
-.topbar-nav a[aria-current="true"] { color: var(--ink); }
+.topbar-nav a:hover { color: var(--ink); }
+.topbar-nav a:hover::after,
 .topbar-nav a[aria-current="true"]::after { transform: scaleX(1); }
+.topbar-nav a[aria-current="true"] { color: var(--ink); }
 
-/* ---------------------------------------------------------------- hero -- */
+/* ---------------------------------------------------------------- hero --
+   A type poster. The name is fitted to the window, not to the page measure, so it is
+   the one thing on the page that runs edge to edge. The sentence sits in the space
+   the first name leaves free; nothing else competes.
+   ------------------------------------------------------------------------ */
 
 .hero {
-  padding-top: clamp(3.5rem, 11vh, 7rem);
-  padding-bottom: clamp(3rem, 7vw, 5.5rem);
+  --name: min(calc((100vw - 2 * var(--gutter)) / 5.75), 25rem);
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  /* the bottom allows for the J, which hangs well below the line */
+  padding: clamp(4rem, 9vh, 6rem) var(--gutter) calc(var(--name) * 0.12);
 }
-
-.hero-eyebrow {
-  display: flex;
-  align-items: baseline;
-  gap: 0.7rem;
-  font-size: 0.8125rem;
-  color: var(--ink-muted);
-  margin-bottom: clamp(1.25rem, 3vw, 2rem);
-}
-.hero-num {
-  font-size: 0.6875rem;
-  letter-spacing: 0.16em;
-  font-variant-numeric: tabular-nums;
-  color: var(--ink-faint);
-}
-
 .hero-name {
   font-family: var(--display);
-  font-weight: 400;
-  font-size: clamp(2.375rem, 7.4vw, 5.5rem);
-  line-height: 0.96;
-  letter-spacing: -0.026em;
-  margin-bottom: clamp(1.25rem, 3vw, 1.75rem);
-  overflow-wrap: break-word;
-  hyphens: auto;
-}
-
-.hero-line {
-  font-size: clamp(1.0625rem, 2vw, 1.3125rem);
-  line-height: 1.55;
-  max-width: 32rem;
-  margin-bottom: clamp(1.25rem, 3vw, 1.75rem);
-}
-.hero-line em { font-family: var(--display); font-style: italic; font-size: 1.1em; }
-
-.ticker {
-  display: flex;
-  align-items: baseline;
-  gap: 0.6rem;
-  min-height: 1.7rem;
-  font-size: 0.9375rem;
-  color: var(--ink-muted);
-  margin-bottom: clamp(1.75rem, 4vw, 2.75rem);
-}
-.ticker-dot {
-  width: 5px; height: 5px;
-  border-radius: 50%;
-  background: var(--ink-link);
-  flex: none;
-  transform: translateY(-2px);
-}
-.ticker-slot { position: relative; display: inline-block; min-width: 0; }
-.ticker-text {
-  display: inline-block;
-  transition: opacity var(--mid) var(--ease), transform var(--mid) var(--ease);
-}
-.ticker-text.is-out { opacity: 0; transform: translateY(-4px); }
-.ticker-text b { font-weight: 500; color: var(--ink); }
-
-.hero-nav {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem 1.5rem;
-}
-.hero-nav a {
-  display: inline-flex;
-  align-items: baseline;
-  gap: 0.45rem;
-  text-decoration: none;
-  font-size: 0.9375rem;
-  color: var(--ink-muted);
-  transition: color var(--fast) var(--ease);
-}
-.hero-nav a .n {
-  font-size: 0.6875rem;
-  letter-spacing: 0.14em;
-  font-variant-numeric: tabular-nums;
-  color: var(--ink-faint);
-  transition: color var(--fast) var(--ease);
-}
-.hero-nav a:hover, .hero-nav a:hover .n { color: var(--ink-link); }
-
-/* ----------------------------------------------------- card foundation -- */
-
-.card {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
-  background: var(--surface);
-  border: 1px solid var(--rule);
-  border-radius: 14px;
-  padding: var(--card-pad);
-  box-shadow: var(--lift);
-  transition: transform var(--fast) var(--ease), box-shadow var(--fast) var(--ease), border-color var(--fast) var(--ease);
-}
-.card:hover {
-  transform: translateY(-3px);
-  box-shadow: var(--lift-hover);
-  border-color: #D5DDEC;
-}
-
-.card-label {
-  font-size: 0.6875rem;
-  font-weight: 500;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--ink-faint);
-}
-
-.card-body { flex: 1; }
-
-.card-foot {
-  font-size: 0.75rem;
-  color: var(--ink-faint);
-  padding-top: 0.7rem;
-  border-top: 1px solid var(--rule);
-  margin-top: auto;
-}
-
-/* the hover veil: a sheer white layer fades in over a card, its note centered.
-   Cards carry tabindex so keyboard focus (and a tap on phones) shows it too. */
-.veil {
-  position: absolute;
-  inset: 0;
-  z-index: 2;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 0.35rem;
-  padding: var(--card-pad);
-  text-align: center;
-  color: var(--ink);
-  background: rgba(255, 255, 255, 0.85);
-  -webkit-backdrop-filter: blur(4px);
-  backdrop-filter: blur(4px);
-  border-radius: inherit;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity var(--fast) var(--ease);
-}
-.card:hover .veil, .card:focus-visible .veil, .card:focus-within .veil,
-.work:hover .veil, .work:focus-visible .veil,
-.mini:hover .veil, .mini:focus-visible .veil { opacity: 1; }
-
-.veil-big {
-  display: block;
-  font-family: var(--display);
-  font-size: clamp(1.25rem, 2.2vw, 1.625rem);
-  line-height: 1.15;
-  letter-spacing: -0.012em;
-  max-width: 22ch;
-}
-.veil-small {
-  display: block;
-  font-size: 0.8125rem;
-  line-height: 1.45;
-  color: var(--ink-link);
-  max-width: 30ch;
-}
-.veil-cue {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.35rem;
-  margin-top: 0.3rem;
-  font-size: 0.8125rem;
-  color: var(--ink-link);
-}
-
-/* a detail line that slides in on hover / focus */
-.reveal-line {
-  display: grid;
-  grid-template-rows: 0fr;
-  opacity: 0;
-  transform: translateY(3px);
-  transition: grid-template-rows var(--fast) var(--ease), opacity var(--fast) var(--ease), transform var(--fast) var(--ease);
-}
-.reveal-line > span { overflow: hidden; min-height: 0; }
-.card:hover .reveal-line,
-.card:focus-within .reveal-line,
-.work:hover .reveal-line,
-.work:focus-within .reveal-line {
-  grid-template-rows: 1fr;
-  opacity: 1;
-  transform: none;
-}
-
-/* --------------------------------------------------------------- health --
-   Two cards, one composition: Running on the left, Last Night on the right,
-   the same padding, label, foot, and serif numerals at related sizes.
-   ------------------------------------------------------------------------ */
-
-.health-pair {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr);
-  gap: 0.875rem;
-  align-items: stretch;
-}
-.health-pair .card {
-  gap: 0.9rem;
-  padding: clamp(1rem, 2vw, 1.375rem);
-  outline-offset: 4px;
-}
-.health-pair .card-body {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  gap: 1rem;
-}
-
-.figures {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: flex-end;
-  gap: clamp(1.75rem, 5vw, 3.5rem);
-}
-.figure-num {
-  font-family: var(--display);
-  font-size: clamp(4.25rem, 13vw, 7rem);
-  line-height: 0.84;
+  font-size: var(--name);
+  line-height: 0.86;
   letter-spacing: -0.035em;
-  font-variant-numeric: tabular-nums;
+  margin-left: -0.04em; /* optical: the stems, not the boxes, meet the margin */
+  white-space: nowrap;
 }
-.figure-sm .figure-num { font-size: clamp(2.25rem, 5.5vw, 3.25rem); }
-.figure-cap {
-  font-size: 0.8125rem;
-  color: var(--ink-muted);
-  margin-top: 0.5rem;
+.hero-name > span { display: block; }
+.hero-first { color: var(--ink-link); }
+.rise { display: inline-block; animation: rise 1200ms var(--ease-expo) both; }
+.hero-last .rise { animation-delay: 110ms; }
+@keyframes rise {
+  from { opacity: 0; transform: translateY(0.28em); }
+  to   { opacity: 1; transform: none; }
 }
 
-/* the countdown tile: the number beside its copy, the copy block centred on
-   the numeral so neither hangs off the other.
+.hero-aside { display: contents; }
+.hero-line {
+  margin-top: clamp(1.75rem, 4vw, 2.5rem);
+  font-size: var(--t-lead);
+  line-height: 1.38;
+  letter-spacing: -0.014em;
+  max-width: 31ch;
+  text-wrap: pretty;
+  animation: rise 1200ms var(--ease-expo) 260ms both;
+}
+.hero-line em { font-family: var(--display); font-style: italic; font-size: 1.12em; letter-spacing: -0.005em; }
+
+@media (min-width: 64rem) {
+  /* the sentence moves up into the first line, right of "Zander", level with its x-height */
+  .hero { grid-template-columns: 47fr 53fr; }
+  .hero-name { grid-column: 1 / -1; grid-row: 1; }
+  .hero-line {
+    grid-column: 2;
+    grid-row: 1;
+    z-index: var(--z-over);
+    align-self: start;
+    margin-top: calc(var(--name) * 0.24);
+    /* fitted with the name, so the pair keep their proportion on a very wide window */
+    font-size: clamp(1.3125rem, calc(var(--name) * 0.115), 2.25rem);
+  }
+}
+
+/* --------------------------------------------------------------- about --
+   A few sentences, then a journey: the map holds still on the left while two
+   chapters scroll past it on the right. Structure unique to this section.
    ------------------------------------------------------------------------ */
-.card-goal {
-  justify-content: center;
-  gap: 0.85rem;
-  background: var(--tint);
-  border-color: #DCE3F0;
-  box-shadow: none;
-}
-.goal-row {
-  display: flex;
-  align-items: center;
-  gap: clamp(0.85rem, 2vw, 1.25rem);
-}
-.goal-days {
-  font-family: var(--display);
-  font-size: clamp(2.75rem, 6vw, 3.5rem);
-  line-height: 0.9;
-  letter-spacing: -0.03em;
-  font-variant-numeric: tabular-nums;
-  flex: none;
-}
-.goal-copy { display: grid; gap: 0.15rem; min-width: 0; }
-.goal-copy b {
-  font-family: var(--display);
-  font-weight: 400;
-  font-size: clamp(1.125rem, 2vw, 1.375rem);
-  line-height: 1.15;
-  letter-spacing: -0.01em;
-}
-.goal-copy span { font-size: 0.8125rem; line-height: 1.4; color: var(--ink-muted); }
 
-/* Last Night: two ring gauges */
-.rings {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: clamp(0.75rem, 2.5vw, 1.5rem);
-  justify-items: center;
-}
-.ring { margin: 0; display: grid; justify-items: center; gap: 0.6rem; }
-.ring-dial {
-  position: relative;
-  width: clamp(6.75rem, 28vw, 11.75rem);
-  aspect-ratio: 1;
-}
-.ring-dial svg { width: 100%; height: 100%; transform: rotate(-90deg); display: block; }
-.ring-track, .ring-fill { fill: none; stroke-width: 5; }
-.ring-track { stroke: var(--tint-deep); }
-.ring-fill {
-  stroke: var(--ink-link);
-  stroke-linecap: round;
-  stroke-dasharray: 100 100;
-  stroke-dashoffset: 100;
-  transition: stroke-dashoffset 600ms var(--ease);
-}
-.ring-value {
-  position: absolute;
-  inset: 0;
-  display: flex;
-  align-items: baseline;
-  padding-top: calc(50% - 0.5em);
-  justify-content: center;
-  font-family: var(--display);
-  font-size: clamp(2.25rem, 6.5vw, 3.25rem);
-  line-height: 1;
-  letter-spacing: -0.03em;
-  font-variant-numeric: tabular-nums;
-}
-.ring-value .pct { font-size: 0.42em; margin-left: 0.06em; color: var(--ink-muted); }
-.ring-name { font-size: 0.8125rem; color: var(--ink-muted); }
+/* a section's own words: one line under its name, then a paragraph at reading measure */
+.copy { max-width: 42rem; }
+.blurb { max-width: var(--measure); }
+.title + .copy { margin-top: 1.25rem; }
+.sub { font-size: var(--t-lead); line-height: 1.25; letter-spacing: -0.014em; color: var(--ink-muted); text-wrap: pretty; }
+.blurb { margin-top: 1rem; line-height: 1.68; text-wrap: pretty; }
+.sub + .blurb { margin-top: 1.1rem; }
 
-.is-empty { font-size: 0.9375rem; color: var(--ink-faint); }
-
-/* ---------------------------------------------------------------- about -- */
-
-.about-lede {
-  font-family: var(--display);
-  /* sized so the sentence always holds one line, down to 375px */
-  font-size: clamp(1.25rem, 3vw, 2.375rem);
-  line-height: 1.14;
-  letter-spacing: -0.018em;
-  white-space: nowrap;
-}
-
-.prose { max-width: var(--measure); }
-.prose p + p { margin-top: 1rem; }
-
-/* ---------------------------------------------------------------- about --
-   One gap value governs the whole section: --about-gap.
-   -------------------------------------------------------------------- */
-
-#about { --about-gap: clamp(1.25rem, 2.2vw, 1.75rem); }
-
-.about-top {
-  display: flex;
-  flex-direction: column;
-  gap: var(--about-gap);
-  margin-bottom: var(--about-gap);
-}
-
-/* the slow line of interests */
-.marquee {
-  position: relative;
-  overflow: hidden;
-  padding-block: 0.2rem;
-  -webkit-mask-image: linear-gradient(to right, transparent, #000 4%, #000 96%, transparent);
-  mask-image: linear-gradient(to right, transparent, #000 4%, #000 96%, transparent);
-}
-.marquee-track {
-  display: flex;
-  width: max-content;
-  animation: marquee 46s linear infinite;
-}
-.marquee:hover .marquee-track,
-.marquee:focus-within .marquee-track { animation-play-state: paused; }
-
-.marquee-run { display: flex; align-items: baseline; flex: none; padding-right: 1.5rem; }
-.marquee-word {
-  font-family: var(--display);
-  font-size: clamp(1.125rem, 2vw, 1.5rem);
-  line-height: 1.3;
-  letter-spacing: -0.008em;
-  white-space: nowrap;
-}
-.marquee-dot { color: var(--ink-faint); padding-inline: 0.75rem; }
-
-@keyframes marquee {
-  from { transform: translateX(0); }
-  to   { transform: translateX(-50%); }
-}
-
-/* twelve columns: map on 7, the side column on 5 */
-.about-grid {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr);
-  gap: var(--about-gap);
-  align-items: stretch;
-}
-
-/* --- the map panel: no card, no border --- */
-.map-panel {
-  position: relative;
-  min-height: 220px;
-}
-/* the map layer fills whatever height the grid row gives the panel, so the
-   percentage-sized inset and the measured arc both have something to resolve against */
-.map-main {
-  position: absolute;
-  inset: 0;
-  display: flex;
-  align-items: center;
-}
-/* the shape box hugs the outline so pin percentages land on the map */
-.map-shape { position: relative; height: 100%; flex: none; }
-.map-shape > svg {
-  height: 100%;
-  width: auto;
-  display: block;
-  overflow: visible;
-}
-.map-panel path {
+/* --- land: one outline, its pin, its name. Used still and on the stage. --- */
+.land { position: relative; }
+.land > svg { display: block; width: 100%; height: 100%; overflow: visible; filter: var(--shadow-land); }
+.land path {
   fill: var(--tint-deep);
   stroke: var(--ink-link);
   stroke-width: 1;
   stroke-linejoin: round;
   vector-effect: non-scaling-stroke;
-  transition: fill var(--fast) var(--ease);
 }
-.map-panel:hover path { fill: #E4EAF6; }
-
-/* Connecticut, about a third of the panel height, in from the top-right corner */
-.map-inset {
-  position: absolute;
-  top: 0;
-  right: 14%;
-  height: 32%;
-}
-.map-inset > svg { height: 100%; width: auto; display: block; overflow: visible; }
-
-/* --- pins --- */
 .pin { position: absolute; width: 0; height: 0; }
 .pin-dot,
 .pin-ring {
   position: absolute;
   top: 0;
   left: 0;
+  width: 7px;
+  height: 7px;
   border-radius: 50%;
   transform: translate(-50%, -50%);
 }
-.pin-dot { width: 7px; height: 7px; background: var(--ink); }
-.pin-ring { width: 7px; height: 7px; border: 1px solid var(--ink-link); opacity: 0; }
-.map-panel:hover .pin-ring { animation: pin-pulse 700ms var(--ease) 1; }
-@keyframes pin-pulse {
-  from { opacity: 0.8; transform: translate(-50%, -50%) scale(1); }
-  to   { opacity: 0;   transform: translate(-50%, -50%) scale(4.5); }
-}
-
+.pin-dot { background: var(--ink); box-shadow: 0 0 0 3px var(--bg); }
+.pin-ring { border: 1px solid var(--ink-link); opacity: 0; }
 .pin-label {
   position: absolute;
-  left: 0.75rem;
+  left: 0.9rem;
   top: 0;
   transform: translateY(-50%);
   white-space: nowrap;
+  font-size: var(--t-small);
+  font-weight: 500;
+  letter-spacing: -0.005em;
+  /* a paper-coloured halo, so the coastline breaks behind the name instead of striking through it */
+  text-shadow: 0 0 3px var(--bg), 0 0 3px var(--bg), 0 0 5px var(--bg), 0 0 5px var(--bg);
+}
+
+/* --- the journey, stacked: map, list, map, list. This is the default; the pinned
+       version below only switches on when main.js says the screen and the reader allow it. --- */
+.journey {
+  max-width: var(--page);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+  margin-top: clamp(3rem, 7vw, 5.5rem);
+}
+.journey-stage { display: none; }
+.journey:not([data-mode="pinned"]) { margin-bottom: clamp(3rem, 8vw, 5rem); }
+
+.chapter + .chapter { margin-top: clamp(4rem, 12vw, 7rem); }
+.chapter-map { margin: 0; }
+.chapter-map .land { height: clamp(15rem, 62vw, 22rem); }
+.chapter-map[data-map="newhaven"] .land { height: auto; width: min(100%, 24rem); }
+
+/* the place name is the big thing, and it sits on the map's shoulder, not under it */
+.chapter-head { position: relative; z-index: var(--z-over); margin-top: -2.4rem; }
+.chapter-title {
   font-family: var(--display);
-  font-size: 1.25rem;
-  letter-spacing: -0.01em;
+  font-weight: 400;
+  font-size: var(--t-display);
+  line-height: 0.86;
+  letter-spacing: -0.04em;
+  white-space: nowrap;
+}
+.chapter-note {
+  margin-top: 0.9rem;
+  font-size: var(--t-lead);
+  line-height: 1.2;
+  letter-spacing: -0.015em;
   color: var(--ink-muted);
-  transition: color var(--fast) var(--ease);
 }
-/* the inset is small, so its label drops below the dot instead of crossing the outline */
-.pin-away .pin-label {
-  font-family: var(--sans);
-  font-size: 0.6875rem;
-  letter-spacing: 0.04em;
-  left: -0.25rem;
-  top: 1.15rem;
-  transform: none;
-}
-.map-panel:hover .pin-label { color: var(--ink); }
 
-/* the dotted arc between the two dots, drawn once on hover */
-.map-arc {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-  overflow: visible;
+/* --- marks: one visual language for the teams and the clubs. No boxes, no row rules;
+       the year hangs in its own column and the space does the separating. --- */
+.marks { margin-top: clamp(2rem, 5vw, 3rem); display: grid; gap: clamp(1.6rem, 4.5vw, 2.25rem); }
+.mark { display: grid; grid-template-columns: clamp(4.9rem, 9vw, 5.75rem) minmax(0, 1fr); column-gap: 1rem; align-items: baseline; }
+.mark-when {
+  font-family: var(--mono);
+  font-size: var(--t-mono);
+  letter-spacing: 0.01em;
+  color: var(--ink-faint);
 }
-.map-arc path {
+.mark-name {
+  display: block;
+  font-family: var(--display);
+  font-size: var(--t-title);
+  line-height: 1.04;
+  letter-spacing: -0.022em;
+  text-wrap: balance;
+}
+.mark-details { margin-top: 0.6rem; display: grid; gap: 0.3rem; font-size: var(--t-small); line-height: 1.45; color: var(--ink-muted); }
+.mark-details li { padding-left: 1.05rem; position: relative; text-wrap: pretty; }
+.mark-details li::before { content: ""; position: absolute; left: 0.1rem; top: 0.62em; width: 4px; height: 4px; border-radius: 50%; background: var(--ink-faint); }
+
+.mark, .chapter-head {
+  opacity: 0;
+  transform: translateY(22px);
+  transition: opacity 800ms var(--ease-expo), transform 800ms var(--ease-expo);
+}
+.mark.is-in, .chapter-head.is-in { opacity: 1; transform: none; }
+
+/* stacked, but with room: reduced motion on a wide screen. Still map, list, map, list in
+   reading order; the map simply stands beside its list instead of above it. */
+@media (min-width: 48rem) {
+  .journey:not([data-mode="pinned"]) .chapter {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr);
+    grid-template-rows: auto 1fr;
+    column-gap: clamp(1.5rem, 4vw, 4rem);
+    align-items: start;
+  }
+  .journey:not([data-mode="pinned"]) .chapter-map { grid-row: 1 / span 2; justify-self: center; }
+  .journey:not([data-mode="pinned"]) .chapter-map .land { height: min(70svh, 34rem); }
+  .journey:not([data-mode="pinned"]) .chapter-map[data-map="newhaven"] .land { height: auto; width: min(100%, 30rem); }
+  .journey:not([data-mode="pinned"]) .chapter-head { margin-top: clamp(1rem, 6vw, 4rem); }
+  .journey:not([data-mode="pinned"]) .chapter-title { margin-left: calc(-1 * clamp(2rem, 8vw, 8rem)); }
+}
+
+/* --- the journey, pinned ------------------------------------------------- */
+.journey[data-mode="pinned"] {
+  display: grid;
+  grid-template-columns: minmax(0, 1.18fr) minmax(0, 1fr);
+  column-gap: clamp(1.5rem, 4vw, 4rem);
+  align-items: start;
+}
+.journey[data-mode="pinned"] .chapter-map { display: none; }
+.journey[data-mode="pinned"] .journey-stage {
+  display: block;
+  position: sticky;
+  top: max(4.5rem, calc(50svh - min(39svh, 23rem)));
+  z-index: var(--z-stage);
+}
+.journey[data-mode="pinned"] .chapter { padding-block: 20svh 8svh; }
+.journey[data-mode="pinned"] .chapter + .chapter { margin-top: 0; padding-top: 34svh; }
+.journey[data-mode="pinned"] .chapter:last-child { padding-bottom: 18svh; }
+.journey[data-mode="pinned"] .chapter-head { margin-top: 0; }
+/* the name reaches back across the gap and lies over the map as it passes */
+.journey[data-mode="pinned"] .chapter-title { margin-left: calc(-1 * clamp(3rem, 12vw, 12rem)); }
+.journey[data-mode="pinned"] .marks { gap: clamp(3.5rem, 13svh, 7rem); margin-top: clamp(3.5rem, 12svh, 6rem); }
+
+/* the stage is a size container, so everything on it is placed in shares of the stage
+   (cqw, cqh) and the composition holds from 768px to any width */
+.stage {
+  position: relative;
+  height: min(78svh, 46rem);
+  container-type: size;
+  --th-h: min(90cqh, 122cqw);   /* Thailand as tall as the stage allows, never wider than two thirds of it */
+}
+.stage .land {
+  position: absolute;
+  will-change: transform, opacity;
+  transition: transform 1100ms var(--ease-inout), opacity 700ms var(--ease-inout);
+}
+.stage .pin-dot { transition: transform 1100ms var(--ease-inout); }
+.stage .pin-label { transition: opacity 400ms var(--ease-inout); }
+
+/* Bangkok: Thailand fills the stage */
+.stage-th { height: var(--th-h); inset-block: 0; margin-block: auto; left: 30cqw; transform-origin: 0% 100%; }
+.stage-ct { width: 66cqw; top: 17cqh; right: 0; opacity: 0; transform: translate(7%, -5%) scale(0.9); transform-origin: 60% 60%; }
+
+/* New Haven: Thailand steps back into the near corner, still there, smaller and paler;
+   Connecticut comes forward. Thailand leaves first, the line is drawn, then Connecticut arrives. */
+.stage[data-place="newhaven"] .stage-th { transform: translate(-30cqw, calc((100cqh - var(--th-h)) / 2 - 1cqh)) scale(0.36); opacity: 0.6; }
+.stage[data-place="newhaven"] .stage-th .pin-dot { transform: translate(-50%, -50%) scale(2.6); }
+.stage[data-place="newhaven"] .stage-th .pin-label { opacity: 0; }
+.stage[data-place="newhaven"] .stage-ct { opacity: 1; transform: none; transition-delay: 650ms; }
+
+.stage-arc { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; pointer-events: none; }
+.arc-dots { fill: none; stroke: var(--ink-link); stroke-width: 1.25; stroke-dasharray: 1 6; stroke-linecap: round; }
+.arc-draw {
   fill: none;
-  stroke: var(--ink-link);
-  stroke-width: 1;
-  stroke-dasharray: 1 4;
-  stroke-linecap: round;
-  opacity: 0.75;
-  clip-path: inset(0 100% 0 0);
-  transition: clip-path 480ms var(--ease);
+  stroke: #fff;
+  stroke-width: 8;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  transition: stroke-dashoffset 700ms var(--ease-inout);
 }
-.map-panel:hover .map-arc path { clip-path: inset(0 0 0 0); }
+.stage[data-place="newhaven"] .arc-draw { stroke-dashoffset: 0; transition: stroke-dashoffset 1500ms var(--ease-inout) 350ms; }
 
-/* --- the side column --- */
-.about-side {
-  display: flex;
-  flex-direction: column;
-  gap: var(--about-gap);
-  min-width: 0;
-}
-.side-label {
-  font-size: 0.6875rem;
-  font-weight: 500;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--ink-faint);
-}
-.teams-col { display: flex; flex-direction: column; gap: var(--about-gap); }
-.team {
-  position: relative;
-  padding: var(--card-pad) var(--card-pad) var(--card-pad) 1.9rem;
-  border: 1px solid var(--rule);
-  border-radius: 12px;
-  background: var(--surface);
-  transition: border-color var(--fast) var(--ease), background-color var(--fast) var(--ease);
-}
-.team:hover { border-color: #C9D4E8; background: var(--tint); }
-.team-dot {
+/* one dot makes the trip, and comes to rest as New Haven's pin */
+.stage-flight {
   position: absolute;
-  top: 1.45rem;
-  left: var(--card-pad);
-  width: 5px;
-  height: 5px;
+  left: 0;
+  top: 0;
+  width: 7px;
+  height: 7px;
   border-radius: 50%;
-  background: var(--ink-link);
+  background: var(--ink);
+  offset-rotate: 0deg;
+  offset-distance: 0%;
+  opacity: 0;
+  transition: offset-distance 700ms var(--ease-inout), opacity 250ms var(--ease-inout);
 }
-.team-name {
-  display: block;
-  font-family: var(--display);
-  font-size: 1.125rem;
-  line-height: 1.16;
-  letter-spacing: -0.01em;
+.stage[data-place="newhaven"] .stage-flight {
+  offset-distance: 100%;
+  opacity: 1;
+  transition: offset-distance 1500ms var(--ease-inout) 350ms, opacity 250ms var(--ease-inout) 350ms;
 }
-.team-what { display: block; font-size: 0.8125rem; color: var(--ink-muted); margin-top: 0.25rem; }
+.stage[data-place="newhaven"] .stage-ct .pin-ring { animation: pin-pulse 900ms var(--ease-expo) 1850ms 1 both; }
+@keyframes pin-pulse {
+  from { opacity: 0.8; transform: translate(-50%, -50%) scale(1); }
+  to   { opacity: 0;   transform: translate(-50%, -50%) scale(5); }
+}
 
-/* one-row fact line */
-.facts { margin-top: auto; padding-top: var(--about-gap); border-top: 1px solid var(--rule); }
-.facts dd { margin: 0.4rem 0 0; font-size: 0.9375rem; }
-
-/* three national teams */
-.teams-col { display: flex; flex-direction: column; gap: 0.6rem; }
-.team {
-  position: relative;
-  padding: var(--card-pad) var(--card-pad) var(--card-pad) 1.9rem;
-  border: 1px solid var(--rule);
-  border-radius: 12px;
-  background: var(--surface);
-  transition: transform var(--fast) var(--ease), box-shadow var(--fast) var(--ease), border-color var(--fast) var(--ease);
-}
-.team:hover {
-  transform: translateY(-2px);
-  box-shadow: var(--lift-hover);
-  border-color: #D5DDEC;
-}
-.team-dot {
+.stage-from,
+.stage-miles {
   position: absolute;
-  top: 1.35rem;
-  left: 0.9rem;
-  width: 5px;
-  height: 5px;
-  border-radius: 50%;
-  background: var(--ink-link);
+  left: 0;
+  top: 0;
+  white-space: nowrap;
+  opacity: 0;
+  transition: opacity 400ms var(--ease-inout);
+  text-shadow: 0 0 3px var(--bg), 0 0 3px var(--bg), 0 0 5px var(--bg);
 }
-.team-name {
-  display: block;
+.stage-from { font-size: var(--t-mono); font-weight: 500; color: var(--ink-muted); }
+.stage-miles { font-family: var(--mono); font-size: var(--t-mono); letter-spacing: 0.01em; color: var(--ink-faint); }
+.stage[data-place="newhaven"] .stage-from { opacity: 1; transition-delay: 900ms; }
+.stage[data-place="newhaven"] .stage-miles { opacity: 1; transition-delay: 1500ms; }
+
+/* while main.js measures where the pins come to rest, nothing may animate */
+.stage.is-measuring, .stage.is-measuring * { transition: none !important; animation: none !important; }
+
+/* --- the slow line of interests, as a full-bleed break. The only marquee on the page. --- */
+.bleed-marquee {
+  margin-top: clamp(1rem, 3vw, 2rem);
+  padding-block: clamp(1.25rem, 2.6vw, 2rem);
+  border-block: 1px solid var(--rule);
+}
+.marquee {
+  position: relative;
+  overflow: hidden;
+  padding-block: 0.2rem;
+  /* a wide fade, so words dissolve at the edges instead of being cut in half */
+  -webkit-mask-image: linear-gradient(to right, transparent, #000 14%, #000 86%, transparent);
+  mask-image: linear-gradient(to right, transparent, #000 14%, #000 86%, transparent);
+}
+.marquee-track { display: flex; width: max-content; animation: marquee 64s linear infinite; }
+.marquee:hover .marquee-track,
+.marquee:focus-within .marquee-track { animation-play-state: paused; }
+.marquee-run { display: flex; align-items: baseline; flex: none; padding-right: clamp(2rem, 4vw, 3.5rem); }
+.marquee-gap { display: inline-block; width: clamp(2rem, 4vw, 3.5rem); }
+.marquee-word {
   font-family: var(--display);
-  font-size: 1.125rem;
-  line-height: 1.16;
-  letter-spacing: -0.01em;
+  font-style: italic;
+  font-size: var(--t-title);
+  line-height: 1.3;
+  letter-spacing: -0.012em;
+  white-space: nowrap;
+  color: var(--ink-muted);
 }
-.team-what { display: block; font-size: 0.8125rem; color: var(--ink-muted); margin-top: 0.25rem; }
-
-.affil-label + .elsewhere li:first-child { border-top: 0; }
-.affil-label {
-  font-size: 0.6875rem;
-  font-weight: 500;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--ink-faint);
-  padding-bottom: 0.85rem;
-  border-bottom: 1px solid var(--rule);
-  margin-bottom: 1rem;
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
 }
 
-/* ---------------------------------------------------------------- works --
-   A logo band: equal tiles, marks balanced by eye (`size` in main.js),
-   navy at rest, colour on hover under the veil.
+/* ---------------------------------------------------------------- work --
+   Words, then one raised strip of marks running the full window. The strip is the
+   only white-on-white surface with a shadow on the page, so it reads as lying on top.
    ------------------------------------------------------------------------ */
 
-.work-grid {
+.work-strip {
+  position: relative;
+  z-index: var(--z-over);
+  margin-top: clamp(2.5rem, 5vw, 4rem);
+  background: var(--strip-bg);
+  box-shadow: var(--shadow-rest), 0 -1px 0 var(--rule);
+  /* the strip keeps its own light ink in both themes, so every mark is drawn as its owner drew it */
+  --ink: #0F2044;
+  --ink-faint: #65738F;
+}
+/* the strip's own heading, in the same voice as "Musicals" and "Last night": serif, full ink,
+   on the measure. The marks line up under it, left edge to left edge. */
+.work-label {
+  max-width: var(--page);
+  margin-inline: auto;
+  padding: clamp(2.25rem, 4.5vw, 3.5rem) var(--gutter) 0;
+  font-family: var(--display);
+  font-size: var(--t-lead);
+  line-height: 1.1;
+  letter-spacing: -0.015em;
+  color: var(--ink);
+}
+.work-band {
+  max-width: var(--page);
+  margin-inline: auto;
+  padding: clamp(1.75rem, 3.5vw, 2.5rem) var(--gutter) clamp(3rem, 6vw, 4.75rem);
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 0.75rem;
+  gap: clamp(2.5rem, 5vw, 3.5rem) clamp(1.25rem, 3vw, 2.5rem);
+  align-items: center;
 }
 
 .work {
   position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  aspect-ratio: 16 / 9;
-  background: var(--surface);
-  border: 1px solid var(--rule);
-  border-radius: 14px;
-  overflow: hidden;
+  display: grid;
+  justify-items: start;
   text-decoration: none;
-  transition: transform var(--fast) var(--ease), box-shadow var(--fast) var(--ease), border-color var(--fast) var(--ease);
+  color: var(--ink);
+  transition: transform var(--mid) var(--ease-spring);
 }
-.work:hover {
-  transform: translateY(-3px);
-  box-shadow: var(--lift-hover);
-  border-color: #D5DDEC;
-}
-/* long, thin wordmarks take a whole row on phones */
-.work.is-wide { grid-column: 1 / -1; aspect-ratio: auto; height: 5.5rem; }
-
-.work-wordmark {
-  font-family: var(--display);
-  font-size: 1.25rem;
-  line-height: 1.12;
-  text-align: center;
-  padding: var(--card-pad);
-}
-
-.work-mark {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.6rem;
-  width: 100%;
-  padding-inline: 0.75rem;
-}
-.work-note {
-  font-size: 0.6875rem;
-  font-weight: 500;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--ink-faint);
-  text-align: center;
-  transition: color var(--fast) var(--ease);
-}
-.work:hover .work-note { color: var(--ink-link); }
+.work:hover { transform: translateY(-3px); }
+.work:active { transform: translateY(0) scale(0.98); }
 
 .work-logo {
   position: relative;
-  width: calc(var(--logo-w, 0.6) * 100%);
-  aspect-ratio: 8 / 3;
-  max-height: 4.5rem;
-}
-/* marks whose own artwork carries the detail are shown exactly as published */
-.work-logo.as-published img { opacity: 1; }
-.work.is-wide .work-logo { width: min(calc(var(--logo-w) * 100%), 18rem); }
-.work-logo .mono,
-.work-logo img {
-  position: absolute;
-  inset: 0;
-  height: 100%;
-  width: 100%;
-  object-fit: contain;
-  object-position: center;
-  transition: opacity var(--fast) var(--ease);
+  width: min(100%, calc(var(--logo-w, 0.6) * 250px));
+  height: clamp(2.5rem, 4vw, 3.5rem);
 }
 .work-logo .mono {
+  position: absolute;
+  inset: 0;
   background: var(--ink);
-  -webkit-mask-position: center;
-  mask-position: center;
-  -webkit-mask-repeat: no-repeat;
-  mask-repeat: no-repeat;
-  -webkit-mask-size: contain;
-  mask-size: contain;
-}
-.work-logo img,
-.work-logo .mono.tint { opacity: 0; }
-.work:hover .work-logo .mono, .work:focus-visible .work-logo .mono { opacity: 0; }
-.work:hover .work-logo img, .work:hover .work-logo .mono.tint,
-.work:focus-visible .work-logo img, .work:focus-visible .work-logo .mono.tint { opacity: 1; }
-.work .veil-big { font-size: clamp(1.0625rem, 1.8vw, 1.375rem); }
-
-/* -------------------------------------------------------------- library -- */
-
-.library-grid {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: clamp(1.75rem, 4vw, 3rem);
-  align-items: start;
-}
-
-.book-cover {
-  position: relative;
-  aspect-ratio: 2 / 3;
-  border-radius: 4px;
-  overflow: hidden;
-  background: var(--tint-deep);
-  box-shadow: 0 1px 3px rgba(15, 32, 68, 0.12);
-  transform: perspective(700px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg)) translateY(var(--ty, 0));
-  transition: transform 120ms var(--ease), box-shadow var(--fast) var(--ease);
-  will-change: transform;
-}
-.book-cover img { width: 100%; height: 100%; object-fit: cover; }
-
-.book-lead:hover .book-cover,
-.mini:hover .book-cover {
-  --ty: -4px;
-  box-shadow: 0 16px 34px -14px rgba(15, 32, 68, 0.42), 0 3px 8px rgba(15, 32, 68, 0.08);
-}
-
-/* the most recent read, at double size */
-.book-lead {
-  display: grid;
-  grid-template-columns: minmax(0, 8.5rem) 1fr;
-  gap: clamp(1.25rem, 3vw, 2rem);
-  align-items: start;
-  text-decoration: none;
-}
-.lead-kicker {
-  font-size: 0.6875rem;
-  font-weight: 500;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--ink-faint);
-  margin-bottom: 0.6rem;
-}
-.lead-title {
-  font-family: var(--display);
-  font-weight: 400;
-  font-size: clamp(1.5rem, 3.4vw, 2.125rem);
-  line-height: 1.1;
-  letter-spacing: -0.016em;
-}
-.book-lead:hover .lead-title { color: var(--ink-link); }
-.lead-author { font-size: 0.9375rem; color: var(--ink-muted); margin-top: 0.4rem; }
-.book-lead .stars { display: inline-block; margin-top: 0.7rem; font-size: 0.9375rem; }
-.lead-date { font-size: 0.8125rem; color: var(--ink-faint); margin-top: 0.5rem; }
-.lead-cue {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.4rem;
-  font-size: 0.875rem;
-  color: var(--ink-link);
-  margin-top: 1rem;
-}
-.lead-cue svg { transition: transform var(--fast) var(--ease); }
-.book-lead:hover .lead-cue svg { transform: translate(3px, -3px); }
-
-/* the next eight, at half size, title on hover */
-.book-mini-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: clamp(0.65rem, 1.6vw, 1rem);
-}
-.mini { display: block; text-decoration: none; min-width: 0; }
-.veil-cover { padding: 0.5rem; gap: 0.2rem; border-radius: 0; }
-.veil-cover .veil-big { font-size: clamp(0.875rem, 1.3vw, 1.0625rem); line-height: 1.1; }
-.veil-cover .veil-small { font-size: 0.6875rem; line-height: 1.3; }
-.veil-cover .stars { font-size: 0.625rem; }
-
-.stars { font-size: 0.8125rem; letter-spacing: 0.06em; color: var(--ink-link); white-space: nowrap; }
-.stars .off { color: var(--rule); }
-
-.shelf-foot {
-  margin-top: clamp(1.5rem, 3vw, 2.25rem);
-  padding-top: 1rem;
-  border-top: 1px solid var(--rule);
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  gap: 0.5rem 1.5rem;
-  font-size: 0.8125rem;
-  color: var(--ink-faint);
-}
-
-/* ------------------------------------------------------------ interests -- */
-
-.shelf-block + .shelf-block { margin-top: clamp(2rem, 4vw, 3rem); }
-
-.shelf-head {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: 1rem;
-  padding-bottom: 0.85rem;
-  border-bottom: 1px solid var(--rule);
-  margin-bottom: 1.1rem;
-}
-.shelf-name {
-  font-size: 0.6875rem;
-  font-weight: 500;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--ink-faint);
-}
-.shelf-toggle {
-  background: none;
-  border: 0;
-  padding: 0;
-  cursor: pointer;
-  font-size: 0.8125rem;
-  color: var(--ink-link);
+  -webkit-mask-repeat: no-repeat; mask-repeat: no-repeat;
+  -webkit-mask-position: left center;  mask-position: left center;
+  -webkit-mask-size: contain;     mask-size: contain;
   transition: opacity var(--fast) var(--ease);
 }
-.shelf-toggle:hover { opacity: 0.7; }
+.work-logo .tint { opacity: 0; }
+.work:hover .work-logo .tint,
+.work:focus-visible .work-logo .tint { opacity: 1; }
+.work:hover .work-logo .mono:not(.tint),
+.work:focus-visible .work-logo .mono:not(.tint) { opacity: 0; }
 
-/* poster wall */
+.work-logo.as-published img {
+  position: absolute;
+  inset: 0;
+  width: 100%; height: 100%;
+  object-fit: contain;
+  object-position: left center;
+  filter: grayscale(1) contrast(1.05);
+  opacity: 0.78;
+  transition: filter var(--fast) var(--ease), opacity var(--fast) var(--ease);
+}
+.work:hover .as-published img,
+.work:focus-visible .as-published img { filter: none; opacity: 1; }
+
+/* the one caption: the Yale wordmark alone doesn't say which department */
+.work-note {
+  position: absolute;
+  top: calc(100% + 0.5rem);
+  left: 0; right: 0;
+  text-align: left;
+  font-size: var(--t-mono);
+  color: var(--ink-faint);
+  white-space: nowrap;
+}
+
+/* ------------------------------------------------------------- library --
+   A table of books. The latest one is large, slightly turned, and lies across the
+   corner of the shelf behind it; the shelf itself is out of step, row to row.
+   ------------------------------------------------------------------------ */
+
+/* the count sits at the shelf's top right corner, over the last column of covers */
+.library-note { margin-bottom: clamp(1rem, 2.5vw, 1.5rem); text-align: right; font-size: var(--t-small); color: var(--ink-muted); }
+
+.library-table { margin-top: clamp(2rem, 4vw, 3rem); display: grid; gap: clamp(2.5rem, 6vw, 4rem); }
+
+.book-lead { display: grid; gap: 1.5rem; text-decoration: none; color: inherit; }
+.book-cover { position: relative; overflow: hidden; border-radius: var(--r-s); background: var(--tint); }
+.book-cover img { width: 100%; height: auto; display: block; }
+.lead-cover {
+  box-shadow: var(--shadow-high);
+  transform: rotate(-2.5deg);
+  transform-origin: 30% 60%;
+  transition: transform 600ms var(--ease-spring), box-shadow 600ms var(--ease-out);
+}
+.book-lead:hover .lead-cover { transform: rotate(-1deg) translateY(-6px); }
+.book-lead:active .lead-cover { transform: rotate(-1.5deg) scale(0.99); }
+
+.lead-title { font-family: var(--display); font-size: var(--t-title); line-height: 1.04; letter-spacing: -0.022em; text-wrap: balance; }
+.lead-author { color: var(--ink-muted); margin-top: 0.4rem; }
+.book-lead .stars { margin-top: 0.5rem; }
+.lead-date { font-family: var(--mono); font-size: var(--t-mono); color: var(--ink-faint); margin-top: 0.6rem; }
+.lead-cue { display: inline-flex; align-items: center; gap: 0.35rem; font-size: var(--t-small); color: var(--ink-link); margin-top: 0.9rem; }
+.lead-cue svg { transition: transform var(--mid) var(--ease-spring); }
+.book-lead:hover .lead-cue svg { transform: translate(2px, -2px); }
+
+.book-mini-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(1.5rem, 3vw, 2.25rem) clamp(0.9rem, 2vw, 1.5rem);
+  align-content: start;
+}
+.mini { display: grid; gap: 0.55rem; align-content: start; text-decoration: none; color: inherit; }
+.mini-cover { box-shadow: var(--shadow-low); transition: transform var(--mid) var(--ease-spring), box-shadow var(--mid) var(--ease-out); }
+.mini:hover .mini-cover { transform: translateY(-5px) rotate(-1deg); box-shadow: var(--shadow-rest); }
+.mini:active .mini-cover { transform: scale(0.98); }
+.mini-title {
+  font-size: var(--t-small);
+  line-height: 1.3;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.mini-author { font-size: var(--t-mono); color: var(--ink-faint); }
+
+/* -------------------------------------------------------------- health --
+   One numeral, far larger than anything near it, and a raised sheet lying across
+   its shoulder. The numeral is the running; the sheet is last night.
+   ------------------------------------------------------------------------ */
+
+.health-head { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.5rem 1.5rem; }
+.health-note { color: var(--ink-muted); }
+
+.health-body { position: relative; margin-top: clamp(1.5rem, 3vw, 2.5rem); display: grid; gap: clamp(2rem, 6vw, 3rem); }
+
+.run { position: relative; z-index: var(--z-under); }
+.run-miles { display: grid; gap: 0.9rem; }
+.run-num {
+  font-family: var(--display);
+  font-size: clamp(11rem, 40vw, 36rem);
+  line-height: 0.72;
+  letter-spacing: -0.05em;
+  font-variant-numeric: lining-nums;
+  /* wide screens have margin to spare, and the numeral steps out into it */
+  margin-left: calc(-0.05em - clamp(0rem, (100vw - 82rem) / 3, 8rem));
+  padding-bottom: 0.04em;
+}
+.run-cap { font-size: var(--t-lead); line-height: 1.2; letter-spacing: -0.014em; color: var(--ink-muted); }
+.run-runs { color: var(--ink-muted); }
+.run-runs b,
+.run-goal b { font-family: var(--display); font-weight: 400; font-size: var(--t-title); letter-spacing: -0.02em; color: var(--ink); margin-right: 0.15em; }
+.run-facts { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.25rem clamp(1.5rem, 4vw, 3rem); }
+.run-goal { color: var(--ink-muted); }
+
+/* a dotted route in the space the numeral leaves. Decoration, so it only appears where there is
+   room for it, and it is the same dotted line as the arc in About. It draws once, start to arrow. */
+.route { display: none; overflow: visible; }
+.route-line { fill: none; stroke: var(--ink-muted); stroke-width: 1.6; stroke-dasharray: 0.5 7.5; stroke-linecap: round; }
+.route-tip { fill: none; stroke: var(--ink-muted); stroke-width: 1.4; stroke-linecap: round; stroke-linejoin: round; }
+.route-start { fill: var(--bg); stroke: var(--ink-muted); stroke-width: 1.6; }
+.route-draw {
+  fill: none;
+  stroke: #fff;
+  stroke-width: 26;
+  stroke-linecap: round;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  transition: stroke-dashoffset 2600ms var(--ease-inout) 300ms;
+}
+.route.is-in .route-draw { stroke-dashoffset: 0; }
+.run-more .stamp { margin-top: 1rem; }
+
+.sheet {
+  position: relative;
+  justify-self: start;
+  z-index: var(--z-over);
+  background: var(--surface);
+  border-radius: var(--r-m);
+  box-shadow: var(--shadow-rest);
+  padding: clamp(1.5rem, 3vw, 2.25rem) clamp(1.5rem, 3.4vw, 2.5rem);
+}
+.sheet-label { font-family: var(--display); font-size: var(--t-lead); letter-spacing: -0.015em; }
+.sheet .stamp { margin-top: 1.5rem; }
+
+.rings { display: flex; gap: clamp(1.5rem, 3.5vw, 2.5rem); margin-top: 1.25rem; }
+.ring { margin: 0; }
+.ring-dial { position: relative; width: clamp(6.5rem, 12vw, 9rem); aspect-ratio: 1; }
+.ring-dial svg { width: 100%; height: 100%; transform: rotate(-90deg); display: block; }
+/* the unfilled part of the dial is a ring of ticks, like an instrument face, not a grey band */
+.ring-ticks { fill: none; stroke: var(--ink-faint); stroke-width: 5; stroke-dasharray: 0.35 2.15; opacity: 0.55; }
+.ring-fill {
+  fill: none;
+  stroke: var(--ink-link);
+  stroke-width: 5;
+  stroke-linecap: round;
+  stroke-dasharray: 100;
+  stroke-dashoffset: 100;
+  transition: stroke-dashoffset 900ms var(--ease-out);
+}
+.ring-value {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  /* baseline-aligned children can't be centred by the box, so the line is */
+  line-height: 1;
+  padding-top: calc(50% - 0.52em);
+  font-family: var(--display);
+  font-size: var(--t-title);
+  letter-spacing: -0.02em;
+}
+.ring-value .pct { font-size: 0.5em; color: var(--ink-faint); margin-left: 0.08em; }
+.ring-name { font-size: var(--t-small); color: var(--ink-muted); text-align: center; margin-top: 0.6rem; }
+
+/* ----------------------------------------------------------- interests --
+   Two poster walls side by side, every other column hanging lower. On anything
+   narrower than a laptop they become strips you push sideways.
+   ------------------------------------------------------------------------ */
+
+.walls { margin-top: clamp(2rem, 4vw, 3rem); display: grid; grid-template-columns: minmax(0, 1fr); gap: clamp(2rem, 5vw, 3rem); }
+.wall { min-width: 0; }
+.wall-name { font-family: var(--display); font-size: var(--t-lead); letter-spacing: -0.015em; padding-inline: var(--gutter); margin-bottom: 0.9rem; }
+
 .tiles {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: clamp(1rem, 2.4vw, 1.6rem) clamp(0.85rem, 2vw, 1.4rem);
+  grid-auto-flow: column;
+  grid-auto-columns: clamp(7.5rem, 36vw, 10.5rem);
+  gap: clamp(0.75rem, 1.6vw, 1.1rem);
+  overflow-x: auto;
+  scroll-snap-type: x proximity;
+  padding-inline: var(--gutter);
+  scroll-padding-inline: var(--gutter);
+  padding-bottom: 1.5rem;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
 }
-.tile.is-hidden { display: none; }
-.tile { min-width: 0; }
+.tiles::-webkit-scrollbar { display: none; }
+.tile { scroll-snap-align: start; }
 
 .poster {
   position: relative;
   aspect-ratio: 2 / 3;
-  border-radius: 6px;
   overflow: hidden;
-  background: var(--tint-deep);
-  box-shadow: 0 1px 3px rgba(15, 32, 68, 0.12);
-  transition: transform var(--fast) var(--ease), box-shadow var(--fast) var(--ease);
-}
-.poster img { width: 100%; height: 100%; object-fit: cover; }
-.tile:hover .poster {
-  transform: translateY(-4px);
-  box-shadow: 0 16px 34px -14px rgba(15, 32, 68, 0.42), 0 3px 8px rgba(15, 32, 68, 0.08);
-}
-
-/* designed fallback, same footprint as a poster */
-.poster-set {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  height: 100%;
-  padding: var(--card-pad);
+  border-radius: var(--r-s);
   background: var(--tint);
-  border: 1px solid var(--rule);
-  border-radius: 6px;
+  box-shadow: var(--shadow-low);
+  transition: transform var(--mid) var(--ease-spring), box-shadow var(--mid) var(--ease-out);
 }
-.poster-set .set-mark {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  color: var(--ink-link);
-  opacity: 0.12;
-  transition: opacity var(--fast) var(--ease), transform var(--mid) var(--ease);
-}
-.tile:hover .poster-set .set-mark { opacity: 0.2; transform: translate(-50%, -50%) rotate(6deg); }
-.poster-set .set-kicker {
-  position: relative;
-  font-size: 0.5625rem;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: var(--ink-faint);
-}
-.poster-set .set-title {
-  position: relative;
-  font-family: var(--display);
-  font-size: clamp(1rem, 2.4vw, 1.25rem);
-  line-height: 1.12;
-  letter-spacing: -0.012em;
-}
-
-.tile-meta {
-  display: flex;
-  align-items: baseline;
-  gap: 0.5rem;
-  margin-top: 0.65rem;
-}
-.tile-num {
-  font-size: 0.625rem;
-  letter-spacing: 0.14em;
-  color: var(--ink-faint);
-  font-variant-numeric: tabular-nums;
-  flex: none;
-}
+.tile:hover .poster { transform: translateY(-5px); box-shadow: var(--shadow-rest); }
+.poster img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.poster-set { position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: space-between; padding: 0.8rem; color: var(--ink-link); }
+.set-mark { opacity: 0.55; }
+.set-kicker { font-size: var(--t-mono); color: var(--ink-faint); }
+.set-title { font-family: var(--display); font-size: var(--t-body); line-height: 1.15; color: var(--ink); }
 .tile-title {
-  font-size: 0.8125rem;
-  line-height: 1.3;
-  transition: color var(--fast) var(--ease);
+  margin-top: 0.55rem;
+  font-size: var(--t-mono);
+  line-height: 1.35;
+  color: var(--ink-muted);
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
-.tile:hover .tile-title { color: var(--ink-link); }
+.credit { margin-top: 1rem; font-family: var(--mono); font-size: var(--t-mono); color: var(--ink-faint); }
 
-/* ---------------------------------------------------------------- awards --
-   Every row the same: number · title and context · year.
+/* -------------------------------------------------------------- awards --
+   One award at full size. The rest gather under three headings in three uneven
+   columns. Space separates them; there is not a rule in the section.
    ------------------------------------------------------------------------ */
 
-.award-list { border-top: 1px solid var(--rule); }
-.award {
-  display: grid;
-  grid-template-columns: 2rem minmax(0, 1fr) auto;
-  align-items: baseline;
-  gap: 0 0.75rem;
-  padding: 0.9rem 0.25rem;
-  border-bottom: 1px solid var(--rule);
-  transition: background-color var(--fast) var(--ease);
-}
-.award:hover { background: rgba(244, 246, 251, 0.7); }
-.award-num {
-  font-size: 0.6875rem;
-  letter-spacing: 0.14em;
-  color: var(--ink-faint);
-  font-variant-numeric: tabular-nums;
-  transition: color var(--fast) var(--ease);
-}
-.award:hover .award-num { color: var(--ink-link); }
-.award-text { display: flex; flex-direction: column; gap: 0.1rem; min-width: 0; }
-.award-name { font-family: var(--display); font-size: 1.25rem; line-height: 1.2; letter-spacing: -0.01em; }
-.award-context { font-size: 0.875rem; line-height: 1.45; color: var(--ink-muted); }
-.award-year {
-  font-size: 0.8125rem;
-  color: var(--ink-faint);
-  font-variant-numeric: tabular-nums;
-  white-space: nowrap;
-}
+.award-lead { margin-top: clamp(1.25rem, 3vw, 2rem); }
+.award-lead-name { font-family: var(--display); font-size: var(--t-display); line-height: 0.9; letter-spacing: -0.04em; text-wrap: balance; }
+.award-lead-context { margin-top: 1rem; font-size: var(--t-lead); line-height: 1.25; letter-spacing: -0.014em; color: var(--ink-muted); max-width: 32ch; }
 
-/* -------------------------------------------------------------- contact -- */
+.award-groups { margin-top: clamp(3rem, 7vw, 5.5rem); display: grid; gap: clamp(2.5rem, 6vw, 3.5rem); }
+.award-group-name { font-family: var(--display); font-style: italic; font-size: var(--t-lead); color: var(--ink-muted); letter-spacing: -0.01em; }
+.award-list { margin-top: 1.25rem; display: grid; gap: 1.6rem; }
+.award { display: grid; gap: 0.25rem; }
+.award-name { font-family: var(--display); font-size: var(--t-lead); line-height: 1.12; letter-spacing: -0.016em; text-wrap: balance; }
+.award-context { font-size: var(--t-small); line-height: 1.45; color: var(--ink-muted); text-wrap: pretty; }
+.award-year { font-family: var(--mono); font-size: var(--t-mono); color: var(--ink-faint); }
 
-.contact-grid { display: grid; grid-template-columns: 1fr; gap: clamp(1.75rem, 4vw, 3.5rem); }
-.contact-email {
+/* --------------------------------------------------------------- close --
+   The page ends on navy, edge to edge. The address is the headline, fitted to the
+   measure the way the name is fitted to the window.
+   ------------------------------------------------------------------------ */
+
+.close {
+  margin-top: var(--section-gap);
+  background: var(--close-bg);
+  color: var(--close-ink);
+  padding-block: clamp(4.5rem, 11vw, 9rem) 2rem;
+}
+.close :focus-visible { outline-color: var(--close-ink); }
+.close-title { font-family: var(--display); font-size: var(--t-title); letter-spacing: -0.02em; line-height: 1; }
+.close-line { margin-top: 0.9rem; color: var(--close-muted); font-size: var(--t-lead); line-height: 1.3; letter-spacing: -0.014em; }
+
+.close-email {
+  --fit: calc((min(100vw, var(--page)) - 2 * var(--gutter)) / 8.15);
+  display: inline-block;
+  margin-top: clamp(2.5rem, 6vw, 4.5rem);
   font-family: var(--display);
-  font-size: clamp(1.25rem, 3.2vw, 1.75rem);
-  line-height: 1.3;
-  letter-spacing: -0.01em;
-  margin-top: 1.25rem;
-  word-break: break-word;
-}
-.contact-hint { font-size: 0.8125rem; color: var(--ink-faint); margin-top: 0.5rem; }
-
-.elsewhere li { border-bottom: 1px solid var(--rule); }
-.elsewhere li:first-child { border-top: 1px solid var(--rule); }
-.elsewhere a {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 1rem;
-  padding: 0.9rem 0;
+  font-size: var(--fit);
+  line-height: 0.96;
+  letter-spacing: -0.035em;
+  color: inherit;
   text-decoration: none;
-  font-size: 0.9375rem;
-  transition: color var(--fast) var(--ease), padding-left var(--fast) var(--ease);
 }
-.elsewhere a:hover { color: var(--ink-link); padding-left: 0.35rem; }
-.elsewhere svg { transition: transform var(--fast) var(--ease); flex: none; }
-.elsewhere a:hover svg { transform: translate(3px, -3px); }
+.close-email span { display: block; white-space: nowrap; }
+/* a stepped indent: the second line starts where the first name ends */
+.close-email span + span { padding-left: 2.28em; color: var(--close-muted); transition: color var(--mid) var(--ease-out); }
+.close-email:hover span + span { color: var(--close-ink); }
+.close-email:active { transform: scale(0.995); }
 
-/* --------------------------------------------------------------- footer -- */
+.elsewhere { display: flex; flex-wrap: wrap; gap: 0.5rem 2rem; margin-top: clamp(2.5rem, 6vw, 4rem); }
+.elsewhere a {
+  color: var(--close-ink);
+  text-decoration: none;
+  background-image: linear-gradient(currentColor, currentColor);
+  background-repeat: no-repeat;
+  background-position: 0 100%;
+  background-size: 100% 1px;
+  padding-bottom: 2px;
+  transition: background-size var(--mid) var(--ease-out);
+}
+.elsewhere a:hover { background-size: 0% 1px; background-position: 100% 100%; }
 
 .colophon {
-  padding-block: 2.5rem 3rem;
-  border-top: 1px solid var(--rule);
-}
-.colophon .wrap {
+  margin-top: clamp(4rem, 9vw, 7rem);
+  padding-top: 1.25rem;
+  border-top: 1px solid color-mix(in srgb, var(--close-ink) 16%, transparent);
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
-  gap: 0.5rem 1.5rem;
-  font-size: 0.8125rem;
-  color: var(--ink-faint);
+  gap: 0.4rem 2rem;
+  font-size: var(--t-mono);
+  color: var(--close-muted);
 }
 
-/* --------------------------------------------------------------- reveal -- */
+/* --------------------------------------------------------------- reveal --
+   One arrival, used everywhere: up and in, on the expo curve. Things that belong to
+   a row carry --i and arrive a beat apart, left to right.
+   ------------------------------------------------------------------------ */
 
 [data-reveal] {
   opacity: 0;
-  transform: translateY(12px);
-  transition: opacity 500ms var(--ease), transform 500ms var(--ease);
+  transform: translateY(22px);
+  transition: opacity 800ms var(--ease-expo), transform 800ms var(--ease-expo);
   transition-delay: calc(var(--i, 0) * 70ms);
 }
 [data-reveal].is-in { opacity: 1; transform: none; }
 
-/* ------------------------------------------------------------ phones --
-   Phones get their own layout, not a squeezed desktop.
-   ------------------------------------------------------------------------ */
-
-.contact-grid .prose { max-width: none; }
-
-@media (max-width: 39.99rem) {
-  :root { --section-gap: 3.5rem; }
-
-  .hero-name { font-size: clamp(2.25rem, 11vw, 3rem); }
-  .section-title { font-size: 2.125rem; }
-
-  /* library: a 3 by 3 cover grid under the lead book */
-  .book-lead { grid-template-columns: minmax(0, 42%) 1fr; }
-  .book-mini-grid { grid-template-columns: repeat(3, 1fr); }
-  .veil-cover .veil-small, .veil-cover .stars { display: none; }
-
-  /* interests: sideways strips, the next poster peeking in from the edge */
-  .tiles {
-    display: grid;
-    grid-auto-flow: column;
-    grid-auto-columns: 38%;
-    grid-template-columns: none;
-    overflow-x: auto;
-    margin-inline: calc(var(--gutter) * -1);
-    padding-inline: var(--gutter);
-    padding-bottom: 0.5rem;
-    scrollbar-width: none;
-    -webkit-overflow-scrolling: touch;
-  }
-  .tiles::-webkit-scrollbar { display: none; }
-  .tile.is-hidden { display: block; }
-  .shelf-toggle { display: none; }
-  .tile:hover .poster { transform: none; }
-
-  /* awards: the year sits under the context instead of in its own column */
-  .award { grid-template-columns: 1.75rem minmax(0, 1fr); }
-  .award-year { grid-column: 2; margin-top: 0.2rem; }
-  .award-year:empty { display: none; }
-
-  .contact-email { font-size: 1.1875rem; }
-
-  /* half-row logos get a little more width back */
-  .work:not(.is-wide) .work-logo { width: min(calc(var(--logo-w) * 118%), 88%); }
-  .tiles { grid-auto-columns: 34%; }
-  .hero-eyebrow { align-items: flex-start; line-height: 1.5; }
-  /* when the rotating line wraps, the dot stays with its first line */
-  .ticker { align-items: flex-start; }
-  .ticker-dot { transform: none; margin-top: 0.62em; }
-  .map-panel { min-height: 260px; }
-  .hero-num { padding-top: 0.2em; }
-}
-
-
-/* ----------------------------------------------------------- breakpoints -- */
+/* ------------------------------------------------------- from 40rem up -- */
 
 @media (min-width: 40rem) {
-  .contact-grid { grid-template-columns: 1.15fr 0.85fr; }
-  /* Running takes two thirds of its column, the countdown the last third */
-  .health-pair {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    grid-template-rows: 2fr 1fr;
-  }
-  .health-pair .card-run   { grid-column: 1; grid-row: 1; }
-  .health-pair .card-goal  { grid-column: 1; grid-row: 2; }
-  .health-pair .card-whoop { grid-column: 2; grid-row: 1 / span 2; }
-
-  .section-head { flex-direction: row; align-items: baseline; gap: 1.25rem; }
-  /* headings that lead from the right */
-  .section-head.is-right { flex-direction: row-reverse; text-align: right; }
-  .section-head.is-right .sub { margin-left: auto; }
-  .section-head.is-right .sweep::after { transform-origin: right; }
-  .section-head.is-center { flex-direction: column; align-items: center; gap: 0.5rem; text-align: center; }
-  .section-head.is-center .sweep::after { transform-origin: center; }
-
-  .work-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1rem; }
-  /* three narrow tiles: the marks need a little more of each tile's width */
-  .work-logo { width: min(calc(var(--logo-w) * 112%), 90%); }
-  .work.is-wide { grid-column: auto; aspect-ratio: 16 / 9; height: auto; }
-
-  .book-mini-grid .mini:nth-child(9) { display: none; }
-  .tiles { grid-template-columns: repeat(4, 1fr); }
+  .work-band { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .book-mini-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  /* nine covers fill a 3 by 3 on phones; the ninth stands down for 4 by 2 */
+  .mini-ninth { display: none; }
+  /* out of step: every other book on the shelf sits lower */
+  .mini:nth-child(even) { margin-top: 1.75rem; }
+  .book-lead { grid-template-columns: minmax(0, 15rem) minmax(0, 1fr); align-items: end; gap: 2rem; }
+  .award-groups { grid-template-columns: 1.35fr 1.2fr 1fr; align-items: start; }
 }
+
+/* ------------------------------------------------------- from 60rem up -- */
 
 @media (min-width: 60rem) {
-  .work-logo { width: calc(var(--logo-w, 0.6) * 100%); }
-  .about-grid { grid-template-columns: repeat(12, minmax(0, 1fr)); }
-  .map-panel  { grid-column: span 7; min-height: 380px; }
-  .about-side { grid-column: span 5; }
+  .rail-grid { grid-template-columns: var(--rail) minmax(0, 1fr); }
 
-  .library-grid { grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr); }
-  .book-lead { grid-template-columns: minmax(0, 19rem) 1fr; }
-  .tiles { grid-template-columns: repeat(6, 1fr); }
+  .work-band { grid-template-columns: repeat(6, minmax(0, 1fr)); }
 
-  /* Awards: the heading holds the left column while the list runs down the right */
-  .split {
-    display: grid;
-    grid-template-columns: minmax(0, 4fr) minmax(0, 8fr);
-    gap: clamp(2rem, 5vw, 4.5rem);
+  /* the latest book lies across the corner of the shelf, and up over the foot of the heading */
+  .library-table {
+    grid-template-columns: minmax(0, 21rem) minmax(0, 1fr);
+    gap: 0;
     align-items: start;
+    margin-top: -0.75rem;
   }
-  .split > .section-head { position: sticky; top: 5.5rem; flex-direction: column; gap: 0.5rem; margin-bottom: 0; }
+  .book-feature { position: relative; z-index: var(--z-over); margin-right: -2.75rem; }
+  .book-lead { grid-template-columns: minmax(0, 1fr); gap: 1.75rem; }
+  .shelf { padding-left: 5.5rem; padding-top: 0.75rem; }
 
-  /* Library leads from the right, so its shelf line mirrors too */
-  #library .shelf-foot { flex-direction: row-reverse; }
+  /* the sheet lies across the numeral's shoulder */
+  .health-body { align-items: start; gap: 0; }
+  .run { grid-row: 1; grid-column: 1; }
+  .sheet { grid-row: 1; grid-column: 2; }
+  /* the small facts run underneath both, so the sheet never lies on top of a number */
+  .health-body { grid-template-columns: max-content max-content minmax(0, 1fr); }
+  .route {
+    display: block;
+    grid-row: 1;
+    grid-column: 3;
+    justify-self: end;
+    align-self: start;
+    margin-top: clamp(1rem, 3vw, 3rem);
+    width: min(100% - clamp(1.5rem, 3vw, 3rem), 27rem);
+  }
+  .run-more { grid-row: 2; grid-column: 1 / -1; margin-top: clamp(1.5rem, 3vw, 2.25rem); }
+  /* across the shoulder of the 9 and no further: the number has to stay a number */
+  .sheet { margin-left: clamp(-4.25rem, -3.4vw, -2.25rem); margin-top: clamp(4rem, 12vw, 11rem); }
 }
 
-@media (min-width: 80rem) {
-  .tiles { grid-template-columns: repeat(8, 1fr); }
+/* ------------------------------------------------------- from 64rem up --
+   The strips stand up into walls: three rows deep, side by side, sized by their columns. */
+
+@media (min-width: 64rem) {
+  .walls {
+    grid-template-columns: none;
+    display: flex;
+    align-items: start;
+    gap: clamp(2rem, 4vw, 4rem);
+    padding-inline: var(--edge);
+  }
+  .wall { flex: var(--cols) 1 0; min-width: 0; }
+  .wall-name { padding-inline: 0; }
+  .tiles {
+    grid-auto-flow: row;
+    grid-auto-columns: auto;
+    grid-template-columns: repeat(var(--cols), minmax(0, 1fr));
+    overflow: visible;
+    padding: 0 0 2.75rem;
+  }
+  .tile.is-low { transform: translateY(2.75rem) !important; }
+  .wall[data-reveal] { opacity: 1; transform: none; }
+  .wall .tile { opacity: 0; transition: opacity 800ms var(--ease-expo) calc(var(--i, 0) * 80ms); }
+  .wall.is-in .tile { opacity: 1; }
 }
 
-/* ----------------------------------------------------------------- band --
-   Professional Experiences is a full-bleed tinted band with its heading
-   centered over the logos.
-   ------------------------------------------------------------------------ */
+/* -------------------------------------------------------------- phones -- */
 
-.section.band {
-  background: var(--tint);
-  border-block: 1px solid var(--rule);
-  padding-block: clamp(2.5rem, 5vw, 4.5rem);
-  margin-bottom: var(--section-gap);
+@media (max-width: 39.99rem) {
+  .topbar-name { display: none; }
+  .book-lead { grid-template-columns: minmax(0, 44%) minmax(0, 1fr); gap: 1.25rem; align-items: end; }
+  .sheet { margin-top: -0.5rem; }
+  .close-email span + span { padding-left: 0; }
 }
-.band .section-head { flex-direction: column; align-items: center; gap: 0.5rem; text-align: center; }
-.band .sweep::after { transform-origin: center; }
 
 /* ------------------------------------------------------- reduced motion -- */
 
@@ -1379,18 +1156,14 @@ a { color: inherit; }
   html { scroll-behavior: auto; }
   *, *::before, *::after {
     animation-duration: 0.001ms !important;
+    animation-delay: 0ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.001ms !important;
     transition-delay: 0ms !important;
   }
-  [data-reveal] { opacity: 1; transform: none; }
-  .sweep::after { transform: scaleX(1); }
+  [data-reveal], .mark, .chapter-head, .wall .tile { opacity: 1; transform: none; }
   .marquee { -webkit-mask-image: none; mask-image: none; }
   .marquee-track { animation: none; width: auto; flex-wrap: wrap; }
   .marquee-run[aria-hidden="true"] { display: none; }
-  .marquee-run { flex-wrap: wrap; padding-right: 0; }
-  .pin-ring { animation: none !important; }
-  /* the arc is shown outright rather than drawn */
-  .map-arc path { clip-path: none; }
-  .book-cover { transform: none !important; }
+  .marquee-run { flex-wrap: wrap; padding-right: 0; row-gap: 0.25rem; }
 }

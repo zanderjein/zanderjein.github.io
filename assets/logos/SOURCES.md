@@ -8,7 +8,7 @@ Nothing here is redrawn, traced or approximated.
 | File | Organisation | Source |
 |---|---|---|
 | `council-on-foreign-relations.svg` | Council on Foreign Relations | header wordmark, https://www.cfr.org |
-| `yale-law-journal.svg` | The Yale Law Journal | header wordmark, https://yalelawjournal.org |
+| `yale-law-journal.svg` | The Yale Law Journal | header shield and wordmark, https://yalelawjournal.org. The site publishes them as two inline SVGs; this file stacks the shield above the wordmark, as the site's desktop header does. The shield is set larger against the wordmark than in that header (about 4.5:1 instead of 2.3:1) so it stays legible at the size of the logo strip. Neither drawing is altered. |
 | `health-care-affordability-lab.svg` | Yale Health Care Affordability Lab | site logo, https://www.healthcareaffordabilitylab.org |
 | `yale-school-of-management.svg` | Yale School of Management | header lockup, https://som.yale.edu |
 | `yale.svg` | Yale University | `yale_university_logo.svg`, https://som.yale.edu |

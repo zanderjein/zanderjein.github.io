@@ -1,5 +1,5 @@
 /* ==========================================================================
-   zanderjein.com — main.js
+   zanderjein.com, main.js
    Vanilla JS, no dependencies, no build step.
    ========================================================================== */
 
@@ -10,6 +10,68 @@
 
 const SITE = {
 
+  /* The words on the page. Each section has a `sub` (the line under its name) and a
+     `text` (one string per paragraph). Leave either as '' or [] and it simply doesn't render. */
+  about: {
+    sub: 'Bachelor\u2019s in Economics & Math, Minor in Chinese',
+    text: [
+      'I\u2019m most interested in applying economics to health care and understanding what policy choices mean for patients. I\u2019m especially drawn to questions about access, affordability, and how policy interventions can improve the way care is delivered and paid for. I\u2019m also a big Health Affairs fan. Outside of academics, I debate, run, and make music!'
+    ]
+  },
+  work: {
+    sub: 'Health care systems, global health, and inequality.',
+    text: [
+      'I\u2019m most proud of my work with the Health Care Affordability Lab, where I contribute to health policy research and study how different systems and policies shape spending, coverage, and the way care is financed. At the Council on Foreign Relations, I\u2019ve also worked on U.S. global health interventions, including foreign aid programs, bilateral health agreements, and vaccine rollouts. I also research income and consumption inequality in the United States using household data to understand how economic well-being has changed across groups and over time.'
+    ]
+  },
+  watching: {
+    sub: 'Movies, musicals, and new favorites.',
+    text: [
+      'I picked movies and musicals back up in summer 2026 and have been enjoying them ever since. Always excited for recommendations!'
+    ]
+  },
+
+  /* About, the journey: two places, each with a list beside it. The map is pinned while
+     the chapters scroll past; on phones it becomes map, list, map, list.
+     Every entry is `when`, `name`, and `details` (one string per line underneath).
+     Leave `when` as '' or `details` as [] and that part simply doesn't render.
+     A chapter's `note` is the sentence under the place name; '' removes it. `at` is [latitude, longitude]
+     and is only used to work out the distance printed on the arc. */
+  journey: [
+    {
+      place: 'bangkok',
+      title: 'Bangkok',
+      note: 'Previously represented Thailand on three national teams',
+      at: [13.7563, 100.5018],
+      items: [
+        { when: '2022-23', name: 'Thai National Debate Team',
+          details: ['Captain, WSDC Vietnam, 2023', 'Member, WSDC Netherlands, 2022'] },
+        { when: '2018-23', name: 'Thai National Youth Orchestra',
+          details: ['Flute & Piccolo', 'Festival Internacional de J\u00f3venes Orquestas (FIJO), Spain, 2019'] },
+        { when: '2024', name: 'Thai Philosophy Olympiad Team',
+          details: ['1 of 2 delegates from Thailand', 'Top 10 in the World, Helsinki, Finland'] }
+      ]
+    },
+    {
+      place: 'newhaven',
+      title: 'New Haven',
+      note: '',
+      at: [41.3083, -72.9279],
+      items: [
+        { when: 'Since 2024', name: 'Yale Debate Association', details: ['Director of Membership'] },
+        { when: 'Since 2025', name: 'Yale Undergraduate Consulting Group', details: [] },
+        { when: 'Since 2024', name: 'Yale Foreign Policy Initiative', details: [] }
+      ]
+    }
+  ],
+
+  /* The short lines in Work, Health, and Say hi. '' removes one. */
+  lines: {
+    worked: 'Where I\u2019ve worked',          // the label inside the strip of logos
+    health: 'Strava and Whoop enthusiast',
+    connect: 'The easiest way to reach me is via email.'
+  },
+
   /* The race countdown. After race day the card switches to a "ran it" state. */
   race: {
     date: '2026-11-08',                       // YYYY-MM-DD, local time
@@ -18,13 +80,6 @@ const SITE = {
     where: 'Franklin Park, 8:00\u00a0a.m.'   // the time holds together when the line wraps
   },
 
-  /* Hero rotating line. Each entry cross-fades every four seconds.
-     Use {book} to drop in the most recently finished book from Goodreads. */
-  currently: [
-    'Just finished <b>{book}</b>',
-    'Currently training for <b>the Boston Half</b>',
-    'Currently stage managing for <b>the Yale Dramat</b>'
-  ],
 
   /* About — the slow scrolling line of interests. Add or remove freely. */
   tickerWords: [
@@ -83,12 +138,13 @@ const SITE = {
       url: 'https://yalelawjournal.org',
       logo: 'assets/logos/yale-law-journal.svg',
       logoHover: '#00356B',
-      size: 0.7,
+      size: 0.64,
       wide: true
     }
   ],
 
-  /* Interests — two shelves. First eight show; the rest sit behind "Show all". */
+  /* Interests: two poster walls side by side, three rows deep (strips you push sideways
+     on a phone). Order here is order on the page, left to right, top to bottom. */
   interests: [
     {
       name: 'Musicals',
@@ -104,18 +160,19 @@ const SITE = {
     }
   ],
 
-  /* Awards — in your order. Every entry is the same three parts:
-     `title`, `context` (the organisation or where it happened), and `year`. */
+  /* Awards. The first entry is set large on its own. The rest are gathered under their
+     `group` heading, groups in the order they first appear, entries in the order written here.
+     Every entry: `title`, `context` (the organisation or where it happened), `year`, `group`. */
   awards: [
-    { title: 'Team of the Year', context: 'American Parliamentary Debate Association (APDA)', year: '2025–26' },
-    { title: 'National Finalist', context: 'American Parliamentary Debate Association (APDA)', year: '2026' },
-    { title: 'Finalist, Top 40 of 10,000+', context: 'Bridgewater’s Forecasting the Future Macroeconomics Challenge', year: '2025' },
-    { title: 'Bronze Medal', context: 'International Philosophy Olympiad, second medalist in Thailand’s history', year: '2024' },
-    { title: 'Richard U. Light Fellowship', context: 'Intensive Chinese study at Princeton in Beijing, full scholarship', year: '2025' },
-    { title: '2x Best Speaker in Thailand', context: 'THSDC and TNTC', year: '2021–23' },
-    { title: '3x Thai National Debate Champion', context: 'TWSDC, TNTC, and THSDC', year: '2021–23' },
-    { title: 'First Prize', context: '9th Hong Kong International Youth Performance Arts Festival', year: '2021' },
-    { title: 'Fourth Prize', context: 'London Classical Music Competition', year: '2021' }
+    { title: 'Team of the Year', context: 'American Parliamentary Debate Association (APDA)', year: '2025-26', group: 'Debate' },
+    { title: 'National Finalist', context: 'American Parliamentary Debate Association (APDA)', year: '2026', group: 'Debate' },
+    { title: 'Finalist, Top 40 of 10,000+', context: 'Bridgewater\u2019s Forecasting the Future Macroeconomics Challenge', year: '2025', group: 'Academic' },
+    { title: 'Bronze Medal', context: 'International Philosophy Olympiad, second medalist in Thailand\u2019s history', year: '2024', group: 'Academic' },
+    { title: 'Richard U. Light Fellowship', context: 'Intensive Chinese study at Princeton in Beijing, full scholarship', year: '2025', group: 'Academic' },
+    { title: '2x Best Speaker in Thailand', context: 'THSDC and TNTC', year: '2021-23', group: 'Debate' },
+    { title: '3x Thai National Debate Champion', context: 'TWSDC, TNTC, and THSDC', year: '2021-23', group: 'Debate' },
+    { title: 'First Prize', context: '9th Hong Kong International Youth Performance Arts Festival', year: '2021', group: 'Music' },
+    { title: 'Fourth Prize', context: 'London Classical Music Competition', year: '2021', group: 'Music' }
   ]
 
 };
@@ -205,105 +262,42 @@ async function loadJSON(path) {
   }
 }
 
-/* ------------------------------------------------------------ hero ticker -- */
-
-function startTicker(firstBook) {
-  const el = $('ticker');
-  if (!el) return;
-
-  const lines = SITE.currently.map((line) =>
-    line.replace('{book}', esc(firstBook || 'something on the shelf')));
-
-  let i = 0;
-  el.innerHTML = lines[0];
-  if (lines.length < 2) return;
-
-  let paused = false;
-  const host = el.closest('.ticker');
-  if (host) {
-    host.addEventListener('mouseenter', () => { paused = true; });
-    host.addEventListener('mouseleave', () => { paused = false; });
-    host.addEventListener('focusin', () => { paused = true; });
-    host.addEventListener('focusout', () => { paused = false; });
-  }
-
-  setInterval(() => {
-    if (paused || document.hidden) return;
-    i = (i + 1) % lines.length;
-    if (REDUCED.matches) { el.innerHTML = lines[i]; return; }
-    el.classList.add('is-out');
-    setTimeout(() => {
-      el.innerHTML = lines[i];
-      el.classList.remove('is-out');
-    }, 280);
-  }, 4000);
-}
 
 /* -------------------------------------------------------------- now cards -- */
 
-/** Fill a hover veil: one serif line and one small line, centered in the card. */
-function setVeil(id, big, small) {
-  const el = $(id);
-  if (!el) return;
-  el.innerHTML = `<p class="veil-big">${big}</p>${small ? `<p class="veil-small">${small}</p>` : ''}`;
-}
-
-/** The race countdown: its own small tile under the Running card. */
+/** The race countdown: one line beside the run count. */
 function renderGoal() {
-  const tile = $('card-goal');
-  if (!tile) return;
+  const line = $('card-goal');
+  if (!line) return;
   const race = localDate(SITE.race.date);
-  if (!race) { tile.remove(); return; }
+  if (!race) { line.remove(); return; }
 
   const days = Math.round((midnight(race) - midnight(new Date())) / 86400000);
-  const when = race.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+  const when = race.toLocaleDateString('en-US', { month: 'long', day: 'numeric' });
 
-  const parts = days > 0
-    ? [String(days), `${days === 1 ? 'day' : 'days'} to ${esc(SITE.race.name)}`, `${esc(when)} · ${esc(SITE.race.where)}`]
+  line.innerHTML = days > 0
+    ? `<b>${days}</b> ${days === 1 ? 'day' : 'days'} to ${esc(SITE.race.name)}, ${esc(when)}`
     : days === 0
-      ? ['Today', esc(SITE.race.longName), esc(SITE.race.where)]
-      : ['Ran it', `Ran ${esc(SITE.race.name)}`, `${esc(when)} · next one to be decided`];
-
-  tile.innerHTML = `
-    <p class="card-label">Next race</p>
-    <div class="goal-row">
-      <p class="goal-days">${parts[0]}</p>
-      <p class="goal-copy"><b>${parts[1]}</b><span>${parts[2]}</span></p>
-    </div>`;
+      ? `<b>Today:</b> ${esc(SITE.race.longName)}`
+      : `Ran ${esc(SITE.race.name)}, ${esc(when)}`;
 }
 
 function renderRunning(data) {
   const body = $('card-running');
   const foot = $('foot-running');
-  const yearTag = $('run-year');
 
   if (!data || data.miles == null) {
     body.innerHTML = '<p class="is-empty">No runs logged yet.</p>';
-    foot.textContent = '—';
-    setVeil('veil-running', 'Training for the Boston Half', 'Year-to-date totals from Strava');
+    foot.textContent = '';
     return;
   }
 
-  if (yearTag) yearTag.textContent = data.year ? `· ${data.year}` : '';
-
   const miles = Number(data.miles).toLocaleString('en-US', { maximumFractionDigits: 0 });
-  const last = data.lastRun;
 
   body.innerHTML = `
-    <div class="figures">
-      <div class="figure">
-        <p class="figure-num">${miles}</p>
-        <p class="figure-cap">miles this year</p>
-      </div>
-      <div class="figure figure-sm">
-        <p class="figure-num">${esc(data.runs ?? '—')}</p>
-        <p class="figure-cap">runs</p>
-      </div>
-    </div>`;
-
-  setVeil('veil-running',
-    last ? `Last run: ${esc(longDay(last.date))}, ${Number(last.miles).toFixed(1)} mi` : 'Year-to-date running',
-    `Training for ${esc(SITE.race.longName)} on ${esc(longDay(SITE.race.date))}`);
+    <p class="run-miles"><span class="run-num">${miles}</span><span class="run-cap">miles run${data.year ? ' in ' + esc(data.year) : ' this year'}</span></p>`;
+  const runs = $('run-runs');
+  if (runs) runs.innerHTML = `<b>${esc(data.runs ?? 0)}</b> runs`;
 
   foot.textContent = updatedAgo(data.updated);
 }
@@ -314,8 +308,7 @@ function renderSleep(data) {
 
   if (!data || (data.sleepScore == null && data.recoveryScore == null)) {
     body.innerHTML = '<p class="is-empty">No recent data.</p>';
-    foot.textContent = '—';
-    setVeil('veil-sleep', 'Sleep and recovery', 'Scored by Whoop each morning');
+    foot.textContent = '';
     return;
   }
 
@@ -326,10 +319,10 @@ function renderSleep(data) {
       <figure class="ring">
         <div class="ring-dial">
           <svg viewBox="0 0 120 120" aria-hidden="true">
-            <circle class="ring-track" cx="60" cy="60" r="54" pathLength="100" />
+            <circle class="ring-ticks" cx="60" cy="60" r="54" pathLength="100" />
             <circle class="ring-fill" cx="60" cy="60" r="54" pathLength="100" data-value="${v}" />
           </svg>
-          <span class="ring-value">${value == null ? '—' : esc(value) + '<span class="pct">%</span>'}</span>
+          <span class="ring-value">${value == null ? 'n/a' : esc(value) + '<span class="pct">%</span>'}</span>
         </div>
         <figcaption class="ring-name">${name}</figcaption>
       </figure>`;
@@ -340,10 +333,6 @@ function renderSleep(data) {
       ${ring('Sleep', data.sleepScore)}
       ${ring('Recovery', data.recoveryScore)}
     </div>`;
-
-  setVeil('veil-sleep',
-    data.date ? `Measured ${esc(longDay(data.date))}` : 'Last night',
-    'Sleep performance and recovery, scored by Whoop');
 
   drawRings(body);
   foot.textContent = updatedAgo(data.updated);
@@ -388,34 +377,41 @@ function renderLibrary(data) {
         ${first.cover ? `<img src="${esc(coverAt(first.cover, 720))}" alt="Cover of ${esc(first.title)}" loading="lazy" decoding="async" />` : ''}
       </div>
       <div class="lead-meta">
-        <p class="lead-kicker">Most recently finished</p>
         <h3 class="lead-title">${esc(first.title)}</h3>
         <p class="lead-author">${esc(first.author)}</p>
         ${stars(first.rating)}
-        <p class="lead-date">${esc(longDay(first.readAt))}${firstYear ? ', ' + firstYear : ''}</p>
+        <p class="lead-date">Finished ${esc(longDay(first.readAt))}${firstYear ? ', ' + firstYear : ''}</p>
         <span class="lead-cue">View on Goodreads ${ARROW}</span>
       </div>
     </a>`;
 
   // nine covers: phones show a 3 by 3 grid, wider screens hide the ninth for 4 by 2
-  mini.innerHTML = rest.slice(0, 9).map((b) => `
-    <a class="mini" href="${esc(b.link || '#')}" target="_blank" rel="noopener noreferrer">
+  mini.innerHTML = rest.slice(0, 9).map((b, i) => `
+    <a class="mini${i === 8 ? ' mini-ninth' : ''}" data-reveal style="--i:${i}" href="${esc(b.link || '#')}" target="_blank" rel="noopener noreferrer">
       <div class="book-cover mini-cover">
         ${b.cover ? `<img src="${esc(coverAt(b.cover, 360))}" alt="Cover of ${esc(b.title)}" loading="lazy" decoding="async" />` : ''}
-        <span class="veil veil-cover">
-          <span class="veil-big">${esc(b.title)}</span>
-          <span class="veil-small">${esc(b.author)}</span>
-          ${stars(b.rating)}
-        </span>
       </div>
+      <span class="mini-title">${esc(b.title)}</span>
+      <span class="mini-author">${esc(b.author)}</span>
     </a>`).join('');
 
-  if (count) count.textContent = `${books.length} book${books.length === 1 ? '' : 's'} · ${updatedAgo(data.updated)}`;
-
-  setupTilt();
+  if (count) count.textContent = `${books.length} book${books.length === 1 ? '' : 's'} read. `;
+  setupReveal(mini);
 }
 
 /* --------------------------------------------------------- static sections -- */
+
+/** A section's own words: the line under its name, then its paragraphs. */
+function renderCopy(id, copy) {
+  const host = $(id);
+  if (!host) return;
+  const c = copy || {};
+  const paras = (c.text || []).filter(Boolean);
+  if (!c.sub && !paras.length) { host.remove(); return; }
+  host.innerHTML =
+    (c.sub ? `<p class="sub">${esc(c.sub)}</p>` : '') +
+    paras.map((p) => `<p class="blurb">${esc(p)}</p>`).join('');
+}
 
 function renderMarquee() {
   const track = $('marquee-track');
@@ -423,7 +419,7 @@ function renderMarquee() {
 
   const run = SITE.tickerWords
     .map((w) => `<span class="marquee-word">${esc(w)}</span>`)
-    .join('<span class="marquee-dot" aria-hidden="true">·</span>');
+    .join('<span class="marquee-gap" aria-hidden="true"></span>');
 
   // the run is duplicated so the loop can hand off seamlessly at -50%
   track.innerHTML =
@@ -431,78 +427,194 @@ function renderMarquee() {
     `<span class="marquee-run" aria-hidden="true">${run}</span>`;
 }
 
-function renderPlace(maps) {
-  const host = $('place');
-  if (!host) return;
-  const big = maps && maps.thailand;
-  const small = maps && maps.connecticut;
-  if (!big) { host.innerHTML = ''; return; }
+/* ---------------------------------------------------------------- journey --
+   Two modes, chosen by media query and re-chosen if either one changes:
+     pinned   wide screens, motion allowed. One map stage sticks; the chapters scroll
+              past it and an IntersectionObserver swaps the stage between places.
+     stacked  phones and reduced motion. Each chapter carries its own still map.
+   Nothing listens to the scroll event, and nothing takes the scroll wheel away.
+   ------------------------------------------------------------------------ */
 
-  const pct = (m) => {
-    const [w, h] = m.viewBox.split(' ').slice(2).map(Number);
-    return { left: ((m.dot[0] / w) * 100).toFixed(2), top: ((m.dot[1] / h) * 100).toFixed(2) };
-  };
+const WIDE = window.matchMedia('(min-width: 48rem)');
+const MAP_KEY = { bangkok: 'thailand', newhaven: 'connecticut' };
 
-  const pin = (m, cls) => {
-    const p = pct(m);
-    return `<span class="pin ${cls}" style="left:${p.left}%; top:${p.top}%">
-      <span class="pin-ring" aria-hidden="true"></span>
-      <span class="pin-dot" aria-hidden="true"></span>
-      <span class="pin-label">${esc(m.label)}</span>
-    </span>`;
-  };
-
-  host.innerHTML = `
-    <div class="map-main">
-      <span class="map-shape">
-        <svg viewBox="${esc(big.viewBox)}" role="img" aria-label="Outline map of Thailand with Bangkok marked">
-          <path d="${esc(big.path)}" />
-        </svg>
-        ${pin(big, 'pin-home')}
+function landMarkup(m, cls) {
+  const [w, h] = m.viewBox.split(' ').slice(2).map(Number);
+  const left = ((m.dot[0] / w) * 100).toFixed(2);
+  const top = ((m.dot[1] / h) * 100).toFixed(2);
+  return `
+    <div class="land ${cls}" style="aspect-ratio:${w} / ${h}">
+      <svg viewBox="${esc(m.viewBox)}" aria-hidden="true"><path d="${esc(m.path)}" /></svg>
+      <span class="pin" style="left:${left}%; top:${top}%">
+        <span class="pin-ring" aria-hidden="true"></span>
+        <span class="pin-dot" aria-hidden="true"></span>
+        <span class="pin-label">${esc(m.label)}</span>
       </span>
-    </div>
-    ${small ? `
-    <div class="map-inset">
-      <svg viewBox="${esc(small.viewBox)}" role="img" aria-label="Outline map of Connecticut with New Haven marked">
-        <path d="${esc(small.path)}" />
-      </svg>
-      ${pin(small, 'pin-away')}
-    </div>` : ''}
-    <svg class="map-arc" aria-hidden="true"><path id="arc-path" /></svg>`;
-
-  drawArc();
-  window.addEventListener('resize', drawArc, { passive: true });
+    </div>`;
 }
 
-/** The arc is drawn in panel coordinates, so it has to be measured, not authored. */
-function drawArc() {
-  const host = $('place');
-  const arc = host && host.querySelector('.map-arc');
-  const from = host && host.querySelector('.pin-home');
-  const to = host && host.querySelector('.pin-away');
-  const p = $('arc-path');
-  if (!host || !arc || !from || !to || !p) return;
+/** The chapters and their lists. Drawn before the map data arrives, so the words never wait on it. */
+function renderChapters() {
+  const host = $('chapters');
+  if (!host) return;
 
-  const box = host.getBoundingClientRect();
-  const a = from.getBoundingClientRect();
-  const b = to.getBoundingClientRect();
-  const ax = a.left - box.left, ay = a.top - box.top;
-  const bx = b.left - box.left, by = b.top - box.top;
+  host.innerHTML = (SITE.journey || []).map((c) => `
+    <article class="chapter" data-place="${esc(c.place)}">
+      <figure class="chapter-map" data-map="${esc(c.place)}"></figure>
+      <header class="chapter-head">
+        <h3 class="chapter-title">${esc(c.title)}</h3>
+        ${c.note ? `<p class="chapter-note">${esc(c.note)}</p>` : ''}
+      </header>
+      <ol class="marks">
+        ${c.items.map((it) => `
+        <li class="mark">
+          <span class="mark-when">${esc(it.when)}</span>
+          <span class="mark-what">
+            <span class="mark-name">${esc(it.name)}</span>
+            ${(it.details || []).length ? `<ul class="mark-details">${it.details.map((d) => `<li>${esc(d)}</li>`).join('')}</ul>` : ''}
+          </span>
+        </li>`).join('')}
+      </ol>
+    </article>`).join('');
 
-  // bow the curve away from the straight line by a fraction of its length
-  const mx = (ax + bx) / 2;
-  const my = (ay + by) / 2;
-  const lift = Math.hypot(bx - ax, by - ay) * 0.22;
+  // each line arrives as you reach it, a little above the fold rather than at its edge
+  const marks = host.querySelectorAll('.mark, .chapter-head');
+  if (!('IntersectionObserver' in window)) { marks.forEach((m) => m.classList.add('is-in')); return; }
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach((e) => {
+      if (!e.isIntersecting) return;
+      e.target.classList.add('is-in');
+      io.unobserve(e.target);
+    });
+  }, { rootMargin: '0px 0px -18% 0px', threshold: 0.4 });
+  marks.forEach((m) => io.observe(m));
+}
 
-  arc.setAttribute('viewBox', `0 0 ${Math.round(box.width)} ${Math.round(box.height)}`);
-  p.setAttribute('d', `M${ax.toFixed(1)} ${ay.toFixed(1)} Q${mx.toFixed(1)} ${(my - lift).toFixed(1)} ${bx.toFixed(1)} ${by.toFixed(1)}`);
+/** Great-circle distance in miles between two [lat, lon] pairs. */
+function milesBetween(a, b) {
+  const rad = (d) => (d * Math.PI) / 180;
+  const dLat = rad(b[0] - a[0]);
+  const dLon = rad(b[1] - a[1]);
+  const s = Math.sin(dLat / 2) ** 2 + Math.cos(rad(a[0])) * Math.cos(rad(b[0])) * Math.sin(dLon / 2) ** 2;
+  return 3958.8 * 2 * Math.asin(Math.sqrt(s));
+}
+
+function renderJourney(maps) {
+  const journey = $('journey');
+  const stage = $('stage');
+  if (!journey || !stage) return;
+
+  const th = maps && maps.thailand;
+  const ct = maps && maps.connecticut;
+
+  // the still maps, one per chapter, for the stacked mode
+  journey.querySelectorAll('.chapter-map').forEach((fig) => {
+    const m = maps && maps[MAP_KEY[fig.dataset.map]];
+    fig.innerHTML = m ? landMarkup(m, 'land-still') : '';
+    if (m) fig.setAttribute('aria-label', `Outline map with ${m.label} marked`), fig.setAttribute('role', 'img');
+  });
+
+  if (!th || !ct) { journey.dataset.mode = 'stacked'; return; }
+
+  const [from, to] = SITE.journey;
+  const miles = from && to && from.at && to.at ? Math.round(milesBetween(from.at, to.at) / 10) * 10 : null;
+
+  stage.innerHTML = `
+    ${landMarkup(th, 'stage-th')}
+    ${landMarkup(ct, 'stage-ct')}
+    <svg class="stage-arc" aria-hidden="true">
+      <defs>
+        <mask id="arc-mask" maskUnits="userSpaceOnUse">
+          <path class="arc-draw" id="arc-draw" pathLength="1" />
+        </mask>
+      </defs>
+      <path class="arc-dots" id="arc-dots" mask="url(#arc-mask)" />
+    </svg>
+    <span class="stage-flight" id="stage-flight" aria-hidden="true"></span>
+    <span class="stage-from" id="stage-from" aria-hidden="true">${esc(th.label)}</span>
+    ${miles ? `<span class="stage-miles" id="stage-miles" aria-hidden="true">${miles.toLocaleString('en-US')} miles</span>` : ''}`;
+
+  /** The arc joins the two pins where they come to rest, so it is measured, not authored. */
+  const layoutArc = () => {
+    if (journey.dataset.mode !== 'pinned') return;
+    const was = stage.dataset.place;
+    stage.classList.add('is-measuring');
+    stage.dataset.place = 'newhaven';
+
+    const box = stage.getBoundingClientRect();
+    const a = stage.querySelector('.stage-th .pin').getBoundingClientRect();
+    const b = stage.querySelector('.stage-ct .pin').getBoundingClientRect();
+    const ax = a.left - box.left, ay = a.top - box.top;
+    const bx = b.left - box.left, by = b.top - box.top;
+
+    stage.dataset.place = was;
+    void stage.offsetWidth;                 // settle before transitions come back on
+    stage.classList.remove('is-measuring');
+
+    // bow the curve upward, away from the straight line, by a share of its length
+    const len = Math.hypot(bx - ax, by - ay) || 1;
+    let nx = -(by - ay) / len, ny = (bx - ax) / len;
+    if (ny > 0) { nx = -nx; ny = -ny; }
+    const lift = len * 0.34;
+    const cx = (ax + bx) / 2 + nx * lift, cy = (ay + by) / 2 + ny * lift;
+    const d = `M${ax.toFixed(1)} ${ay.toFixed(1)} Q${cx.toFixed(1)} ${cy.toFixed(1)} ${bx.toFixed(1)} ${by.toFixed(1)}`;
+
+    const svg = stage.querySelector('.stage-arc');
+    svg.setAttribute('viewBox', `0 0 ${box.width.toFixed(0)} ${box.height.toFixed(0)}`);
+    const mask = svg.querySelector('mask');
+    // the mask region is generous, so a curve that swings outside the stage isn't cut off
+    mask.setAttribute('x', -200); mask.setAttribute('y', -200);
+    mask.setAttribute('width', (box.width + 400).toFixed(0)); mask.setAttribute('height', (box.height + 400).toFixed(0));
+    $('arc-draw').setAttribute('d', d);
+    $('arc-dots').setAttribute('d', d);
+    $('stage-flight').style.offsetPath = `path("${d}")`;
+
+    const fromLabel = $('stage-from');
+    fromLabel.style.transform = `translate(${(ax + 10).toFixed(1)}px, ${(ay + 8).toFixed(1)}px)`;
+
+    const milesLabel = $('stage-miles');
+    if (milesLabel) {
+      // the top of a quadratic curve sits halfway between the chord and the control point
+      const px = 0.25 * ax + 0.5 * cx + 0.25 * bx, py = 0.25 * ay + 0.5 * cy + 0.25 * by;
+      // step off the curve along its normal, and hang the words from the side facing away from it
+      const lx = px + nx * 12, ly = py + ny * 12;
+      milesLabel.style.transform = `translate(${lx.toFixed(1)}px, ${ly.toFixed(1)}px) translate(${nx < 0 ? '-100%' : '0'}, -100%)`;
+    }
+  };
+
+  const setMode = () => {
+    const pinned = WIDE.matches && !REDUCED.matches && 'IntersectionObserver' in window;
+    journey.dataset.mode = pinned ? 'pinned' : 'stacked';
+    if (pinned) layoutArc();
+  };
+  WIDE.addEventListener('change', setMode);
+  REDUCED.addEventListener('change', setMode);
+  setMode();
+
+  if ('ResizeObserver' in window) new ResizeObserver(layoutArc).observe(stage);
+
+  // A place takes the stage once its name has risen past a line 72% of the way down the
+  // window, and gives it back when the name drops below that line again.
+  if ('IntersectionObserver' in window) {
+    const heads = [...journey.querySelectorAll('.chapter-head')];
+    const passed = new Map();
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach((e) => {
+        const line = e.rootBounds ? e.rootBounds.bottom : window.innerHeight * 0.72;
+        passed.set(e.target, e.isIntersecting || e.boundingClientRect.top < line);
+      });
+      const current = heads.filter((h) => passed.get(h)).pop() || heads[0];
+      if (current) stage.dataset.place = current.closest('.chapter').dataset.place;
+    }, { rootMargin: '0px 0px -28% 0px', threshold: 0 });
+    heads.forEach((h) => io.observe(h));
+  }
 }
 
 function renderWorks() {
-  const grid = $('work-grid');
-  if (!grid) return;
+  const band = $('work-grid');
+  if (!band) return;
 
-  grid.innerHTML = SITE.works.map((w, i) => {
+  band.innerHTML = SITE.works.map((w, i) => {
     const mask = `-webkit-mask-image:url('${esc(w.logo)}');mask-image:url('${esc(w.logo)}')`;
     const logo = w.logoAsPublished
       ? `<div class="work-logo as-published" style="--logo-w:${Number(w.size) || 0.6}">
@@ -513,33 +625,25 @@ function renderWorks() {
            <span class="mono tint" style="${mask};background:${esc(w.logoHover || '#00356B')}"></span>
          </div>`;
 
-    const mark = w.logo
-      ? `<span class="work-mark">${logo}${w.logoNote ? `<span class="work-note">${esc(w.logoNote)}</span>` : ''}</span>`
-      : `<span class="work-wordmark">${esc(w.org)}</span>`;
-
-    const veil = `
-      <span class="veil">
-        <span class="veil-big">${esc(w.org)}</span>
-        ${w.logoNote ? `<span class="veil-small">${esc(w.logoNote)}</span>` : ''}
-        ${w.url ? `<span class="veil-cue">Visit ${ARROW}</span>` : ''}
-      </span>`;
+    // every mark here is a wordmark, so it already says the name; a caption is only for what it leaves out
+    const name = w.logoNote ? `<span class="work-note">${esc(w.logoNote)}</span>` : '';
 
     const label = [w.org, w.logoNote].filter(Boolean).join(', ');
-    const cls = `work${w.wide ? ' is-wide' : ''}`;
     return w.url
-      ? `<a class="${cls}" href="${esc(w.url)}" target="_blank" rel="noopener noreferrer" aria-label="${esc(label)}" data-reveal style="--i:${i % 3}">${mark}${veil}</a>`
-      : `<article class="${cls}" tabindex="0" aria-label="${esc(label)}" data-reveal style="--i:${i % 3}">${mark}${veil}</article>`;
+      ? `<a class="work" style="--i:${i}" href="${esc(w.url)}" target="_blank" rel="noopener noreferrer" aria-label="${esc(label)}">${logo}${name}</a>`
+      : `<div class="work" style="--i:${i}" role="img" aria-label="${esc(label)}">${logo}${name}</div>`;
   }).join('');
 }
 
 function renderInterests(posters) {
   const host = $('shelves');
   if (!host) return;
-  const SHOWN = 8;
   const map = (posters && posters.posters) || {};
+  const ROWS = 3;
 
   host.innerHTML = SITE.interests.map((shelf, s) => {
     const kicker = shelf.name.replace(/s$/, '');
+    const cols = Math.max(1, Math.ceil(shelf.items.length / ROWS));
 
     const tiles = shelf.items.map((title, i) => {
       const src = map[title];
@@ -551,53 +655,69 @@ function renderInterests(posters) {
              <span class="set-title">${esc(title)}</span>
            </div>`;
 
+      // every other column hangs lower, so the wall never reads as a spreadsheet
+      const col = i % cols;
       return `
-        <div class="tile${i >= SHOWN ? ' is-hidden' : ''}">
+        <li class="tile${col % 2 ? ' is-low' : ''}" style="--i:${col}">
           <div class="poster">${art}</div>
-          <p class="tile-meta">
-            <span class="tile-num">${String(i + 1).padStart(2, '0')}</span>
-            <span class="tile-title">${esc(title)}</span>
-          </p>
-        </div>`;
+          <p class="tile-title">${esc(title)}</p>
+        </li>`;
     }).join('');
 
-    const extra = shelf.items.length - SHOWN;
     return `
-      <div class="shelf-block" data-reveal style="--i:${s}">
-        <div class="shelf-head">
-          <span class="shelf-name">${esc(shelf.name)}</span>
-          ${extra > 0 ? `<button class="shelf-toggle" type="button" data-shelf="${s}" aria-expanded="false">Show all ${shelf.items.length}</button>` : ''}
-        </div>
-        <div class="tiles" id="tiles-${s}">${tiles}</div>
+      <div class="wall" style="--cols:${cols}" data-reveal>
+        <h3 class="wall-name">${esc(shelf.name)}</h3>
+        <ul class="tiles" tabindex="0" aria-label="${esc(shelf.name)}">${tiles}</ul>
       </div>`;
   }).join('');
-
-  host.querySelectorAll('.shelf-toggle').forEach((btn) => {
-    btn.addEventListener('click', () => {
-      const s = btn.dataset.shelf;
-      const open = btn.getAttribute('aria-expanded') === 'true';
-      $(`tiles-${s}`).querySelectorAll('.tile').forEach((t, i) => t.classList.toggle('is-hidden', open && i >= SHOWN));
-      btn.setAttribute('aria-expanded', String(!open));
-      btn.textContent = open ? `Show all ${SITE.interests[s].items.length}` : 'Show fewer';
-    });
-  });
 
   setupReveal(host);
 }
 
-function renderAwards() {
-  const list = $('award-list');
-  if (!list) return;
+/** The short lines. An empty string removes the line rather than leaving a gap. */
+function renderLines() {
+  Object.entries(SITE.lines || {}).forEach(([key, text]) => {
+    const el = $(`line-${key}`);
+    if (!el) return;
+    if (text) el.textContent = text; else el.remove();
+  });
+}
 
-  list.innerHTML = SITE.awards.map((a, i) => `
-    <li class="award" data-reveal style="--i:${i % 4}">
-      <span class="award-num">${String(i + 1).padStart(2, '0')}</span>
-      <span class="award-text">
-        <span class="award-name">${esc(a.title)}</span>
-        <span class="award-context">${esc(a.context)}</span>
-      </span>
-      <span class="award-year">${esc(a.year)}</span>
-    </li>`).join('');
+function renderAwards() {
+  const lead = $('award-lead');
+  const host = $('award-groups');
+  if (!host) return;
+
+  const [first, ...rest] = SITE.awards;
+
+  if (lead && first) {
+    lead.innerHTML = `
+      <p class="award-lead-name">${esc(first.title)}</p>
+      <p class="award-lead-context">${esc(first.context)}, ${esc(first.year)}</p>`;
+  }
+
+  const groups = [];
+  rest.forEach((a) => {
+    const name = a.group || '';
+    let g = groups.find((x) => x.name === name);
+    if (!g) { g = { name, items: [] }; groups.push(g); }
+    g.items.push(a);
+  });
+
+  host.innerHTML = groups.map((g, i) => `
+    <section class="award-group" data-reveal style="--i:${i}">
+      ${g.name ? `<h3 class="award-group-name">${esc(g.name)}</h3>` : ''}
+      <ul class="award-list">
+        ${g.items.map((a) => `
+        <li class="award">
+          <span class="award-name">${esc(a.title)}</span>
+          <span class="award-context">${esc(a.context)}</span>
+          <span class="award-year">${esc(a.year)}</span>
+        </li>`).join('')}
+      </ul>
+    </section>`).join('');
+
+  setupReveal(host);
 }
 
 /* ----------------------------------------------------------------- motion -- */
@@ -617,27 +737,6 @@ function setupReveal(scope) {
   }, { rootMargin: '0px 0px -8% 0px', threshold: 0.05 });
 
   items.forEach((el) => io.observe(el));
-}
-
-function setupProgress() {
-  const bar = $('progress-bar');
-  if (!bar) return;
-  let ticking = false;
-
-  const update = () => {
-    const h = document.documentElement.scrollHeight - window.innerHeight;
-    const pct = h > 0 ? Math.min(1, Math.max(0, window.scrollY / h)) : 0;
-    bar.style.width = (pct * 100).toFixed(2) + '%';
-    ticking = false;
-  };
-
-  window.addEventListener('scroll', () => {
-    if (ticking) return;
-    ticking = true;
-    requestAnimationFrame(update);
-  }, { passive: true });
-  window.addEventListener('resize', update, { passive: true });
-  update();
 }
 
 function setupTopbar() {
@@ -660,44 +759,12 @@ function setupActiveSection() {
       if (!entry.isIntersecting) return;
       const id = '#' + entry.target.id;
       links.forEach((a) => a.setAttribute('aria-current', String(a.getAttribute('href') === id)));
-      document.querySelectorAll('.section-num').forEach((n) => { n.style.color = ''; });
-      const num = entry.target.querySelector('.section-num');
-      if (num) num.style.color = 'var(--ink-link)';
     });
   }, { rootMargin: '-45% 0px -45% 0px' });
 
   sections.forEach((s) => io.observe(s));
 }
 
-/** Small tilt on book covers — max 3°, pointer only, off for reduced motion. */
-function setupTilt() {
-  if (REDUCED.matches) return;
-  if (!window.matchMedia('(hover: hover) and (pointer: fine)').matches) return;
-
-  const MAX = 3;
-  document.querySelectorAll('.book-lead, .mini').forEach((link) => {
-    const cover = link.querySelector('.book-cover');
-    if (!cover || cover.dataset.tilt) return;
-    cover.dataset.tilt = '1';
-
-    let frame = null;
-    link.addEventListener('pointermove', (e) => {
-      if (frame) return;
-      frame = requestAnimationFrame(() => {
-        frame = null;
-        const r = cover.getBoundingClientRect();
-        const x = (e.clientX - r.left) / r.width - 0.5;
-        const y = (e.clientY - r.top) / r.height - 0.5;
-        cover.style.setProperty('--ry', (x * MAX * 2).toFixed(2) + 'deg');
-        cover.style.setProperty('--rx', (-y * MAX * 2).toFixed(2) + 'deg');
-      });
-    });
-    link.addEventListener('pointerleave', () => {
-      cover.style.setProperty('--ry', '0deg');
-      cover.style.setProperty('--rx', '0deg');
-    });
-  });
-}
 
 /* ------------------------------------------------------------------- boot -- */
 
@@ -705,13 +772,17 @@ function setupTilt() {
   const yr = $('year');
   if (yr) yr.textContent = new Date().getFullYear();
 
+  renderCopy('copy-about', SITE.about);
+  renderCopy('copy-work', SITE.work);
+  renderCopy('copy-interests', SITE.watching);
+  renderChapters();
+  renderLines();
   renderMarquee();
   renderWorks();
   renderAwards();
   renderGoal();
 
   setupReveal();
-  setupProgress();
   setupTopbar();
   setupActiveSection();
 
@@ -724,7 +795,7 @@ function setupTilt() {
   ]);
 
   renderInterests(posters);
-  renderPlace(maps);
+  renderJourney(maps);
 
   // one sort for everything downstream: newest read date first
   if (books && Array.isArray(books.books)) {
@@ -734,6 +805,4 @@ function setupTilt() {
   renderRunning(strava);
   renderSleep(whoop);
   renderLibrary(books);
-  const latest = books && Array.isArray(books.books) ? books.books[0] : null;
-  startTicker(latest && latest.title);
 })();
