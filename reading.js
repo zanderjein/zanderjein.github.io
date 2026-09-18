@@ -48,7 +48,8 @@
     const title = url
       ? `<a href="${esc(url)}" target="_blank" rel="noopener noreferrer">${esc(it.title)}</a>`
       : esc(it.title);
-    const meta = [it.source, it.authors].filter(Boolean).map(esc).join(', ');
+    // a middle dot, not a comma: the authors may be a comma list of their own
+    const meta = [it.source, it.authors].filter(Boolean).map(esc).join(' <span class="read-dot" aria-hidden="true">\u00b7</span> ');
 
     return `
       <li class="read" data-reveal style="--i:${Math.min(i || 0, 6)}">

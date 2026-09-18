@@ -306,6 +306,7 @@ a { color: inherit; }
 .read-title a { text-decoration: none; transition: color var(--fast) var(--ease); }
 .read-title a:hover { color: var(--ink-link); text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 0.18em; }
 .read-meta { font-size: var(--t-small); line-height: 1.45; color: var(--ink-muted); }
+.read-dot { margin-inline: 0.15em; color: var(--ink-faint); }
 .read-kind { margin-left: 0.5rem; font-family: var(--mono); font-size: var(--t-mono); letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-faint); }
 .read-note { max-width: var(--measure); font-size: var(--t-small); line-height: 1.6; color: var(--ink-muted); text-wrap: pretty; }
 .reads-more { margin-top: 1.25rem; font-size: var(--t-small); color: var(--ink-muted); }
