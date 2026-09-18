@@ -298,15 +298,11 @@ function renderRunning(data) {
   }
 
   const miles = Number(data.miles).toLocaleString('en-US', { maximumFractionDigits: 0 });
-  // three digits share the width two digits get, so the number never leaves the infield
-  $('track').style.setProperty('--digits', Math.max(2, miles.replace(/\D/g, '').length));
 
   body.innerHTML = `
     <p class="run-miles"><span class="run-num">${miles}</span><span class="run-cap">miles run${data.year ? ' in ' + esc(data.year) : ' this year'}</span></p>`;
-  ['run-runs', 'run-runs-below'].forEach((id) => {
-    const el = $(id);
-    if (el) el.innerHTML = `<b>${esc(data.runs ?? 0)}</b> runs`;
-  });
+  const runs = $('run-runs');
+  if (runs) runs.innerHTML = `<b>${esc(data.runs ?? 0)}</b> runs`;
 
   foot.textContent = `Running ${updatedAgo(data.updated).toLowerCase()}`;
 }
@@ -345,33 +341,45 @@ function renderSleep(data) {
   // in the infield each score is a figure like the miles: numeral over caption, lane glyph in the caption
   const figure = (lane, name, value) => `
     <p class="lap lap-figure"><b>${score(value)}</b><span class="lap-cap">${lapGlyph(lane)}${name} last night</span></p>`;
+  // on phones each score is a ring of its own: the same lane, closed into a circle, run
+  // clockwise from the top, with the figure in the middle
+  const ring = (name, key, value) => `
+    <div class="ring">
+      <svg viewBox="0 0 100 100" aria-hidden="true" focusable="false">
+        <circle class="lane-ticks" pathLength="100" cx="50" cy="50" r="45" transform="rotate(-90 50 50)" />
+        <circle class="lane-fill" pathLength="100" data-score="${key}" cx="50" cy="50" r="45" transform="rotate(-90 50 50)" />
+      </svg>
+      <p class="ring-figure"><b>${score(value)}</b><span class="ring-cap">${name}</span></p>
+    </div>`;
   legends[0].innerHTML = figure(0, 'sleep', data.sleepScore) + figure(1, 'recovery', data.recoveryScore);
   legends[1].innerHTML = `
     <h3 class="lap-title">Last night</h3>
-    ${lap(0, 'Sleep', data.sleepScore)}
-    ${lap(1, 'Recovery', data.recoveryScore)}`;
+    ${ring('sleep', 'sleepScore', data.sleepScore)}
+    ${ring('recovery', 'recoveryScore', data.recoveryScore)}`;
 
-  runLanes(track, data);
+  runLanes(track.closest('.health') || track, data);
   foot.textContent = `Last night ${updatedAgo(data.updated).toLowerCase()}`;
 }
 
-/** Each lane runs from the start line round to its score once the track scrolls into view.
-    pathLength="100" lets the dash offset be the percentage itself. */
-function runLanes(track, data) {
-  const lanes = [...track.querySelectorAll('.lane-fill')];
-  const run = () => lanes.forEach((el) => {
+/** Each lane runs from the start line round to its score once its track or ring scrolls
+    into view. pathLength="100" lets the dash offset be the percentage itself. */
+function runLanes(root, data) {
+  const lanes = [...root.querySelectorAll('.lane-fill')];
+  const run = (el) => {
     const v = Math.max(0, Math.min(100, Number(data[el.dataset.score]) || 0));
     el.style.strokeDashoffset = String(100 - v);
-  });
-  if (REDUCED.matches || !('IntersectionObserver' in window)) { run(); return; }
+  };
+  if (REDUCED.matches || !('IntersectionObserver' in window)) { lanes.forEach(run); return; }
 
-  const io = new IntersectionObserver(([entry]) => {
-    if (!entry.isIntersecting) return;
-    io.disconnect();
-    // one frame at the start line first, so the transition has somewhere to run from
-    requestAnimationFrame(() => requestAnimationFrame(run));
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (!entry.isIntersecting) return;
+      io.unobserve(entry.target);
+      // one frame at the start line first, so the transition has somewhere to run from
+      requestAnimationFrame(() => requestAnimationFrame(() => entry.target.querySelectorAll('.lane-fill').forEach(run)));
+    });
   }, { threshold: 0.35 });
-  io.observe(track);
+  new Set(lanes.map((el) => el.closest('.track, .ring'))).forEach((el) => io.observe(el));
 }
 
 /* ---------------------------------------------------------------- library -- */

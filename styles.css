@@ -865,37 +865,51 @@ a { color: inherit; }
 .lane-fill[data-lane="1"] { transition-delay: 150ms; }
 .lane-start { stroke: var(--ink); stroke-width: 3; }
 
-/* the infield sits inside the inner lane; its type is sized by the track, not the window */
-.infield { position: absolute; inset: 17% 16%; display: flex; align-items: center; justify-content: center; gap: 6cqw; }
-.run-miles { display: grid; gap: 1.6cqw; }
-.run-num {
-  font-family: var(--display);
-  /* two digits fill the infield; three share the same width */
-  font-size: calc(25cqw * 2 / var(--digits, 2));
-  line-height: 0.72;
-  letter-spacing: -0.05em;
-  font-variant-numeric: lining-nums;
-  margin-left: -0.05em;
+/* the infield sits inside the inner lane; its type is sized by the track, not the window.
+   Every figure in it is a numeral at one size over a small caption. On phones that is the
+   miles and the runs; from a tablet up the two scores join them. */
+.infield {
+  --fig: 20cqw;
+  --cap: max(var(--t-small), 1.9cqw);
+  position: absolute; inset: 17% 12%;
+  display: flex; align-items: center; justify-content: center; gap: 7cqw;
 }
-.run-cap { font-size: max(var(--t-small), 1.9cqw); line-height: 1.2; letter-spacing: -0.014em; color: var(--ink-muted); }
+.run-figure, .runs-infield, .laps-infield { min-width: 0; }
+.run-miles, .runs-infield { display: grid; gap: 1cqw; }
+.run-num, .runs-infield b, .lap-figure b, .ring-figure b {
+  font-family: var(--display);
+  font-weight: 400;
+  font-size: var(--fig);
+  line-height: 0.8;
+  letter-spacing: -0.03em;
+  font-variant-numeric: lining-nums;
+  color: var(--ink);
+  margin-left: -0.04em;
+}
+.run-cap, .runs-infield, .lap-cap, .ring-cap { font-size: var(--cap); line-height: 1.2; letter-spacing: -0.014em; color: var(--ink-muted); }
+.pct { font-size: 0.42em; color: var(--ink-faint); margin-left: 0.04em; }
 
-/* which lane is which: a figure, a little two-lane glyph, a name */
-.laps { display: none; gap: 0.5rem; }
-.lap-title { font-family: var(--display); font-size: var(--t-lead); letter-spacing: -0.015em; }
-.lap { display: flex; align-items: baseline; gap: 0.6rem; color: var(--ink-muted); }
-.lap b { font-family: var(--display); font-weight: 400; font-size: var(--t-title); letter-spacing: -0.02em; color: var(--ink); min-width: 2.6ch; }
-.lap b .pct { font-size: 0.5em; color: var(--ink-faint); margin-left: 0.08em; }
-.lap-glyph { width: 2rem; height: 1rem; align-self: center; flex: none; }
+/* the two scores as figures in the infield (tablet up), the lane glyph in the caption */
+.laps { display: none; }
+.laps .is-empty { margin: 0; }
+.lap-figure { display: grid; gap: 0.6cqw; flex: 1 1 0; min-width: 0; }
+.lap-cap { display: flex; align-items: center; gap: 0.5cqw; white-space: nowrap; }
+.lap-glyph { width: 2.2cqw; height: 1.1cqw; flex: none; }
 .lap-glyph path { fill: none; stroke: var(--ink-faint); stroke-width: 1.5; opacity: 0.5; }
 .lap-glyph .on { stroke: var(--ink-link); stroke-width: 2.5; opacity: 1; }
-.laps-below { display: grid; }
-.laps .is-empty { margin: 0; }
+
+/* the two scores as rings (phones): the lane closed into a circle, the figure in the middle */
+.rings { margin-top: clamp(1.5rem, 4vw, 2rem); display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem clamp(1rem, 4vw, 1.5rem); }
+.lap-title { grid-column: 1 / -1; font-family: var(--display); font-size: var(--t-lead); letter-spacing: -0.015em; }
+.ring { --fig: 30cqw; --cap: var(--t-small); position: relative; container-type: inline-size; }
+.ring svg { display: block; width: 100%; height: auto; overflow: visible; }
+.ring .lane-ticks, .ring .lane-fill { stroke-width: 2.8; }
+.ring .lane-fill[data-score="recoveryScore"] { transition-delay: 150ms; }
+.ring-figure { position: absolute; inset: 0; display: grid; place-content: center; justify-items: center; gap: 2.5cqw; text-align: center; }
+.ring-figure b { margin-left: 0; }
+.rings .is-empty { grid-column: 1 / -1; margin: 0; }
 
 .track-foot { margin-top: clamp(1.5rem, 3vw, 2.25rem); display: grid; gap: 1.5rem; }
-.run-runs { color: var(--ink-muted); }
-.run-runs b { font-family: var(--display); font-weight: 400; font-size: var(--t-title); letter-spacing: -0.02em; color: var(--ink); margin-right: 0.15em; }
-/* the run count stands in the middle of the infield from a tablet up; below that it sits under the track */
-.runs-infield { display: none; }
 .track-stamps { display: flex; flex-wrap: wrap; gap: 0.25rem 1.5rem; }
 
 /* the most recent race: one row between two hairlines, each value at title size under a small label */
@@ -917,26 +931,13 @@ a { color: inherit; }
 }
 
 @media (min-width: 48rem) {
-  /* from a tablet up the legend moves into the infield, beside the miles, with the run count between */
-  .infield { justify-content: space-between; }
-  .laps-infield { display: grid; }
-  .laps-below { display: none; }
-  .runs-below { display: none; }
-
-  /* the four figures in the infield share one scale: a numeral at 10cqw over a small caption */
-  .infield { --fig: 10cqw; --cap: max(var(--t-small), 1.8cqw); inset: 17% 11%; gap: 2.5cqw; align-items: center; }
-  .run-figure, .runs-infield, .laps-infield { flex: 1 1 0; min-width: 0; }
-  .run-miles { gap: 0.6cqw; }
-  .run-num { font-size: var(--fig); line-height: 0.8; letter-spacing: -0.03em; margin-left: -0.04em; }
-  .run-cap, .runs-infield, .lap-cap { font-size: var(--cap); line-height: 1.2; letter-spacing: -0.014em; color: var(--ink-muted); }
-  .runs-infield { display: grid; gap: 0.6cqw; }
-  .runs-infield b { font-size: var(--fig); line-height: 0.8; letter-spacing: -0.03em; margin: 0 0 0 -0.04em; }
+  /* from a tablet up the two scores move into the infield with the miles and runs, four
+     figures at one size, and the rings stand down */
+  .infield { --fig: 10cqw; --cap: max(var(--t-small), 1.8cqw); inset: 17% 11%; gap: 2.5cqw; justify-content: space-between; }
+  .run-figure, .runs-infield, .laps-infield { flex: 1 1 0; }
+  .run-miles, .runs-infield { gap: 0.6cqw; }
   .laps-infield { display: flex; gap: 2.5cqw; flex: 2.3 1 0; }
-  .lap-figure { display: grid; gap: 0.6cqw; flex: 1 1 0; min-width: 0; }
-  .lap-figure b { font-size: var(--fig); line-height: 0.8; letter-spacing: -0.03em; min-width: 0; margin-left: -0.04em; }
-  .lap-figure b .pct { font-size: 0.42em; margin-left: 0.04em; }
-  .lap-cap { display: flex; align-items: center; gap: 0.5cqw; white-space: nowrap; }
-  .lap-cap .lap-glyph { width: 2.2cqw; height: 1.1cqw; }
+  .rings { display: none; }
   .track-foot { grid-template-columns: minmax(0, 1fr) auto; align-items: baseline; }
   .track-stamps { grid-column: 2; flex-direction: column; gap: 0.35rem; text-align: right; }
 }

@@ -138,7 +138,8 @@
     <!-- ================================================== HEALTH
          A running track. Last night's sleep and recovery are two lanes of the oval, each run
          as far round as its score from the start line; the year's miles and runs stand in the
-         infield, and the most recent race is a results row below. -->
+         infield, and the most recent race is a results row below. On phones the two scores
+         become two rings of their own under the track. -->
     <section class="section health" id="health">
       <div class="wrap">
         <div class="health-head">
@@ -157,14 +158,15 @@
           </svg>
           <div class="infield">
             <div class="run-figure" id="card-running"><p class="is-empty">Loading…</p></div>
-            <p class="run-runs runs-infield" id="run-runs"></p>
+            <p class="runs-infield" id="run-runs"></p>
             <div class="laps laps-infield" id="card-sleep"><p class="is-empty">Loading…</p></div>
           </div>
         </div>
 
+        <!-- on phones the scores leave the track and become two rings of their own -->
+        <div class="rings" id="card-sleep-below" data-reveal></div>
+
         <div class="track-foot" data-reveal>
-          <div class="laps laps-below" id="card-sleep-below"></div>
-          <p class="run-runs runs-below" id="run-runs-below"></p>
           <div class="track-stamps">
             <p class="stamp" id="foot-running"></p>
             <p class="stamp" id="foot-sleep"></p>
