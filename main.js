@@ -302,7 +302,7 @@ function renderRunning(data) {
   body.innerHTML = `
     <p class="run-miles"><span class="run-num">${miles}</span><span class="run-cap">miles run${data.year ? ' in ' + esc(data.year) : ' this year'}</span></p>`;
   const runs = $('run-runs');
-  if (runs) runs.innerHTML = `<b>${esc(data.runs ?? 0)}</b> runs`;
+  if (runs) runs.innerHTML = `<b>${esc(data.runs ?? 0)}</b> runs${data.year ? ' in ' + esc(data.year) : ' this year'}`;
 
   foot.textContent = `Running ${updatedAgo(data.updated).toLowerCase()}`;
 }
