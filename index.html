@@ -102,11 +102,20 @@
     </section>
 
     <!-- =================================== PROFESSIONAL EXPERIENCES
-         Words first, then one raised strip of marks running the full window. -->
+         Words first, with the latest reading beside them (logged from /admin; it stays out
+         of the page until something is logged), then one raised strip of marks running
+         the full window. -->
     <section class="section" id="experience">
-      <div class="wrap">
-        <h2 class="title">Work</h2>
-        <div class="copy" id="copy-work" data-reveal></div>
+      <div class="wrap work-top">
+        <div class="work-words">
+          <h2 class="title">Work</h2>
+          <div class="copy" id="copy-work" data-reveal></div>
+        </div>
+        <aside class="work-reading" id="reading" aria-labelledby="reading-name" hidden>
+          <h3 class="work-reading-name" id="reading-name">Currently reading</h3>
+          <ol class="reads" id="reads"></ol>
+          <p class="reads-more" id="reads-more"></p>
+        </aside>
       </div>
 
       <div class="work-strip" data-reveal>
@@ -225,6 +234,7 @@
     </div>
   </footer>
 
+  <script src="reading.js" defer></script>
   <script src="main.js" defer></script>
 </body>
 </html>

@@ -1,0 +1,66 @@
+# Fetches poster art whenever /admin adds a movie or musical (data/watching.json),
+# commits it, and republishes the site. Until it finishes, a new title shows the
+# site's typographic tile.
+#
+# Needs one secret, TMDB_API_KEY: the same credential as the local .tmdb-key file.
+# The explicit rebuild is for the same reason as in refresh-data.yml.
+
+name: Posters
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - data/watching.json
+      - scripts/fetch-posters.js
+  workflow_dispatch:
+
+permissions:
+  contents: write   # commit the posters
+  pages: write      # request a Pages build after committing
+
+concurrency:
+  group: posters
+  cancel-in-progress: false
+
+jobs:
+  posters:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+
+      - name: Fetch posters
+        env:
+          TMDB_API_KEY: ${{ secrets.TMDB_API_KEY }}
+        run: node scripts/fetch-posters.js
+
+      - name: Commit posters
+        id: commit
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/posters.json assets/posters
+          # posters.json carries a timestamp, so look past it: only new art is worth a commit
+          if git diff --cached --quiet -- assets/posters && \
+             [ -z "$(git diff --cached -U0 -- data/posters.json | grep '^[+-] ' | grep -v '"updated"')" ]; then
+            echo "No poster changed — no commit."
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          git commit -m "chore: refresh posters [skip ci]"
+          # pick up anything pushed while this job was running
+          git pull --rebase origin "$GITHUB_REF_NAME"
+          git push origin "HEAD:$GITHUB_REF_NAME"
+          echo "changed=true" >> "$GITHUB_OUTPUT"
+
+      - name: Rebuild the live site
+        if: steps.commit.outputs.changed == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh api --method POST "repos/$GITHUB_REPOSITORY/pages/builds"

@@ -1,0 +1,38 @@
+{
+  "shelves": [
+    {
+      "name": "Musicals",
+      "items": [
+        "Ragtime",
+        "Merrily We Roll Along",
+        "Hamilton",
+        "West Side Story",
+        "Hadestown",
+        "The Sound of Music",
+        "Into the Woods",
+        "Sweeney Todd",
+        "Fiddler on the Roof"
+      ]
+    },
+    {
+      "name": "Movies",
+      "items": [
+        "Crazy Rich Asians",
+        "Top Gun: Maverick",
+        "The Meg",
+        "Spider-Man: Brand New Day",
+        "The Intern",
+        "Ratatouille",
+        "Jurassic Park",
+        "The Odyssey",
+        "Hoppers",
+        "The Farewell",
+        "Barbie",
+        "The Dark Knight",
+        "Oppenheimer",
+        "Memento",
+        "Better Off Dead"
+      ]
+    }
+  ]
+}

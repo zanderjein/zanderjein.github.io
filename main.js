@@ -24,6 +24,9 @@ const SITE = {
       'I\u2019m most proud of my work with the Health Care Affordability Lab, where I contribute to health policy research and study how different systems and policies shape spending, coverage, and the way care is financed. At the Council on Foreign Relations, I supported research on U.S. global health interventions, including foreign aid programs, bilateral health agreements, and vaccine rollouts. I also research income and consumption inequality in the United States using household data to understand how economic well-being has changed across groups and over time.'
     ]
   },
+  /* Reading: the papers and news logged from /admin, shown beside the Work copy.
+     `latest` is how many appear there; the rest are on /reading/. */
+  reading: { latest: 3 },
   watching: {
     sub: 'Movies, musicals, and new favorites.',
     text: [
@@ -145,22 +148,9 @@ const SITE = {
     }
   ],
 
-  /* Interests: two poster walls side by side, three rows deep (strips you push sideways
-     on a phone). Order here is order on the page, left to right, top to bottom. */
-  interests: [
-    {
-      name: 'Musicals',
-      items: ['Ragtime', 'Merrily We Roll Along', 'Hamilton', 'West Side Story', 'Hadestown',
-              'The Sound of Music', 'Into the Woods', 'Sweeney Todd', 'Fiddler on the Roof']
-    },
-    {
-      name: 'Movies',
-      items: ['Crazy Rich Asians', 'Top Gun: Maverick', 'The Meg', 'Spider-Man: Brand New Day',
-              'The Intern', 'Ratatouille', 'Jurassic Park', 'The Odyssey', 'Hoppers', 'The Farewell',
-              'Barbie',
-              'The Dark Knight', 'Oppenheimer', 'Memento', 'Better Off Dead']
-    }
-  ],
+  /* Interests (the poster walls) and Reading (the papers and news) are not in this file:
+     they are logged from zanderjein.com/admin, which saves them to data/watching.json
+     and data/reading.json. */
 
   /* Awards. The first entry is set large on its own. The rest are gathered under their
      `group` heading, groups in the order they first appear, entries in the order written here.
@@ -664,13 +654,18 @@ function renderWorks() {
   }).join('');
 }
 
-function renderInterests(posters) {
+function renderInterests(watching, posters) {
   const host = $('shelves');
   if (!host) return;
   const map = (posters && posters.posters) || {};
   const ROWS = 3;
+  // an item is a title, or { title, tmdb } when its poster is pinned to one TMDB entry
+  const shelves = ((watching && watching.shelves) || []).map((shelf) => ({
+    name: shelf.name,
+    items: (shelf.items || []).map((it) => (typeof it === 'string' ? it : it.title)).filter(Boolean)
+  }));
 
-  host.innerHTML = SITE.interests.map((shelf, s) => {
+  host.innerHTML = shelves.map((shelf, s) => {
     const kicker = shelf.name.replace(/s$/, '');
     const cols = Math.max(1, Math.ceil(shelf.items.length / ROWS));
 
@@ -700,6 +695,24 @@ function renderInterests(posters) {
       </div>`;
   }).join('');
 
+  setupReveal(host);
+}
+
+/** The latest few things read, beside the Work copy; the whole log lives at /reading/. */
+function renderReading(items) {
+  const section = $('reading');
+  const host = $('reads');
+  if (!section || !host || !items.length) return;
+
+  const latest = items.slice(0, SITE.reading.latest || 4);
+  host.innerHTML = latest.map((it, i) => Reading.row(it, i)).join('');
+
+  const more = $('reads-more');
+  if (more && items.length > latest.length) {
+    more.innerHTML = `${items.length} logged so far. <a class="text-link" href="reading/">All of it</a>`;
+  }
+
+  section.hidden = false;
   setupReveal(host);
 }
 
@@ -815,15 +828,18 @@ function setupActiveSection() {
   setupTopbar();
   setupActiveSection();
 
-  const [books, strava, whoop, posters, maps] = await Promise.all([
+  const [books, strava, whoop, posters, maps, watching, reading] = await Promise.all([
     loadJSON('data/books.json'),
     loadJSON('data/strava.json'),
     loadJSON('data/whoop.json'),
     loadJSON('data/posters.json'),
-    loadJSON('data/maps.json')
+    loadJSON('data/maps.json'),
+    loadJSON('data/watching.json'),
+    Reading.load('data/reading.json')
   ]);
 
-  renderInterests(posters);
+  renderInterests(watching, posters);
+  renderReading(reading);
   renderJourney(maps);
 
   // one sort for everything downstream: newest read date first

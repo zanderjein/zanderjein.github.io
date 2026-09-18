@@ -218,6 +218,7 @@ body {
   overflow-x: clip;   /* clip, not hidden: hidden would make body a scroll container and break sticky */
 }
 
+[hidden] { display: none !important; }
 img { max-width: 100%; display: block; }
 ul, ol { list-style: none; margin: 0; padding: 0; }
 h1, h2, h3, p, figure { margin: 0; }
@@ -291,6 +292,50 @@ a { color: inherit; }
 
 .stars { display: inline-block; color: var(--ink-link); font-size: var(--t-small); letter-spacing: 0.1em; }
 .stars .off { color: var(--rule); }
+
+/* ------------------------------------------------------------- reading --
+   A ledger: one entry per line between hairlines, the day it was read in the margin.
+   Shared by the home page and /reading/.
+   ------------------------------------------------------------------------ */
+
+.reads { margin-top: clamp(1.75rem, 4vw, 2.75rem); max-width: 58rem; border-top: 1px solid var(--rule); }
+.read { display: grid; gap: 0.4rem; padding-block: 1.4rem; border-bottom: 1px solid var(--rule); }
+.read-when { font-family: var(--mono); font-size: var(--t-mono); color: var(--ink-faint); }
+.read-what { display: grid; gap: 0.4rem; }
+.read-title { font-family: var(--display); font-size: var(--t-lead); line-height: 1.14; letter-spacing: -0.016em; text-wrap: balance; }
+.read-title a { text-decoration: none; transition: color var(--fast) var(--ease); }
+.read-title a:hover { color: var(--ink-link); text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 0.18em; }
+.read-meta { font-size: var(--t-small); line-height: 1.45; color: var(--ink-muted); }
+.read-kind { margin-left: 0.5rem; font-family: var(--mono); font-size: var(--t-mono); letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-faint); }
+.read-note { max-width: var(--measure); font-size: var(--t-small); line-height: 1.6; color: var(--ink-muted); text-wrap: pretty; }
+.reads-more { margin-top: 1.25rem; font-size: var(--t-small); color: var(--ink-muted); }
+
+@media (min-width: 40rem) {
+  .read { grid-template-columns: 6.5rem minmax(0, 1fr); column-gap: var(--rail-gap); }
+  .read-when { padding-top: 0.5rem; }
+}
+
+/* beside the Work copy the ledger is one narrow column: the day sits over the title */
+.work-top { display: grid; row-gap: clamp(3rem, 8vw, 4.5rem); }
+.work-reading-name { font-family: var(--display); font-style: italic; font-size: var(--t-lead); color: var(--ink-muted); letter-spacing: -0.01em; }
+.work-reading .reads { margin-top: 1.1rem; }
+.work-reading .read { grid-template-columns: minmax(0, 1fr); padding-block: 1.1rem; }
+.work-reading .read-when { padding-top: 0; }
+.work-reading .read-title { font-size: 1.25rem; line-height: 1.18; }
+
+@media (min-width: 60rem) {
+  .work-top { grid-template-columns: minmax(0, 42rem) minmax(0, 30rem); justify-content: space-between; column-gap: clamp(3rem, 6vw, 6rem); align-items: start; }
+  /* the italic name sits level with "Work" */
+  .work-reading { padding-top: 0.3rem; }
+}
+
+/* /reading/: the whole log, a month at a time */
+.reading-page { padding-block: clamp(2rem, 5vw, 3.5rem) var(--section-gap); }
+.reading-back { font-size: var(--t-small); }
+.reading-page .title { margin-top: clamp(3rem, 8vw, 6rem); }
+.reading-count { margin-top: 1.5rem; }
+.reading-month { margin-top: clamp(3rem, 7vw, 5rem); }
+.reading-month .reads { margin-top: 1.25rem; }
 
 /* the rail: About's two-track opening */
 .rail-grid {

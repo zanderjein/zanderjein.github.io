@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Admin · Zander Jein</title>
+  <meta name="robots" content="noindex, nofollow" />
+  <meta name="color-scheme" content="light dark" />
+  <link rel="icon" href="/favicon.ico" sizes="any" />
+  <link rel="stylesheet" href="/styles.css" />
+  <link rel="stylesheet" href="admin.css" />
+</head>
+<body class="admin">
+
+  <header class="admin-bar wrap">
+    <a class="admin-home" href="/">zanderjein.com</a>
+    <button class="quiet" id="sign-out" type="button" hidden>Forget this device</button>
+  </header>
+
+  <main class="wrap admin-main">
+
+    <!-- ===================================================== THE KEY
+         Nothing here can save without a GitHub token, and the token never leaves this browser
+         except to go to api.github.com. -->
+    <section id="gate" hidden>
+      <h1 class="title title-xl">Admin</h1>
+      <p class="sub gate-sub">This page saves to the site, so it needs a key. You only do this once per device.</p>
+      <ol class="steps">
+        <li>Open <a class="text-link" href="https://github.com/settings/personal-access-tokens/new" target="_blank" rel="noopener noreferrer">GitHub, new fine-grained token</a>.</li>
+        <li>Repository access: <b>Only select repositories</b>, then <b>zanderjein.github.io</b>.</li>
+        <li>Permissions, Repository, <b>Contents: Read and write</b>. Nothing else.</li>
+        <li>Generate it, copy it, and paste it here.</li>
+      </ol>
+      <form class="form" id="gate-form" autocomplete="off">
+        <label class="field">
+          <span class="field-name">Token</span>
+          <input id="token" type="password" placeholder="github_pat_…" required spellcheck="false" />
+        </label>
+        <div class="actions">
+          <button class="solid" type="submit">Unlock</button>
+          <p class="status" id="gate-status" role="status"></p>
+        </div>
+      </form>
+    </section>
+
+    <!-- ===================================================== THE DESK -->
+    <section id="desk" hidden>
+      <h1 class="title title-xl">Admin</h1>
+
+      <nav class="tabs" role="tablist" aria-label="What to log">
+        <button role="tab" type="button" id="tab-reading" aria-controls="panel-reading" aria-selected="true">Reading</button>
+        <button role="tab" type="button" id="tab-watching" aria-controls="panel-watching" aria-selected="false">Movies &amp; musicals</button>
+      </nav>
+
+      <p class="status status-main" id="status" role="status"></p>
+
+      <!-- ------------------------------------------------ reading -->
+      <div id="panel-reading" role="tabpanel" aria-labelledby="tab-reading">
+        <form class="form" id="read-form" autocomplete="off">
+          <h2 class="form-title" id="read-form-title">Log something you read</h2>
+
+          <label class="field">
+            <span class="field-name">Link</span>
+            <input id="r-url" type="url" inputmode="url" placeholder="https://…" spellcheck="false" />
+            <span class="field-hint" id="r-url-hint">Paste a journal link and the rest fills itself in when it can.</span>
+          </label>
+          <label class="field">
+            <span class="field-name">Title</span>
+            <input id="r-title" type="text" required />
+          </label>
+          <div class="field-row">
+            <label class="field">
+              <span class="field-name">Source</span>
+              <input id="r-source" type="text" list="sources" placeholder="Health Affairs" />
+              <datalist id="sources"></datalist>
+            </label>
+            <label class="field">
+              <span class="field-name">Authors</span>
+              <input id="r-authors" type="text" placeholder="optional" />
+            </label>
+          </div>
+          <div class="field-row">
+            <fieldset class="field choice">
+              <legend class="field-name">Kind</legend>
+              <label><input type="radio" name="r-kind" value="paper" checked /> Paper</label>
+              <label><input type="radio" name="r-kind" value="news" /> News</label>
+            </fieldset>
+            <label class="field">
+              <span class="field-name">Read on</span>
+              <input id="r-date" type="date" required />
+            </label>
+          </div>
+          <label class="field">
+            <span class="field-name">Note</span>
+            <textarea id="r-note" rows="3" placeholder="optional, shown under the title"></textarea>
+          </label>
+          <label class="check"><input id="r-hidden" type="checkbox" /> Keep it off the site for now</label>
+
+          <div class="actions">
+            <button class="solid" type="submit" id="read-save">Save</button>
+            <button class="quiet" type="button" id="read-cancel" hidden>Cancel</button>
+          </div>
+        </form>
+
+        <h2 class="list-title"><span id="read-count"></span></h2>
+        <ol class="log" id="read-list"></ol>
+      </div>
+
+      <!-- ----------------------------------------------- watching -->
+      <div id="panel-watching" role="tabpanel" aria-labelledby="tab-watching" hidden>
+        <div id="shelves-admin"></div>
+        <p class="field-hint shelf-hint">A new title appears on the site in about a minute and its poster a minute after that.
+          If the poster is the wrong film, remove the title and add it again with its themoviedb.org link.</p>
+      </div>
+    </section>
+
+  </main>
+
+  <script src="admin.js" defer></script>
+</body>
+</html>

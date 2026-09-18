@@ -4,6 +4,9 @@
 
    Run:  node scripts/fetch-posters.js
 
+   Titles come from data/watching.json, which /admin writes. On GitHub this runs from
+   .github/workflows/posters.yml whenever that file changes.
+
    Credential: put either TMDB credential in a file called .tmdb-key in the
    repo root (it is gitignored), or set TMDB_API_KEY. Both kinds work:
      - the "API Read Access Token" (long, starts with eyJ…) is sent as a header
@@ -38,21 +41,20 @@ const OVERRIDES = {
   'Hadestown': { kind: 'movie', id: 1439808 }        // Hadestown: The Musical (2026), filmed stage production
 };
 
-/* --- the shelves are defined once, in main.js; read them from there ------- */
+/* --- the shelves live in data/watching.json, written by /admin -------------
+   An item is a title, or { title, tmdb: 'movie/123' } when /admin pinned its poster. */
 async function readShelves() {
-  const src = await fs.readFile(path.join(ROOT, 'main.js'), 'utf8');
-  const start = src.indexOf('const SITE = {');
-  if (start < 0) throw new Error('could not find the SITE block in main.js');
+  const data = JSON.parse(await fs.readFile(path.join(ROOT, 'data', 'watching.json'), 'utf8'));
+  return (data.shelves || []).map((shelf) => ({
+    name: shelf.name,
+    items: (shelf.items || [])
+      .map((it) => (typeof it === 'string' ? { title: it } : it))
+      .filter((it) => it && it.title)
+  }));
+}
 
-  let depth = 0, i = src.indexOf('{', start), end = -1;
-  for (; i < src.length; i++) {
-    if (src[i] === '{') depth++;
-    else if (src[i] === '}') { depth--; if (depth === 0) { end = i + 1; break; } }
-  }
-  if (end < 0) throw new Error('could not parse the SITE block');
-
-  const site = eval('(' + src.slice(src.indexOf('{', start), end) + ')');
-  return site.interests || [];
+async function readPrevious() {
+  try { return JSON.parse(await fs.readFile(MANIFEST, 'utf8')); } catch { return {}; }
 }
 
 async function readCredential() {
@@ -87,9 +89,10 @@ const slug = (s) => s.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g
 const norm = (s) => (s || '').toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim();
 const yearOf = (r) => (r.release_date || r.first_air_date || '').slice(0, 4);
 
-async function lookup(api, title) {
-  if (Object.prototype.hasOwnProperty.call(OVERRIDES, title)) {
-    const pin = OVERRIDES[title];
+async function lookup(api, title, tmdb) {
+  const [, pinKind, pinId] = String(tmdb || '').match(/^(movie|tv)\/(\d+)$/) || [];
+  if (pinId || Object.prototype.hasOwnProperty.call(OVERRIDES, title)) {
+    const pin = pinId ? { kind: pinKind, id: pinId } : OVERRIDES[title];
     if (!pin) return null;
     const res = await api(`/${pin.kind}/${pin.id}`);
     if (!res.ok) throw new Error(`override ${pin.kind}/${pin.id} returned HTTP ${res.status}`);
@@ -115,6 +118,7 @@ async function lookup(api, title) {
 async function main() {
   const api = tmdbFetch(await readCredential());
   const shelves = await readShelves();
+  const previous = await readPrevious();
   await fs.mkdir(OUT_DIR, { recursive: true });
 
   const posters = {};
@@ -122,13 +126,19 @@ async function main() {
   const missing = [];
 
   for (const shelf of shelves) {
-    for (const title of shelf.items) {
+    for (const { title, tmdb } of shelf.items) {
       let hit = null;
       try {
-        hit = await lookup(api, title);
+        hit = await lookup(api, title, tmdb);
       } catch (err) {
         console.error(`  ! ${title}: ${err.message}`);
         if (/401/.test(err.message)) process.exit(1);
+        // a lookup that failed is not a title without a poster: keep the one already saved
+        if (previous.posters && previous.posters[title]) {
+          posters[title] = previous.posters[title];
+          if (previous.matches && previous.matches[title]) matches[title] = previous.matches[title];
+          continue;
+        }
       }
 
       if (!hit) {

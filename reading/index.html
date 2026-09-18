@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Reading · Zander Jeinthanuttkanont</title>
+  <meta name="description" content="The health policy papers and news Zander Jeinthanuttkanont has been reading." />
+  <link rel="canonical" href="https://zanderjein.com/reading/" />
+  <meta name="theme-color" content="#FCFCFC" media="(prefers-color-scheme: light)" />
+  <meta name="theme-color" content="#0A1428" media="(prefers-color-scheme: dark)" />
+  <meta name="color-scheme" content="light dark" />
+  <link rel="icon" href="/favicon.ico" sizes="any" />
+  <link rel="icon" href="/assets/icons/favicon-32.png" type="image/png" sizes="32x32" />
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+  <link rel="preload" href="/assets/fonts/instrument-serif-latin.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="preload" href="/assets/fonts/geist-latin.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+<body>
+  <div class="grain" aria-hidden="true"></div>
+
+  <main class="wrap reading-page">
+    <a class="text-link reading-back" href="/#reading">zanderjein.com</a>
+    <h1 class="title title-xl">Reading</h1>
+    <p class="stamp reading-count" id="reading-count"></p>
+    <div id="reading-log"><p class="is-empty">Loading…</p></div>
+  </main>
+
+  <script src="/reading.js"></script>
+  <script>
+    /* the whole log, a month at a time */
+    (async function () {
+      const items = await Reading.load('/data/reading.json');
+      const host = document.getElementById('reading-log');
+      if (!items.length) { host.innerHTML = '<p class="is-empty">Nothing logged yet.</p>'; return; }
+
+      const months = [];
+      items.forEach((it) => {
+        const d = Reading.localDate(it.date);
+        const name = d ? d.toLocaleDateString('en-US', { month: 'long', year: 'numeric' }) : 'Undated';
+        if (!months.length || months[months.length - 1].name !== name) months.push({ name, items: [] });
+        months[months.length - 1].items.push(it);
+      });
+
+      const papers = items.filter((it) => it.kind !== 'news').length;
+      const count = (n, word) => `${n} ${word}${n === 1 ? '' : 's'}`;
+      document.getElementById('reading-count').textContent =
+        [papers && count(papers, 'paper'), items.length - papers && count(items.length - papers, 'news piece')].filter(Boolean).join(', ');
+
+      host.innerHTML = months.map((m) => `
+        <section class="reading-month">
+          <h2 class="award-group-name">${Reading.esc(m.name)}</h2>
+          <ol class="reads">${m.items.map((it) => Reading.row(it, 0)).join('')}</ol>
+        </section>`).join('');
+      host.querySelectorAll('[data-reveal]').forEach((el) => el.classList.add('is-in'));
+    })();
+  </script>
+</body>
+</html>
