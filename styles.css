@@ -892,19 +892,59 @@ a { color: inherit; }
 .laps .is-empty { margin: 0; }
 
 .track-foot { margin-top: clamp(1.5rem, 3vw, 2.25rem); display: grid; gap: 1.5rem; }
-.run-runs b,
-.run-goal b { font-family: var(--display); font-weight: 400; font-size: var(--t-title); letter-spacing: -0.02em; color: var(--ink); margin-right: 0.15em; }
-.run-runs, .run-goal { color: var(--ink-muted); }
-.run-facts { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.25rem clamp(1.5rem, 4vw, 3rem); }
+.run-runs { color: var(--ink-muted); }
+.run-runs b { font-family: var(--display); font-weight: 400; font-size: var(--t-title); letter-spacing: -0.02em; color: var(--ink); margin-right: 0.15em; }
+/* the run count stands in the middle of the infield from a tablet up; below that it sits under the track */
+.runs-infield { display: none; }
 .track-stamps { display: flex; flex-wrap: wrap; gap: 0.25rem 1.5rem; }
 
+/* the most recent race: one row between two hairlines, each value at title size under a small label */
+.board {
+  margin-top: clamp(2rem, 4vw, 3rem);
+  border-block: 1px solid var(--rule);
+  padding-block: clamp(1.5rem, 3vw, 2.25rem);
+  display: grid;
+  gap: 1.5rem 2rem;
+}
+.board-cell { display: grid; gap: 0.45rem; align-content: start; }
+.board-k { font-family: var(--mono); font-size: var(--t-mono); color: var(--ink-faint); letter-spacing: 0.06em; text-transform: uppercase; }
+.board-v { margin: 0; font-family: var(--display); font-size: var(--t-title); line-height: 1.02; letter-spacing: -0.022em; text-wrap: balance; font-variant-numeric: lining-nums; }
+.board-v .unit { font-size: 0.5em; color: var(--ink-faint); }
+
+@media (min-width: 40rem) {
+  .board { grid-template-columns: 1fr 1fr; }
+  .board-race { grid-column: 1 / -1; }
+}
+
 @media (min-width: 48rem) {
-  /* from a tablet up the legend moves into the infield, beside the miles */
+  /* from a tablet up the legend moves into the infield, beside the miles, with the run count between */
   .infield { justify-content: space-between; }
   .laps-infield { display: grid; }
   .laps-below { display: none; }
+  .runs-below { display: none; }
+
+  /* the four figures in the infield share one scale: a numeral at 10cqw over a small caption */
+  .infield { --fig: 10cqw; --cap: max(var(--t-small), 1.8cqw); inset: 17% 11%; gap: 2.5cqw; align-items: center; }
+  .run-figure, .runs-infield, .laps-infield { flex: 1 1 0; min-width: 0; }
+  .run-miles { gap: 0.6cqw; }
+  .run-num { font-size: var(--fig); line-height: 0.8; letter-spacing: -0.03em; margin-left: -0.04em; }
+  .run-cap, .runs-infield, .lap-cap { font-size: var(--cap); line-height: 1.2; letter-spacing: -0.014em; color: var(--ink-muted); }
+  .runs-infield { display: grid; gap: 0.6cqw; }
+  .runs-infield b { font-size: var(--fig); line-height: 0.8; letter-spacing: -0.03em; margin: 0 0 0 -0.04em; }
+  .laps-infield { display: flex; gap: 2.5cqw; flex: 2.3 1 0; }
+  .lap-figure { display: grid; gap: 0.6cqw; flex: 1 1 0; min-width: 0; }
+  .lap-figure b { font-size: var(--fig); line-height: 0.8; letter-spacing: -0.03em; min-width: 0; margin-left: -0.04em; }
+  .lap-figure b .pct { font-size: 0.42em; margin-left: 0.04em; }
+  .lap-cap { display: flex; align-items: center; gap: 0.5cqw; white-space: nowrap; }
+  .lap-cap .lap-glyph { width: 2.2cqw; height: 1.1cqw; }
   .track-foot { grid-template-columns: minmax(0, 1fr) auto; align-items: baseline; }
-  .track-stamps { flex-direction: column; gap: 0.35rem; text-align: right; }
+  .track-stamps { grid-column: 2; flex-direction: column; gap: 0.35rem; text-align: right; }
+}
+
+@media (min-width: 60rem) {
+  .board { grid-template-columns: 2.2fr 1fr 1.2fr 1fr; }
+  .board.has-time { grid-template-columns: 2.2fr 1fr 1.2fr 1fr 1fr; }
+  .board-race { grid-column: auto; }
 }
 
 /* ----------------------------------------------------------- interests --
@@ -1066,12 +1106,12 @@ a { color: inherit; }
 
   .work-band { grid-template-columns: repeat(6, minmax(0, 1fr)); }
 
-  /* the latest book lies across the corner of the shelf, and up over the foot of the heading */
+  /* the latest book lies across the corner of the shelf; the heading stays clear above it */
   .library-table {
     grid-template-columns: minmax(0, 21rem) minmax(0, 1fr);
     gap: 0;
     align-items: start;
-    margin-top: -0.75rem;
+    margin-top: clamp(1.5rem, 2.5vw, 2.25rem);
   }
   .book-feature { position: relative; z-index: var(--z-over); margin-right: -2.75rem; }
   .book-lead { grid-template-columns: minmax(0, 1fr); gap: 1.75rem; }

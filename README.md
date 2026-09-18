@@ -14,7 +14,7 @@ CNAME           custom domain — do not remove
 ## Editing content
 
 Almost everything you'd want to change lives in one block at the top of `main.js`,
-marked `EDIT ME`: the race countdown, the hero's rotating line, the
+marked `EDIT ME`: the most recent race, the hero's rotating line, the
 Professional Experiences logos, Interests (musicals and movies), and Awards. Add a movie by adding a
 string to a list; nothing else to touch.
 

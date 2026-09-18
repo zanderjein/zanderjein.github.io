@@ -21,7 +21,7 @@ const SITE = {
   work: {
     sub: 'Health care systems, global health, and inequality.',
     text: [
-      'I\u2019m most proud of my work with the Health Care Affordability Lab, where I contribute to health policy research and study how different systems and policies shape spending, coverage, and the way care is financed. At the Council on Foreign Relations, I\u2019ve also worked on U.S. global health interventions, including foreign aid programs, bilateral health agreements, and vaccine rollouts. I also research income and consumption inequality in the United States using household data to understand how economic well-being has changed across groups and over time.'
+      'I\u2019m most proud of my work with the Health Care Affordability Lab, where I contribute to health policy research and study how different systems and policies shape spending, coverage, and the way care is financed. At the Council on Foreign Relations, I supported research on U.S. global health interventions, including foreign aid programs, bilateral health agreements, and vaccine rollouts. I also research income and consumption inequality in the United States using household data to understand how economic well-being has changed across groups and over time.'
     ]
   },
   watching: {
@@ -67,17 +67,19 @@ const SITE = {
 
   /* The short lines in Work, Health, and Say hi. '' removes one. */
   lines: {
-    worked: 'Where I\u2019ve worked',          // the label inside the strip of logos
+    worked: '',                               // the label inside the strip of logos ('' removes it)
     health: 'Strava and Whoop enthusiast',
     connect: 'The easiest way to reach me is via email.'
   },
 
-  /* The race countdown. After race day the card switches to a "ran it" state. */
+  /* The most recent race. Update this after each one. `time` is optional: leave it ''
+     and the finish time is simply not shown. */
   race: {
-    date: '2026-11-08',                       // YYYY-MM-DD, local time
-    name: 'the Boston Half',
-    longName: 'the B.A.A. Boston Half Marathon',
-    where: 'Franklin Park, 8:00\u00a0a.m.'   // the time holds together when the line wraps
+    date: '2026-09-07',                       // YYYY-MM-DD, local time
+    name: 'Faxon Law New Haven Road Race',
+    distance: '13.1',                         // in miles; the unit is added
+    where: 'New Haven Green',
+    time: ''                                  // e.g. '1:52:10' — EDIT ME if you want it shown
   },
 
 
@@ -211,7 +213,6 @@ function localDate(ymd) {
   return new Date(+m[1], +m[2] - 1, +m[3]);
 }
 
-const midnight = (d) => new Date(d.getFullYear(), d.getMonth(), d.getDate());
 
 function monthYear(ymd) {
   const d = localDate(ymd);
@@ -265,21 +266,25 @@ async function loadJSON(path) {
 
 /* -------------------------------------------------------------- now cards -- */
 
-/** The race countdown: one line beside the run count. */
-function renderGoal() {
-  const line = $('card-goal');
-  if (!line) return;
+/** The most recent race: a results row under the track. Each cell is a term and a value. */
+function renderRace() {
+  const board = $('board');
+  if (!board) return;
   const race = localDate(SITE.race.date);
-  if (!race) { line.remove(); return; }
+  if (!race || !SITE.race.name) { board.remove(); return; }
 
-  const days = Math.round((midnight(race) - midnight(new Date())) / 86400000);
-  const when = race.toLocaleDateString('en-US', { month: 'long', day: 'numeric' });
+  const when = race.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+  const cells = [
+    ['Most recent race', esc(SITE.race.name), 'board-race'],
+    ['Distance', `${esc(SITE.race.distance)} <span class="unit">mi</span>`],
+    ['Date', esc(when)],
+    ['Where', esc(SITE.race.where)],
+    SITE.race.time ? ['Time', esc(SITE.race.time)] : null
+  ].filter(Boolean);
 
-  line.innerHTML = days > 0
-    ? `<b>${days}</b> ${days === 1 ? 'day' : 'days'} to ${esc(SITE.race.name)}, ${esc(when)}`
-    : days === 0
-      ? `<b>Today:</b> ${esc(SITE.race.longName)}`
-      : `Ran ${esc(SITE.race.name)}, ${esc(when)}`;
+  board.classList.toggle('has-time', Boolean(SITE.race.time));
+  board.innerHTML = cells.map(([k, v, cls]) => `
+    <div class="board-cell${cls ? ' ' + cls : ''}"><dt class="board-k">${k}</dt><dd class="board-v">${v}</dd></div>`).join('');
 }
 
 function renderRunning(data) {
@@ -298,8 +303,10 @@ function renderRunning(data) {
 
   body.innerHTML = `
     <p class="run-miles"><span class="run-num">${miles}</span><span class="run-cap">miles run${data.year ? ' in ' + esc(data.year) : ' this year'}</span></p>`;
-  const runs = $('run-runs');
-  if (runs) runs.innerHTML = `<b>${esc(data.runs ?? 0)}</b> runs`;
+  ['run-runs', 'run-runs-below'].forEach((id) => {
+    const el = $(id);
+    if (el) el.innerHTML = `<b>${esc(data.runs ?? 0)}</b> runs`;
+  });
 
   foot.textContent = `Running ${updatedAgo(data.updated).toLowerCase()}`;
 }
@@ -332,13 +339,17 @@ function renderSleep(data) {
     return;
   }
 
+  const score = (v) => (v == null ? 'n/a' : esc(v) + '<span class="pct">%</span>');
   const lap = (lane, name, value) => `
-    <p class="lap">${lapGlyph(lane)}<b>${value == null ? 'n/a' : esc(value) + '<span class="pct">%</span>'}</b> ${name}</p>`;
-  const html = `
+    <p class="lap">${lapGlyph(lane)}<b>${score(value)}</b> ${name}</p>`;
+  // in the infield each score is a figure like the miles: numeral over caption, lane glyph in the caption
+  const figure = (lane, name, value) => `
+    <p class="lap lap-figure"><b>${score(value)}</b><span class="lap-cap">${lapGlyph(lane)}${name} last night</span></p>`;
+  legends[0].innerHTML = figure(0, 'sleep', data.sleepScore) + figure(1, 'recovery', data.recoveryScore);
+  legends[1].innerHTML = `
     <h3 class="lap-title">Last night</h3>
     ${lap(0, 'Sleep', data.sleepScore)}
     ${lap(1, 'Recovery', data.recoveryScore)}`;
-  legends.forEach((el) => { el.innerHTML = html; });
 
   runLanes(track, data);
   foot.textContent = `Last night ${updatedAgo(data.updated).toLowerCase()}`;
@@ -790,7 +801,7 @@ function setupActiveSection() {
   renderMarquee();
   renderWorks();
   renderAwards();
-  renderGoal();
+  renderRace();
 
   setupReveal();
   setupTopbar();

@@ -137,7 +137,8 @@
 
     <!-- ================================================== HEALTH
          A running track. Last night's sleep and recovery are two lanes of the oval, each run
-         as far round as its score from the start line; the year's miles stand in the infield. -->
+         as far round as its score from the start line; the year's miles and runs stand in the
+         infield, and the most recent race is a results row below. -->
     <section class="section health" id="health">
       <div class="wrap">
         <div class="health-head">
@@ -156,21 +157,22 @@
           </svg>
           <div class="infield">
             <div class="run-figure" id="card-running"><p class="is-empty">Loading…</p></div>
+            <p class="run-runs runs-infield" id="run-runs"></p>
             <div class="laps laps-infield" id="card-sleep"><p class="is-empty">Loading…</p></div>
           </div>
         </div>
 
         <div class="track-foot" data-reveal>
           <div class="laps laps-below" id="card-sleep-below"></div>
-          <div class="run-facts">
-            <p class="run-runs" id="run-runs"></p>
-            <p class="run-goal" id="card-goal"></p>
-          </div>
+          <p class="run-runs runs-below" id="run-runs-below"></p>
           <div class="track-stamps">
             <p class="stamp" id="foot-running"></p>
             <p class="stamp" id="foot-sleep"></p>
           </div>
         </div>
+
+        <!-- the most recent race: one row between two hairlines, filled from SITE.race -->
+        <dl class="board" id="board" data-reveal></dl>
       </div>
     </section>
 
