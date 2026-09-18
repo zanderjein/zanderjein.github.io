@@ -9,8 +9,8 @@
 
 .gate-sub { margin-top: 1.5rem; max-width: 30ch; }
 .steps { margin-top: 2rem; display: grid; gap: 0.6rem; counter-reset: step; max-width: var(--measure); }
-.steps li { counter-increment: step; display: grid; grid-template-columns: 2rem minmax(0, 1fr); }
-.steps li::before { content: counter(step); font-family: var(--mono); font-size: var(--t-mono); color: var(--ink-faint); padding-top: 0.35rem; }
+.steps li { counter-increment: step; position: relative; padding-left: 2rem; }
+.steps li::before { content: counter(step); position: absolute; left: 0; top: 0.35rem; font-family: var(--mono); font-size: var(--t-mono); color: var(--ink-faint); }
 
 /* tabs: two words and an underline, like the top bar */
 .tabs { margin-top: 2.5rem; display: flex; gap: 2rem; border-bottom: 1px solid var(--rule); }
