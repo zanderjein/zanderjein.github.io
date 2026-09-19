@@ -1,5 +1,5 @@
 {
-  "updated": "2026-09-19T03:28:34.169Z",
+  "updated": "2026-09-19T03:29:00.399Z",
   "source": "TMDB — this product uses the TMDB API but is not endorsed or certified by TMDB.",
   "posters": {
     "Ragtime": "assets/posters/ragtime.jpg",
@@ -16,11 +16,12 @@
     "Top Gun: Maverick": "assets/posters/top-gun-maverick.jpg",
     "The Intern": "assets/posters/the-intern.jpg",
     "Spider-Man: Brand New Day": "assets/posters/spider-man-brand-new-day.jpg",
+    "Call Me By Your Name": "assets/posters/call-me-by-your-name.jpg",
+    "The Odyssey": "assets/posters/the-odyssey.jpg",
     "The Meg": "assets/posters/the-meg.jpg",
     "Meg 2: The Trench": "assets/posters/meg-2-the-trench.jpg",
     "Ratatouille": "assets/posters/ratatouille.jpg",
     "Jurassic Park": "assets/posters/jurassic-park.jpg",
-    "The Odyssey": "assets/posters/the-odyssey.jpg",
     "Hoppers": "assets/posters/hoppers.jpg",
     "The Farewell": "assets/posters/the-farewell.jpg",
     "Barbie": "assets/posters/barbie.jpg",
@@ -114,6 +115,18 @@
       "year": "2026",
       "pinned": false
     },
+    "Call Me By Your Name": {
+      "tmdb": "movie/398818",
+      "title": "Call Me by Your Name",
+      "year": "2017",
+      "pinned": false
+    },
+    "The Odyssey": {
+      "tmdb": "movie/1368337",
+      "title": "The Odyssey",
+      "year": "2026",
+      "pinned": false
+    },
     "The Meg": {
       "tmdb": "movie/345940",
       "title": "The Meg",
@@ -136,12 +149,6 @@
       "tmdb": "movie/329",
       "title": "Jurassic Park",
       "year": "1993",
-      "pinned": false
-    },
-    "The Odyssey": {
-      "tmdb": "movie/1368337",
-      "title": "The Odyssey",
-      "year": "2026",
       "pinned": false
     },
     "Hoppers": {
