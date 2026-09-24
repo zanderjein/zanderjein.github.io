@@ -28,6 +28,7 @@ const SITE = {
      `latest` is how many appear there; the rest are on /reading/. */
   reading: { latest: 3 },
   watching: {
+    latest: 3,                                // posters shown per shelf, newest first
     sub: 'Movies, musicals, and new favorites.',
     text: [
       'I picked movies and musicals back up in summer 2026 and have been enjoying them ever since. Always excited for recommendations!'
@@ -71,7 +72,7 @@ const SITE = {
   /* The short lines in Work, Health, and Say hi. '' removes one. */
   lines: {
     worked: '',                               // the label inside the strip of logos ('' removes it)
-    health: 'Strava and Whoop enthusiast',
+    health: 'A live update of my running and sleep, pulled from Strava and Whoop twice a day.',
     connect: 'The easiest way to reach me is via email.'
   },
 
@@ -148,7 +149,7 @@ const SITE = {
     }
   ],
 
-  /* Interests (the poster walls) and Reading (the papers and news) are not in this file:
+  /* Interests (the poster shelves) and Reading (the papers and news) are not in this file:
      they are logged from zanderjein.com/admin, which saves them to data/watching.json
      and data/reading.json. */
 
@@ -658,7 +659,7 @@ function renderInterests(watching, posters) {
   const host = $('shelves');
   if (!host) return;
   const map = (posters && posters.posters) || {};
-  const ROWS = 3;
+  const SHOW = Math.max(1, Number(SITE.watching.latest) || 3);
   // an item is a title, or { title, tmdb } when its poster is pinned to one TMDB entry
   const shelves = ((watching && watching.shelves) || []).map((shelf) => ({
     name: shelf.name,
@@ -667,9 +668,9 @@ function renderInterests(watching, posters) {
 
   host.innerHTML = shelves.map((shelf, s) => {
     const kicker = shelf.name.replace(/s$/, '');
-    const cols = Math.max(1, Math.ceil(shelf.items.length / ROWS));
 
-    const tiles = shelf.items.map((title, i) => {
+    // the latest few, newest first and largest; the rest of the shelf is only counted
+    const tiles = shelf.items.slice(0, SHOW).map((title, i) => {
       const src = map[title];
       const art = src
         ? `<img src="${esc(src)}" alt="Poster for ${esc(title)}" loading="lazy" decoding="async" />`
@@ -678,20 +679,21 @@ function renderInterests(watching, posters) {
              <span class="set-kicker">${esc(kicker)}</span>
              <span class="set-title">${esc(title)}</span>
            </div>`;
-
-      // every other column hangs lower, so the wall never reads as a spreadsheet
-      const col = i % cols;
       return `
-        <li class="tile${col % 2 ? ' is-low' : ''}" style="--i:${col}">
+        <li class="trio-item" style="--i:${i}">
           <div class="poster">${art}</div>
           <p class="tile-title">${esc(title)}</p>
         </li>`;
     }).join('');
 
+    const n = shelf.items.length;
     return `
-      <div class="wall" style="--cols:${cols}" data-reveal>
-        <h3 class="wall-name">${esc(shelf.name)}</h3>
-        <ul class="tiles" tabindex="0" aria-label="${esc(shelf.name)}">${tiles}</ul>
+      <div class="trio" data-reveal>
+        <div class="trio-rail">
+          <h3 class="trio-name">${esc(shelf.name)}</h3>
+          <p class="trio-count">${n} so far</p>
+        </div>
+        <ul class="trio-posters" aria-label="${esc(shelf.name)}">${tiles}</ul>
       </div>`;
   }).join('');
 
@@ -791,6 +793,74 @@ function setupTopbar() {
   io.observe(hero);
 }
 
+/** The address is a button: one click puts it on the clipboard, and the line under it says so. */
+function setupCopyEmail() {
+  const btn = $('copy-email');
+  const hint = $('copy-hint');
+  if (!btn) return;
+  const email = btn.dataset.email || btn.textContent.replace(/\s+/g, '');
+  // a phone taps, everything else clicks
+  const idle = window.matchMedia('(hover: none)').matches ? 'Tap to copy' : 'Click to copy';
+  if (hint) hint.textContent = idle;
+  let timer = 0;
+
+  const say = (text) => {
+    if (!hint) return;
+    hint.textContent = text;
+    hint.classList.add('is-done');
+    clearTimeout(timer);
+    timer = setTimeout(() => { hint.textContent = idle; hint.classList.remove('is-done'); }, 2400);
+  };
+
+  // the old way, for browsers that won't hand over the clipboard on a plain page
+  const fallback = () => {
+    const ta = document.createElement('textarea');
+    ta.value = email;
+    ta.setAttribute('readonly', '');
+    ta.style.position = 'fixed';
+    ta.style.opacity = '0';
+    document.body.appendChild(ta);
+    ta.select();
+    let ok = false;
+    try { ok = document.execCommand('copy'); } catch (err) { ok = false; }
+    ta.remove();
+    return ok;
+  };
+
+  btn.addEventListener('click', async () => {
+    let ok = false;
+    try {
+      if (navigator.clipboard && window.isSecureContext) { await navigator.clipboard.writeText(email); ok = true; }
+    } catch (err) { ok = false; }
+    if (!ok) ok = fallback();
+    if (ok) { say('Copied to clipboard'); return; }
+    // nothing worked: the address is at least selected, ready for a manual copy
+    const range = document.createRange();
+    range.selectNodeContents(btn);
+    const sel = window.getSelection();
+    sel.removeAllRanges();
+    sel.addRange(range);
+    say('Select and copy the address above');
+  });
+}
+
+/** The folded part of the page opens when a link points into it, so #library still lands on the library. */
+function setupMoreFold() {
+  const fold = $('more-fold');
+  if (!fold) return;
+  const openFor = (hash) => {
+    if (!hash || hash.length < 2) return;
+    let target = null;
+    try { target = document.querySelector(hash); } catch (err) { target = null; }
+    if (!target || !fold.contains(target) || fold.open) return;
+    fold.open = true;
+    // the browser already tried to scroll while it was closed; try again now that it is open
+    requestAnimationFrame(() => target.scrollIntoView({ block: 'start' }));
+  };
+  window.addEventListener('hashchange', () => openFor(location.hash));
+  openFor(location.hash);
+}
+
 function setupActiveSection() {
   const links = [...document.querySelectorAll('.topbar-nav a')];
   const sections = links.map((a) => document.querySelector(a.getAttribute('href'))).filter(Boolean);
@@ -827,6 +897,8 @@ function setupActiveSection() {
   setupReveal();
   setupTopbar();
   setupActiveSection();
+  setupCopyEmail();
+  setupMoreFold();
 
   const [books, strava, whoop, posters, maps, watching, reading] = await Promise.all([
     loadJSON('data/books.json'),
