@@ -1066,7 +1066,7 @@ a { color: inherit; }
   margin-top: var(--section-gap);
   background: var(--close-bg);
   color: var(--close-ink);
-  padding-block: clamp(4.5rem, 11vw, 9rem);
+  padding-block: clamp(4.5rem, 11vw, 9rem) clamp(3rem, 6vw, 5rem);
 }
 .close :focus-visible { outline-color: var(--close-ink); }
 .close-title { font-family: var(--display); font-size: var(--t-title); letter-spacing: -0.02em; line-height: 1; }
@@ -1115,6 +1115,8 @@ a { color: inherit; }
    the live health numbers, and the poster shelves. Closed, the page ends on this line.
    ------------------------------------------------------------------------ */
 
+/* the fold sits close under the navy, not a full section's breath away */
+.section.more { padding-top: clamp(2rem, 4vw, 3rem); }
 .more-summary {
   margin-inline: var(--edge);       /* the hairlines stop where the text column does */
   display: flex;
@@ -1145,7 +1147,7 @@ a { color: inherit; }
 .more-body { padding-bottom: var(--section-gap); }
 .more-body > .section:last-child { padding-bottom: 0; }
 
-.foot { margin-top: clamp(3rem, 6vw, 5rem); padding-bottom: 2rem; }
+.foot { margin-top: clamp(2rem, 4vw, 3rem); padding-bottom: 2rem; }
 .colophon {
   padding-top: 1.25rem;
   border-top: 1px solid var(--rule);
