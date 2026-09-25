@@ -72,7 +72,7 @@ const SITE = {
   /* The short lines in Work, Health, and Say hi. '' removes one. */
   lines: {
     worked: '',                               // the label inside the strip of logos ('' removes it)
-    health: 'A live update of my running and sleep, pulled from Strava and Whoop twice a day.',
+    health: 'A live update of my running and sleep.',
     connect: 'The easiest way to reach me is via email.'
   },
 
