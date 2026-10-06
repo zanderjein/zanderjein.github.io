@@ -1123,7 +1123,7 @@ a { color: inherit; }
   justify-items: center;
   text-align: center;
   gap: 0.5rem;
-  padding-block: 1.5rem 1rem;
+  padding-block: 1.5rem 0.25rem;
   cursor: pointer;
   list-style: none;
 }
@@ -1133,7 +1133,7 @@ a { color: inherit; }
   width: 100%;
   display: flex;
   align-items: flex-start;
-  margin-bottom: 0.75rem;
+  margin-bottom: 0.5rem;
 }
 .more-mark::before, .more-mark::after { content: ""; flex: 1 1 0; height: 1px; margin-top: 0.5px; background: var(--rule); }
 .more-mark svg { flex: none; display: block; width: 6rem; height: 2.875rem; overflow: visible; }
@@ -1153,7 +1153,7 @@ a { color: inherit; }
 .more-summary:hover .more-name { color: var(--ink-link); }
 .more-body { padding-bottom: var(--section-gap); }
 /* the first section inside the fold sits close under the summary, not a full section's breath away */
-.more-body > .section:first-child { padding-top: clamp(2rem, 4vw, 3rem); }
+.more-body > .section:first-child { padding-top: clamp(1rem, 2vw, 1.5rem); }
 .more-body > .section:last-child { padding-bottom: 0; }
 
 .foot { margin-top: clamp(2rem, 4vw, 3rem); padding-bottom: 2rem; }
