@@ -1118,31 +1118,38 @@ a { color: inherit; }
 /* the fold sits close under the navy, not a full section's breath away */
 .section.more { padding-top: clamp(2rem, 4vw, 3rem); }
 .more-summary {
-  margin-inline: var(--edge);       /* the hairlines stop where the text column does */
-  display: flex;
-  flex-wrap: wrap;
-  align-items: baseline;
-  gap: 0.35rem 1.25rem;
-  padding-block: 1.5rem;
-  border-block: 1px solid var(--rule);
+  margin-inline: var(--edge);       /* the mark's hairline stops where the text column does */
+  display: grid;
+  justify-items: center;
+  text-align: center;
+  gap: 0.5rem;
+  padding-block: 1.5rem 2rem;
   cursor: pointer;
   list-style: none;
 }
 .more-summary::-webkit-details-marker { display: none; }
-.more-name { font-family: var(--display); font-size: var(--t-title); line-height: 1; letter-spacing: -0.02em; }
-.more-note { color: var(--ink-muted); font-size: var(--t-small); flex: 1 1 auto; }
-/* a plus that turns into a cross once the fold is open */
-.more-mark { position: relative; width: 1rem; height: 1rem; align-self: center; transition: transform var(--mid) var(--ease-out); }
-.more-mark::before, .more-mark::after {
-  content: "";
-  position: absolute;
-  inset: 50% auto auto 0;
+/* the hairline runs in from both edges and dips into two thin chevrons in the middle */
+.more-mark {
   width: 100%;
-  height: 1px;
-  background: var(--ink);
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: 1.25rem;
 }
-.more-mark::after { transform: rotate(90deg); }
-.more-fold[open] .more-mark { transform: rotate(45deg); }
+.more-mark::before, .more-mark::after { content: ""; flex: 1 1 0; height: 1px; margin-top: 0.5px; background: var(--rule); }
+.more-mark svg { flex: none; display: block; width: 6rem; height: 2.875rem; overflow: visible; }
+.more-mark path {
+  fill: none;
+  stroke: var(--ink);
+  stroke-width: 1px;
+  vector-effect: non-scaling-stroke;
+  transition: transform var(--mid) var(--ease-out);
+}
+.more-summary:hover .more-mark path + path { transform: translateY(2px); }
+/* open, the lower chevron tucks up into the upper one; nothing turns over */
+.more-fold[open] .more-mark path + path { transform: translateY(-20px); }
+.more-fold[open] .more-summary:hover .more-mark path + path { transform: translateY(-18px); }
+.more-name { font-family: var(--display); font-size: var(--t-title); line-height: 1; letter-spacing: -0.02em; transition: color var(--mid) var(--ease-out); }
+.more-note { color: var(--ink-muted); font-size: var(--t-small); }
 .more-summary:hover .more-name { color: var(--ink-link); }
 .more-body { padding-bottom: var(--section-gap); }
 .more-body > .section:last-child { padding-bottom: 0; }
