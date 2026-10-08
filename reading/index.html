@@ -42,10 +42,12 @@
         months[months.length - 1].items.push(it);
       });
 
-      const papers = items.filter((it) => it.kind !== 'news').length;
+      const words = { paper: 'paper', news: 'news piece', opinion: 'opinion piece', personal: 'personal piece' };
       const count = (n, word) => `${n} ${word}${n === 1 ? '' : 's'}`;
-      document.getElementById('reading-count').textContent =
-        [papers && count(papers, 'paper'), items.length - papers && count(items.length - papers, 'news piece')].filter(Boolean).join(', ');
+      document.getElementById('reading-count').textContent = Object.keys(words)
+        .map((kind) => [kind, items.filter((it) => (words[it.kind] ? it.kind : 'paper') === kind).length])
+        .filter(([, n]) => n)
+        .map(([kind, n]) => count(n, words[kind])).join(', ');
 
       host.innerHTML = months.map((m) => `
         <section class="reading-month">

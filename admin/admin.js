@@ -132,6 +132,7 @@ const today = () => {
   return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
 };
 
+const KINDS = { paper: 'Paper', news: 'News', opinion: 'Opinion', personal: 'Personal' };
 const kindOf = () => document.querySelector('input[name="r-kind"]:checked').value;
 
 function resetReadForm() {
@@ -155,7 +156,7 @@ function editRead(id) {
   $('r-date').value = it.date || today();
   $('r-note').value = it.note || '';
   $('r-hidden').checked = Boolean(it.hidden);
-  document.querySelector(`input[name="r-kind"][value="${it.kind === 'news' ? 'news' : 'paper'}"]`).checked = true;
+  document.querySelector(`input[name="r-kind"][value="${KINDS[it.kind] ? it.kind : 'paper'}"]`).checked = true;
   $('read-form-title').textContent = 'Editing';
   $('read-save').textContent = 'Save changes';
   $('read-cancel').hidden = false;
@@ -238,7 +239,7 @@ function renderReading() {
     <li class="log-row${it.hidden ? ' is-hidden' : ''}" data-id="${esc(it.id)}">
       <div>
         <p class="log-title">${esc(it.title)}</p>
-        <p class="log-meta">${esc([it.date, it.source, it.kind === 'news' ? 'News' : 'Paper', it.hidden ? 'off the site' : ''].filter(Boolean).join(' · '))}</p>
+        <p class="log-meta">${esc([it.date, it.source, KINDS[it.kind] || 'Paper', it.hidden ? 'off the site' : ''].filter(Boolean).join(' · '))}</p>
       </div>
       <div class="log-verbs">
         <button class="quiet" type="button" data-do="edit">Edit</button>

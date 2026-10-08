@@ -1,7 +1,7 @@
 /* ==========================================================================
-   reading.js — the papers and news log, shared by the home page and /reading/.
+   reading.js — the papers, news, opinion and personal-piece log, shared by the home page and /reading/.
    Entries are written by /admin into data/reading.json:
-     { id, title, url, source, authors, kind: 'paper' | 'news', date: 'YYYY-MM-DD', note, hidden }
+     { id, title, url, source, authors, kind: 'paper' | 'news' | 'opinion' | 'personal', date: 'YYYY-MM-DD', note, hidden }
    ========================================================================== */
 
 (function () {
@@ -9,7 +9,7 @@
     { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]
   ));
 
-  const KINDS = { paper: 'Paper', news: 'News' };
+  const KINDS = { paper: 'Paper', news: 'News', opinion: 'Opinion', personal: 'Personal' };
 
   /** YYYY-MM-DD as a local date, so an entry never lands on the day before. */
   function localDate(ymd) {
